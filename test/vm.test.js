@@ -78,8 +78,25 @@ describe("Chip8.VM", function() {
   });
 
   describe("#updateTimers", function() {
-    it("decreases the delay timer when it is greater than zero");
-    it("decreases the sound timer when it is greater than zero");
+    it("decreases the delay timer when it is greater than zero", function() {
+      vm.delayTimer = 2;
+      vm.updateTimers();
+      expect(vm.delayTimer).to.equal(1);
+      vm.updateTimers();
+      vm.updateTimers();
+      vm.updateTimers();
+      expect(vm.delayTimer).to.equal(0);
+    });
+
+    it("decreases the sound timer when it is greater than zero", function() {
+      vm.soundTimer = 2;
+      vm.updateTimers();
+      expect(vm.soundTimer).to.equal(1);
+      vm.updateTimers();
+      vm.updateTimers();
+      vm.updateTimers();
+      expect(vm.soundTimer).to.equal(0);
+    });
   });
 
   describe("#perform(opcode)", function() {

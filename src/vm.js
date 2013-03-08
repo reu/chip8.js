@@ -21,7 +21,12 @@
 
     this.perform = function(opcode) {}
     this.render = function() {}
-    this.updateTimers = function() {}
+
+    this.updateTimers = function() {
+      if (this.delayTimer > 0) this.delayTimer -= 1;
+      if (this.soundTimer > 0) this.soundTimer -= 1;
+    }
+
     this.updateInput = function() {}
   }
 
