@@ -1,0 +1,30 @@
+{
+  "name": "chip8.js",
+  "version": "0.0.0",
+  "description": "CHIP-8 emulator.",
+  "main": "src/chip8.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/reu/chip8.js"
+  },
+  "keywords": [
+    "emulator",
+    "chip8",
+    "space",
+    "invanders",
+    "html5",
+    "canvas",
+    "webaudio",
+    "game"
+  ],
+  "author": "Rodrigo Navarro",
+  "license": "BSD",
+  "devDependencies": {
+    "mocha": "latest",
+    "expect.js": "latest",
+    "serve": "*"
+  }
+}
