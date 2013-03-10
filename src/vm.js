@@ -183,6 +183,29 @@
           this.v[x] = Math.floor(Math.random() * 0xFF) & (opcode & 0x00FF);
           break;
 
+        case 0xD000:
+          var row, col, sprite
+            , width = 8
+            , height = opcode & 0x000F;
+
+          this.v[0xF] = 0;
+
+          for (row = 0; row < height; row++) {
+            sprite = this.memory[this.i + row];
+
+            for (col = 0; col < width; col++) {
+              if ((sprite & 0x80) > 0) {
+                if (this.screen.setPixel(this.v[x] + col, this.v[y] + row)) {
+                  this.v[0xF] = 1;
+                }
+              }
+
+              sprite = sprite << 1;
+            }
+          }
+
+          break;
+
         case 0xE000:
           switch (opcode & 0x00FF) {
             case 0x009E:

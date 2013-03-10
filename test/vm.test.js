@@ -498,11 +498,84 @@ describe("Chip8.VM", function() {
     });
 
     context("0xDXYN", function() {
-      it("draws a sprite at coordinate (VX, VY)");
-      it("draws a sprite with width of 8 pixels");
-      it("draws a sprite with height of N pixels");
-      it("sets VF to 1 if any screen pixels are flipped from set to unset when the sprite is drawn");
-      it("sets VF to 0 if none screen pixels are flipped from set to unset when the sprite is drawn");
+      before(function() {
+        vm.i = 0;
+
+        for (var i = 0; i < 16; i++) {
+          for (var j = 0; j < 16; j++) {
+            vm.memory[i + j] = 0x80;
+          }
+        }
+      });
+
+      it("draws a sprite at coordinate (VX, VY)", function(done) {
+        var count = 0;
+
+        vm.screen.setPixel = function(x, y) {
+          if (count == 0) {
+            expect(x).to.equal(5);
+            expect(y).to.equal(8);
+
+            done();
+            count++;
+          }
+        }
+
+        vm.v[1] = 5;
+        vm.v[2] = 8;
+
+        vm.perform(0xD122);
+      });
+
+      it("draws a sprite with width of 8 pixels", function() {
+        var xs = [];
+
+        vm.screen.setPixel = function(x, y) {
+          xs.push(x);
+
+          if (xs.length == 8) {
+            var width = xs[xs.length - 1] - xs[0];
+            expect(width).to.equal(8);
+            done();
+          }
+        }
+
+        vm.v[1] = 5;
+        vm.v[2] = 6;
+
+        vm.perform(0xD121);
+      });
+
+      it("draws a sprite with height of N pixels", function() {
+        var ys = [];
+
+        vm.screen.setPixel = function(x, y) {
+          ys.push(y);
+
+          if (ys.length == 3 * 8) {
+            var height = ys[ys.length - 1] - ys[0];
+            expect(height).to.equal(3);
+            done();
+          }
+        }
+
+        vm.v[1] = 5;
+        vm.v[2] = 6;
+
+        vm.perform(0xD123);
+      });
+
+      it("sets VF to 1 if any screen pixels are flipped from set to unset when the sprite is drawn", function() {
+        vm.screen.setPixel = function() { return true }
+        vm.perform(0xD121);
+      });
+
+      it("sets VF to 0 if no screen pixels are flipped from set to unset when the sprite is drawn", function() {
+        vm.screen.setPixel = function() { return false }
+        vm.perform(0xD121);
+      });
+
+      shouldIncrementProgramCounter(0xD121);
     });
 
     context("0xEX9E", function() {
