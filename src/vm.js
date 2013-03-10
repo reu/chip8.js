@@ -34,6 +34,12 @@
       this.memory[i] = fonts[i];
     }
 
+    this.loadProgram = function(program) {
+      for (var i = 0, length = program.length; i < length; i++) {
+        this.memory[0x200 + i] = program[i];
+      }
+    }
+
     this.cycle = function() {
       var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
 

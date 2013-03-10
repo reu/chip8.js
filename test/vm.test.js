@@ -95,6 +95,16 @@ describe("Chip8.VM", function() {
     });
   });
 
+  describe("#loadProgram", function() {
+    it("loads the rom data into memory starting at address 0x200", function() {
+      var rom = [1, 2, 3];
+      vm.loadProgram(rom);
+      expect(vm.memory[0x200]).to.equal(1);
+      expect(vm.memory[0x201]).to.equal(2);
+      expect(vm.memory[0x202]).to.equal(3);
+    });
+  });
+
   describe("#perform(opcode)", function() {
     // Shared examples
     var shouldIncrementProgramCounter = function(opcode) {
