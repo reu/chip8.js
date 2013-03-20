@@ -36,6 +36,11 @@
 
     var self = this;
 
+    /**
+     * Handler for the keyDown event
+     * @method keyDown
+     * @private
+     */
     this.keyDown = function(event) {
       var key = String.fromCharCode(event.which);
       keysPressed[key] = true;
@@ -44,11 +49,16 @@
         var keyCode = Keyboard.MAPPING[property];
 
         if (keyCode == key) {
-          self.onKeyPress(keyCode);
+          self.onKeyPress(parseInt(property));
         }
       }
     }
 
+    /**
+     * Handler for the keyUp event
+     * @method keyUp
+     * @private
+     */
     this.keyUp = function(event) {
       var key = String.fromCharCode(event.which);
       keysPressed[key] = false;

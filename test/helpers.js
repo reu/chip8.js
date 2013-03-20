@@ -1,11 +1,19 @@
-function triggerKeyboardEvent(element, keyCode) {
+function triggerKeyDown(element, keyCode) {
+  triggerKeyEvent("keydown", element, keyCode);
+}
+
+function triggerKeyUp(element, keyCode) {
+  triggerKeyEvent("keyup", element, keyCode);
+}
+
+function triggerKeyEvent(name, element, keyCode) {
   var event = document.createEventObject ? document.createEventObject() : document.createEvent("Events");
   event.which = event.keyCode = keyCode;
 
   if (event.initEvent) {
-    event.initEvent("keydown", true, true);
+    event.initEvent(name, true, true);
     element.dispatchEvent(event);
   } else {
-    element.fireEvent("onkeydown", event);
+    element.fireEvent("on" + name, event);
   }
 }
