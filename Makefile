@@ -10,4 +10,11 @@ test-browser:
 documentation:
 	@yuidoc .
 
-.PHONY: test test-browser documentation
+clean-documentation:
+	rm -rf out
+
+clean: clean-documentation
+	rm -f chip8.build.js
+	rm -f chip8.min.js
+
+.PHONY: test test-browser documentation clean clean-documentation
