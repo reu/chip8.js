@@ -2,7 +2,6 @@
   var VM = function VM() {
     this.pc = 0x200;
     this.stack = new Array;
-    this.stackPointer = 0;
     this.screen = { clear: function() {}, render: function() {}, setPixel: function() {} };
     this.input = { isKeyPressed: function(key) {} };
     this.v = new Uint8Array(16);
@@ -41,7 +40,6 @@
     this.reset = function() {
       this.pc = 0x200;
       this.stack = new Array;
-      this.stackPointer = 0;
       this.v = new Uint8Array(16);
       this.i = 0;
       this.memory = new Uint8Array(4096);
@@ -85,8 +83,7 @@
               break;
 
             case 0x00EE:
-              this.stackPointer -= 1;
-              this.pc = this.stack[this.stackPointer];
+              this.pc = this.stack.pop();
               break;
           }
           break;
@@ -104,8 +101,7 @@
           break;
 
         case 0x2000:
-          this.stack[this.stackPointer] = this.pc;
-          this.stackPointer += 1;
+          this.stack.push(this.pc);
           this.pc = opcode & 0x0FFF;
           break;
 

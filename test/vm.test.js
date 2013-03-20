@@ -163,17 +163,10 @@ describe("Chip8.VM", function() {
     });
 
     context("0x00EE returns from a subroutine", function() {
-      it("sets the program counter to the stored stack pointer", function() {
+      it("sets the program counter to the stored stack", function() {
         vm.stack = [10, 20, 30];
-        vm.stackPointer = 2;
         vm.perform(0x00EE);
-        expect(vm.pc).to.equal(20);
-      });
-
-      it("decrements the stack pointer", function() {
-        vm.stackPointer = 2;
-        vm.perform(0x00EE);
-        expect(vm.stackPointer).to.equal(1);
+        expect(vm.pc).to.equal(30);
       });
     });
 
@@ -194,12 +187,6 @@ describe("Chip8.VM", function() {
         var currentPc = vm.pc = 10;
         vm.perform(0x2333);
         expect(vm.stack).to.contain(currentPc + 2);
-      });
-
-      it("increments the stack pointer", function() {
-        var currentStackPointer = vm.stackPointer = 20;
-        vm.perform(0x2333);
-        expect(vm.stackPointer).to.equal(21);
       });
     });
 
