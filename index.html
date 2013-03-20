@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chip8.js</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <canvas style="border: 10px solid"></canvas>
+    <div id="debug"></div>
+    <script src="chip8.js"></script>
+    <script src="src/vm.js"></script>
+    <script src="src/screen.js"></script>
+    <script src="src/keyboard.js"></script>
+    <script>
+      (function() {
+        var canvas = document.querySelector("canvas");
+        var emulator = new Chip8(canvas.getContext("2d"));
+
+        var romsSelector = document.createElement("select");
+
+        for (var i = 0, romsCount = Chip8.ROMS.length; i < romsCount; i++) {
+          var option = document.createElement("option");
+          var rom = Chip8.ROMS[i];
+          option.value = option.innerHTML = rom;
+          romsSelector.appendChild(option);
+        }
+
+        romsSelector.addEventListener("change", function(event) {
+          emulator.loadRom(event.target.value);
+          romsSelector.blur();
+          canvas.focus();
+        }, false);
+
+        document.body.appendChild(romsSelector);
+      })();
+    </script>
+  </body>
+</html>
