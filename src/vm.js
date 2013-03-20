@@ -46,7 +46,6 @@
       this.perform(opcode);
       this.render();
       this.updateTimers();
-      this.updateInput();
     }
 
     this.perform = function(opcode) {
@@ -278,8 +277,6 @@
       if (this.delayTimer > 0) this.delayTimer -= 1;
       if (this.soundTimer > 0) this.soundTimer -= 1;
     }
-
-    this.updateInput = function() {}
   }
 
   module.exports = VM;

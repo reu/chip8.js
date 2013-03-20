@@ -67,9 +67,6 @@ describe("Chip8.VM", function() {
       vm.cycle();
     });
 
-    it("update the inputs state", function(done) {
-      vm.updateInput = done;
-      vm.cycle();
     });
   });
 
