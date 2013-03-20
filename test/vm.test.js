@@ -675,7 +675,18 @@ describe("Chip8.VM", function() {
     });
 
     context("0xFX0A", function() {
-      it("waits for a key press and the stores it in VX");
+      it("pauses the emulation until a key is pressed", function() {
+        vm.perform(0xF10A);
+        expect(vm.paused).to.be(true);
+        vm.input.onKeyPress(1);
+        expect(vm.paused).to.be(false);
+      });
+
+      it("stores the pressed key in VX", function() {
+        vm.perform(0xF10A);
+        vm.input.onKeyPress(5);
+        expect(vm.v[1]).to.equal(5);
+      });
     });
 
     context("0xFX15", function() {

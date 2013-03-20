@@ -233,6 +233,15 @@
               this.v[x] = this.delayTimer;
               break;
 
+            case 0x000A:
+              this.paused = true;
+
+              this.input.onKeyPress = function(key) {
+                this.v[x] = key;
+                this.paused = false;
+                this.input.onKeyPress = function() {}
+              }.bind(this);
+
             case 0x0015:
               this.delayTimer = this.v[x];
               break;
