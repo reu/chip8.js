@@ -118,14 +118,6 @@
           }
           break;
 
-        case 0xA000:
-          this.i = opcode & 0x0FFF;
-          break;
-
-        case 0xB000:
-          this.pc = (opcode & 0x0FFF) + this.v[0];
-          break;
-
         case 0x1000:
           this.pc = opcode & 0x0FFF;
           break;
@@ -225,6 +217,14 @@
 
         case 0x9000:
           if (this.v[x] != this.v[y]) this.pc += 2;
+          break;
+
+        case 0xA000:
+          this.i = opcode & 0x0FFF;
+          break;
+
+        case 0xB000:
+          this.pc = (opcode & 0x0FFF) + this.v[0];
           break;
 
         case 0xC000:
