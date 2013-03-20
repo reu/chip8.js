@@ -1,14 +1,31 @@
 (function() {
+  /**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.Screen
+   * @constructor
+   *
+   * @property {Array} bitMap the display map
+   */
   var Screen = function Screen() {
     this.rows = 32;
     this.columns = 64;
     this.resolution = this.rows * this.columns;
     this.bitMap = new Array(this.resolution);
 
+    /**
+     * Clear the bitMap.
+     * @method clear
+     */
     this.clear = function() {
       this.bitMap = new Array(this.resolution);
     }
 
+    /**
+     * @method setPixel
+     * @param {Integer} x the starting x coordinate of the pixel
+     * @param {Integer} y the starting y coordinate of the pixel
+     */
     this.setPixel = function(x, y) {
       // Wrap around pixels that overflow the screen
       if (x > this.columns) {
@@ -32,6 +49,15 @@
     this.render = function(output) {}
   }
 
+  /**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.Screen.CanvasScreen
+   * @extends Chip8.Screen
+   * @constructor
+   * @param {CanvasRenderingContext2D} ctx context 2D of a canvas element
+   * @param {Integer} scale the scale of the rendering, defaults to 10.
+   */
   Screen.CanvasScreen = function CanvasScreen(ctx, scale) {
     Screen.apply(this, arguments);
 
@@ -40,6 +66,10 @@
     var width = ctx.canvas.width = this.columns * this.scale;
     var height = ctx.canvas.height = this.rows * this.scale;
 
+    /**
+     * Renders the bitMap array into the canvas context.
+     * @method render
+     */
     this.render = function() {
       var i, x, y;
 

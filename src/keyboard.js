@@ -1,14 +1,34 @@
 (function() {
+  /**
+   * A Keyboard input handler
+   *
+   * @class Chip8.Keyboard
+   * @constructor
+   */
   var Keyboard = function Keyboard() {
     var keysPressed = [];
 
+    /**
+     * Fired when a key is pressed.
+     * @event onKeyPress
+     * @param {Integer} keyCode
+     */
     this.onKeyPress = function() {}
 
+    /**
+     * Clear all the memoty of keys that are pressed.
+     * @method clear
+     */
     this.clear = function() {
       keysPressed = [];
       this.onKeyPress = function() {}
     }
 
+    /**
+     * Checks if a given keyCode is pressed or not.
+     * @param {Integer} keyCode
+     * @return {Boolean}
+     */
     this.isKeyPressed = function(keyCode) {
       var key = Keyboard.MAPPING[keyCode];
       return !!keysPressed[key];

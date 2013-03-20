@@ -1,4 +1,10 @@
 (function() {
+  /**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.VM
+   * @constructor
+   */
   var VM = function VM() {
     this.pc = 0x200;
     this.stack = new Array;
@@ -12,7 +18,13 @@
     this.paused = false;
     this.speed = 10;
 
-    this.loadFonts = function() {
+    /**
+     * Loads the CHIP8 fonts into memory.
+     * Detailed information can be found at: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
+     * @method loadFonts
+     * @private
+     */
+    var loadFonts = function() {
       var fonts = [
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -37,6 +49,10 @@
       }
     }
 
+    /**
+     * Reset the VM with the default values.
+     * @method reset
+     */
     this.reset = function() {
       this.pc = 0x200;
       this.stack = new Array;
@@ -47,16 +63,25 @@
       this.soundTimer = 0;
       this.screen.clear();
       this.input.clear();
-      this.loadFonts();
+      loadFonts();
       this.paused = false;
     }
 
+    /**
+     * Loads a program into the memory.
+     * @method loadProgram
+     * @param {Array} program array of bytes of a CHIP8 program
+     */
     this.loadProgram = function(program) {
       for (var i = 0, length = program.length; i < length; i++) {
         this.memory[0x200 + i] = program[i];
       }
     }
 
+    /**
+     * The main CPU cycle.
+     * @method cycle
+     */
     this.cycle = function() {
       for (var i = 0; i < this.speed; i++) {
         if (!this.paused) {
@@ -69,6 +94,11 @@
       this.render();
     }
 
+    /**
+     * Process a given opcode.
+     * @method perform
+     * @param {Integer} opcode
+     */
     this.perform = function(opcode) {
       this.pc += 2;
 
@@ -297,10 +327,19 @@
       }
     }
 
+    /**
+     * Renders the screen.
+     * @method render
+     */
     this.render = function() {
       this.screen.render();
     }
 
+    /**
+     * Updates the CPU delay and sound timers.
+     * More info at: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.5
+     * @method updateTimers
+     */
     this.updateTimers = function() {
       if (this.delayTimer > 0) this.delayTimer -= 1;
       if (this.soundTimer > 0) this.soundTimer -= 1;

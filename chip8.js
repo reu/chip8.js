@@ -1,4 +1,11 @@
 (function() {
+  /**
+   * The CHIP8 emulator class.
+   *
+   * @class Chip8
+   * @constructor
+   * @param {CanvasRenderingContext2D} renderingContext context 2D of a canvas element
+   */
   var Chip8 = function Chip8(renderingContext) {
     var loop
       , step
@@ -9,19 +16,36 @@
     vm.screen = new Chip8.Screen.CanvasScreen(renderingContext);
     vm.input = new Chip8.Keyboard;
 
+    /**
+     * An emulation cycle step.
+     * @private
+     */
     step = function step() {
       vm.cycle();
       loop = requestAnimationFrame(step);
     }
 
+    /**
+     * Start the emulator main loop.
+     * @method start
+     */
     this.start = function() {
       loop = requestAnimationFrame(step);
     }
 
+    /**
+     * Stop the emulator main loop.
+     * @method stop
+     */
     this.stop = function() {
       cancelAnimationFrame(loop);
     }
 
+    /**
+     * Load a rom into the VM memory.
+     * @method loadRom
+     * @param {String, Chip8.ROMS} name of a rom
+     */
     this.loadRom = function(name) {
       var request = new XMLHttpRequest;
       request.onload = function() {
@@ -36,6 +60,13 @@
     }
   }
 
+  /**
+   * List of known CHIP8 roms.
+   * @property ROMS
+   * @type Array
+   * @static
+   * @final
+   */
   Chip8.ROMS = [
     "15PUZZLE",
     "BLINKY",

@@ -7,4 +7,7 @@ test:
 test-browser:
 	@./node_modules/.bin/serve .
 
+documentation:
+	@yuidoc .
+
 .PHONY: test
