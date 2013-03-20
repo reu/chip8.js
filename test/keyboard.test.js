@@ -8,6 +8,11 @@ describe("Chip8.Keyboard", function() {
     keyboard = new Chip8.Keyboard;
   });
 
+  afterEach(function() {
+    window.removeEventListener("keydown", keyboard.keyDown);
+    window.removeEventListener("keyup", keyboard.keyDown);
+  });
+
   describe("#isKeyPressed(keyCode)", function(){
     it("is true when a key is still pressed", function() {
       triggerKeyDown(document, KEY_Q);
