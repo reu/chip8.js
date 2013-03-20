@@ -3,7 +3,7 @@
     this.pc = 0x200;
     this.stack = new Array;
     this.stackPointer = 0;
-    this.screen = { clear: function() {}, setPixel: function() {} };
+    this.screen = { clear: function() {}, render: function() {}, setPixel: function() {} };
     this.input = { isKeyPressed: function(key) {} };
     this.v = new Uint8Array(16);
     this.i = 0;
@@ -270,7 +270,9 @@
       }
     }
 
-    this.render = function() {}
+    this.render = function() {
+      this.screen.render();
+    }
 
     this.updateTimers = function() {
       if (this.delayTimer > 0) this.delayTimer -= 1;
