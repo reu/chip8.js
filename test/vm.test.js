@@ -44,6 +44,20 @@ describe("Chip8.VM", function() {
   });
 
   describe("#cycle", function() {
+    beforeEach(function() {
+      vm.speed = 1;
+    });
+
+    it("performs speed times", function(done) {
+      var times = 0;
+      vm.speed = 5;
+      vm.perform = function() {
+        times += 1;
+        if (times == 5) done();
+      }
+      vm.cycle();
+    });
+
     it("performs the correct opcode", function(done) {
       vm.pc = 5;
       vm.memory[5] = 0xAA;
@@ -67,6 +81,25 @@ describe("Chip8.VM", function() {
       vm.cycle();
     });
 
+    context("when paused", function() {
+      beforeEach(function() {
+        vm.paused = true;
+      });
+
+      it("doesn't perform any opcode", function() {
+        vm.perform = function() { throw "Called" }
+        expect(function() { vm.cycle() }).to.not.throwException("Called");
+      });
+
+      it("doesn't update the timers", function() {
+        vm.updateTimers = function() { throw "Called" }
+        expect(function() { vm.cycle() }).to.not.throwException("Called");
+      });
+
+      it("renders to the screen", function(done) {
+        vm.render = done;
+        vm.cycle();
+      });
     });
   });
 

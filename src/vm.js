@@ -10,6 +10,8 @@
     this.memory = new Uint8Array(4096);
     this.delayTimer = 0;
     this.soundTimer = 0;
+    this.paused = false;
+    this.speed = 10;
 
     var fonts = [
       0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -41,11 +43,15 @@
     }
 
     this.cycle = function() {
-      var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
+      for (var i = 0; i < this.speed; i++) {
+        if (!this.paused) {
+          var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
+          this.perform(opcode);
+          this.updateTimers();
+        }
+      }
 
-      this.perform(opcode);
       this.render();
-      this.updateTimers();
     }
 
     this.perform = function(opcode) {
