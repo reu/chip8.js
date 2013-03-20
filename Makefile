@@ -10,4 +10,4 @@ test-browser:
 documentation:
 	@yuidoc .
 
-.PHONY: test
+.PHONY: test test-browser documentation
