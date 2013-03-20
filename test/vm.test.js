@@ -515,7 +515,7 @@ describe("Chip8.VM", function() {
     });
 
     context("0xDXYN", function() {
-      before(function() {
+      beforeEach(function() {
         vm.i = 0;
 
         for (var i = 0; i < 16; i++) {
