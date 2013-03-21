@@ -2,8 +2,38 @@
 
 Chip8.js aims to bring CHIP8 emulation to the browser and node.js.
 
-A demo of the browser version can be found at: http://reu.github.com/chip8.js
+## Demo
 
-## Tests
+Currently, the demo only runs on Google Chrome.
 
-There are tests for most of the features implemented (probably the first emulator to have automated tests), they can be run either in node.js or in the browser, by accessing the test/tests.html page (which can be found online at http://reu.github.com/chip8.js/test/tests.html).
+http://reu.github.com/chip8.js
+
+## Running the tests
+
+The emulator is almost completely covered with automated tests. You can run the VM tests using node, with the `test` task:
+
+    $ make test
+
+To run the Keyboard and emulator tests, you must run the suite in the browser.
+
+    $ make test-browser
+
+And then accessing http://localhost:3000/test/tests.html URL.
+
+You can also run the tests online by following http://reu.github.com/chip8.js/test/tests.html
+
+## Documentation
+
+The documentation can be generated with YUIDoc. First, make sure you have it installed:
+
+    $ npm install yuidocjs
+
+Then, to generate the documentation, just run:
+
+    $ make documentation
+
+This will create the documentation inside the `out` folder.
+
+# License
+
+MIT License. Copyright 2013 Rodrigo Navarro. http://rnavarro.com.br
