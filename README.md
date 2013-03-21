@@ -4,7 +4,7 @@ Chip8.js aims to bring CHIP8 emulation to the browser and node.js.
 
 ## Demo
 
-Currently, the demo only runs on Google Chrome.
+Currently, the demo doesn't support Internet Explorer.
 
 http://reu.github.com/chip8.js
 

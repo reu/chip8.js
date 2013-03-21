@@ -38,7 +38,11 @@
      * @method stop
      */
     this.stop = function() {
-      cancelAnimationFrame(loop);
+      if (typeof mozCancelAnimationFrame != "undefined") {
+        mozCancelAnimationFrame(loop);
+      } else {
+        cancelAnimationFrame(loop);
+      }
     }
 
     /**
@@ -49,13 +53,15 @@
     this.loadRom = function(name) {
       var request = new XMLHttpRequest;
       request.onload = function() {
-        self.stop();
-        vm.reset();
-        vm.loadProgram(new Uint8Array(request.response));
-        self.start();
+        if (request.response) {
+          self.stop();
+          vm.reset();
+          vm.loadProgram(new Uint8Array(request.response));
+          self.start();
+        }
       }
-      request.responseType = "arraybuffer";
       request.open("GET", "roms/" + name, true);
+      request.responseType = "arraybuffer";
       request.send();
     }
   }
