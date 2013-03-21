@@ -14,8 +14,12 @@
     <script src="src/keyboard.js"></script>
     <script>
       (function() {
+        var emulator = new Chip8;
+
+        emulator.input = new Chip8.Keyboard;
+
         var canvas = document.querySelector("canvas");
-        var emulator = new Chip8(canvas.getContext("2d"));
+        emulator.screen = new Chip8.Screen.CanvasScreen(canvas.getContext("2d"));
 
         var romsSelector = document.createElement("select");
 

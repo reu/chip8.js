@@ -4,17 +4,16 @@
    *
    * @class Chip8
    * @constructor
-   * @param {CanvasRenderingContext2D} renderingContext context 2D of a canvas element
+   *
+   * @property {Chip8.Screen} screen where the emulator will render the graphics
+   * @property {Chip8.Input} input the input handler
    */
-  var Chip8 = function Chip8(renderingContext) {
+  var Chip8 = function Chip8() {
     var loop
       , step
       , counter = 0
       , self = this
       , vm = new Chip8.VM;
-
-    vm.screen = new Chip8.Screen.CanvasScreen(renderingContext);
-    vm.input = new Chip8.Keyboard;
 
     /**
      * An emulation cycle step.
@@ -54,6 +53,8 @@
       var request = new XMLHttpRequest;
       request.onload = function() {
         if (request.response) {
+          vm.screen = self.screen;
+          vm.input = self.input;
           self.stop();
           vm.reset();
           vm.loadProgram(new Uint8Array(request.response));
