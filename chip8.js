@@ -37,11 +37,7 @@
      * @method stop
      */
     this.stop = function() {
-      if (typeof mozCancelAnimationFrame != "undefined") {
-        mozCancelAnimationFrame(loop);
-      } else {
-        cancelAnimationFrame(loop);
-      }
+      cancelAnimationFrame(loop);
     }
 
     /**
