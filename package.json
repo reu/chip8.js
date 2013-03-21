@@ -1,8 +1,8 @@
 {
   "name": "chip8.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "CHIP-8 emulator.",
-  "main": "src/chip8.js",
+  "main": "chip8.js",
   "scripts": {
     "test": "make test"
   },
@@ -21,7 +21,7 @@
     "game"
   ],
   "author": "Rodrigo Navarro",
-  "license": "BSD",
+  "license": "MIT",
   "devDependencies": {
     "mocha": "latest",
     "expect.js": "latest",
