@@ -10,7 +10,7 @@ http://reu.github.com/chip8.js
 
 ## Running the tests
 
-The emulator is almost completely covered with automated tests. You can run the VM tests using node, with the `test` task:
+The emulator is almost completely covered with automated tests. You can run the CPU tests using node, with the `test` task:
 
     $ make test
 

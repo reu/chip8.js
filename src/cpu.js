@@ -2,14 +2,14 @@
   /**
    * The CPU of the emulator, responsible for processing memory opcodes.
    *
-   * @class Chip8.VM
+   * @class Chip8.CPU
    * @constructor
    */
-  var VM = function VM() {
+  var CPU = function CPU() {
     this.pc = 0x200;
     this.stack = new Array;
     this.screen = { clear: function() {}, render: function() {}, setPixel: function() {} };
-    this.input = { isKeyPressed: function(key) {} };
+    this.input = { isKeyPressed: function(key) {}, clear: function() {} };
     this.v = new Uint8Array(16);
     this.i = 0;
     this.memory = new Uint8Array(4096);
@@ -50,7 +50,7 @@
     }
 
     /**
-     * Reset the VM with the default values.
+     * Reset the CPU with the default values.
      * @method reset
      */
     this.reset = function() {
@@ -464,8 +464,8 @@
   }
 
   if (typeof module != "undefined") {
-    module.exports = VM;
+    module.exports = CPU;
   } else {
-    window.Chip8.VM = VM;
+    window.Chip8.CPU = CPU;
   }
 })();

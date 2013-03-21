@@ -1,137 +1,137 @@
-describe("Chip8.VM", function() {
-  var vm;
+describe("Chip8.CPU", function() {
+  var cpu;
 
   beforeEach(function() {
-    vm = new Chip8.VM;
+    cpu = new Chip8.CPU;
   });
 
   it("has a program counter initialized with 0x200", function() {
-    expect(vm).to.have.property("pc", 0x200);
+    expect(cpu).to.have.property("pc", 0x200);
   });
 
   it("has a stack", function() {
-    expect(vm).to.have.property("stack");
+    expect(cpu).to.have.property("stack");
   });
 
   it("has a screen", function() {
-    expect(vm).to.have.property("screen");
+    expect(cpu).to.have.property("screen");
   });
 
   describe("#memory", function() {
     it("has 4096 bytes", function() {
-      expect(vm.memory).to.have.length(4096);
+      expect(cpu.memory).to.have.length(4096);
     });
   });
 
   it("has 16 8-bit data registers named from v0 to vF", function() {
-    expect(vm).to.have.property("v");
-    expect(vm.v).to.have.length(16);
-    expect(vm.v.BYTES_PER_ELEMENT).to.equal(1);
+    expect(cpu).to.have.property("v");
+    expect(cpu.v).to.have.length(16);
+    expect(cpu.v.BYTES_PER_ELEMENT).to.equal(1);
   });
 
   it("has 16-bit address register named I", function() {
-    expect(vm).to.have.property("i");
+    expect(cpu).to.have.property("i");
   });
 
   describe("timers", function() {
     it("has a delay timer", function() {
-      expect(vm).to.have.property("delayTimer");
+      expect(cpu).to.have.property("delayTimer");
     });
 
     it("has a sound timer", function() {
-      expect(vm).to.have.property("soundTimer");
+      expect(cpu).to.have.property("soundTimer");
     });
   });
 
   describe("#cycle", function() {
     beforeEach(function() {
-      vm.speed = 1;
+      cpu.speed = 1;
     });
 
     it("performs speed times", function(done) {
       var times = 0;
-      vm.speed = 5;
-      vm.perform = function() {
+      cpu.speed = 5;
+      cpu.perform = function() {
         times += 1;
         if (times == 5) done();
       }
-      vm.cycle();
+      cpu.cycle();
     });
 
     it("performs the correct opcode", function(done) {
-      vm.pc = 5;
-      vm.memory[5] = 0xAA;
-      vm.memory[6] = 0xBB;
+      cpu.pc = 5;
+      cpu.memory[5] = 0xAA;
+      cpu.memory[6] = 0xBB;
 
-      vm.perform = function(opcode) {
+      cpu.perform = function(opcode) {
         expect(opcode).to.equal(0xAABB);
         done();
       }
 
-      vm.cycle();
+      cpu.cycle();
     });
 
     it("tries to render to the screen", function(done) {
-      vm.render = done;
-      vm.cycle();
+      cpu.render = done;
+      cpu.cycle();
     });
 
     it("update the timers", function(done) {
-      vm.updateTimers = done;
-      vm.cycle();
+      cpu.updateTimers = done;
+      cpu.cycle();
     });
 
     context("when paused", function() {
       beforeEach(function() {
-        vm.paused = true;
+        cpu.paused = true;
       });
 
       it("doesn't perform any opcode", function() {
-        vm.perform = function() { throw "Called" }
-        expect(function() { vm.cycle() }).to.not.throwException("Called");
+        cpu.perform = function() { throw "Called" }
+        expect(function() { cpu.cycle() }).to.not.throwException("Called");
       });
 
       it("doesn't update the timers", function() {
-        vm.updateTimers = function() { throw "Called" }
-        expect(function() { vm.cycle() }).to.not.throwException("Called");
+        cpu.updateTimers = function() { throw "Called" }
+        expect(function() { cpu.cycle() }).to.not.throwException("Called");
       });
 
       it("renders to the screen", function(done) {
-        vm.render = done;
-        vm.cycle();
+        cpu.render = done;
+        cpu.cycle();
       });
     });
   });
 
   describe("#updateTimers", function() {
     it("decreases the delay timer when it is greater than zero", function() {
-      vm.delayTimer = 2;
-      vm.updateTimers();
-      expect(vm.delayTimer).to.equal(1);
-      vm.updateTimers();
-      vm.updateTimers();
-      vm.updateTimers();
-      expect(vm.delayTimer).to.equal(0);
+      cpu.delayTimer = 2;
+      cpu.updateTimers();
+      expect(cpu.delayTimer).to.equal(1);
+      cpu.updateTimers();
+      cpu.updateTimers();
+      cpu.updateTimers();
+      expect(cpu.delayTimer).to.equal(0);
     });
 
     it("decreases the sound timer when it is greater than zero", function() {
-      vm.soundTimer = 2;
-      vm.updateTimers();
-      expect(vm.soundTimer).to.equal(1);
-      vm.updateTimers();
-      vm.updateTimers();
-      vm.updateTimers();
-      expect(vm.soundTimer).to.equal(0);
+      cpu.soundTimer = 2;
+      cpu.updateTimers();
+      expect(cpu.soundTimer).to.equal(1);
+      cpu.updateTimers();
+      cpu.updateTimers();
+      cpu.updateTimers();
+      expect(cpu.soundTimer).to.equal(0);
     });
   });
 
   describe("#loadProgram", function() {
     it("loads the rom data into memory starting at address 0x200", function() {
       var rom = [1, 2, 3];
-      vm.loadProgram(rom);
-      expect(vm.memory[0x200]).to.equal(1);
-      expect(vm.memory[0x201]).to.equal(2);
-      expect(vm.memory[0x202]).to.equal(3);
+      cpu.loadProgram(rom);
+      expect(cpu.memory[0x200]).to.equal(1);
+      expect(cpu.memory[0x201]).to.equal(2);
+      expect(cpu.memory[0x202]).to.equal(3);
     });
   });
 
@@ -139,24 +139,24 @@ describe("Chip8.VM", function() {
     // Shared examples
     var shouldIncrementProgramCounter = function(opcode) {
       it("increments the program counter by two", function() {
-        vm.pc = 10;
-        vm.perform(opcode);
-        expect(vm.pc).to.equal(12);
+        cpu.pc = 10;
+        cpu.perform(opcode);
+        expect(cpu.pc).to.equal(12);
       });
     }
 
     var shouldNotIncrementProgramCounter = function(opcode) {
       it("doesn't increment the program counter", function() {
-        vm.pc = 10;
-        vm.perform(opcode);
-        expect(vm.pc).to.equal(10);
+        cpu.pc = 10;
+        cpu.perform(opcode);
+        expect(cpu.pc).to.equal(10);
       });
     }
 
     context("0x00E0", function() {
       it("clears the screen", function(done) {
-        vm.screen.clear = done;
-        vm.perform(0x00E0);
+        cpu.screen.clear = done;
+        cpu.perform(0x00E0);
       });
 
       shouldIncrementProgramCounter(0x00E0);
@@ -164,86 +164,86 @@ describe("Chip8.VM", function() {
 
     context("0x00EE returns from a subroutine", function() {
       it("sets the program counter to the stored stack", function() {
-        vm.stack = [10, 20, 30];
-        vm.perform(0x00EE);
-        expect(vm.pc).to.equal(30);
+        cpu.stack = [10, 20, 30];
+        cpu.perform(0x00EE);
+        expect(cpu.pc).to.equal(30);
       });
     });
 
     context("0x1NNN", function() {
       it("jumps to address NNN", function() {
-        vm.perform(0x1445);
-        expect(vm.pc).to.equal(0x0445);
+        cpu.perform(0x1445);
+        expect(cpu.pc).to.equal(0x0445);
       });
     });
 
     context("0x2NNN", function() {
       it("calls subroutine at NNN", function() {
-        vm.perform(0x2678);
-        expect(vm.pc).to.equal(0x0678);
+        cpu.perform(0x2678);
+        expect(cpu.pc).to.equal(0x0678);
       });
 
       it("stores the current program counter on the stack", function() {
-        var currentPc = vm.pc = 10;
-        vm.perform(0x2333);
-        expect(vm.stack).to.contain(currentPc + 2);
+        var currentPc = cpu.pc = 10;
+        cpu.perform(0x2333);
+        expect(cpu.stack).to.contain(currentPc + 2);
       });
     });
 
     context("0x3XNN", function() {
       it("skips the next instruction if VX equals NN", function() {
-        vm.pc = 10;
-        vm.v[5] = 0x0003;
-        vm.perform(0x3503);
-        expect(vm.pc).to.equal(14);
+        cpu.pc = 10;
+        cpu.v[5] = 0x0003;
+        cpu.perform(0x3503);
+        expect(cpu.pc).to.equal(14);
       });
 
       it("runs the next instruction if VX doesn't equal NN", function() {
-        vm.pc = 10;
-        vm.v[5] = 0x0003;
-        vm.perform(0x3504);
-        expect(vm.pc).to.equal(12);
+        cpu.pc = 10;
+        cpu.v[5] = 0x0003;
+        cpu.perform(0x3504);
+        expect(cpu.pc).to.equal(12);
       });
     });
 
     context("0x4XNN", function() {
       it("skips the next instruction if VX doesn't equal NN", function() {
-        vm.pc = 10;
-        vm.v[5] = 0x0003;
-        vm.perform(0x4504);
-        expect(vm.pc).to.equal(14);
+        cpu.pc = 10;
+        cpu.v[5] = 0x0003;
+        cpu.perform(0x4504);
+        expect(cpu.pc).to.equal(14);
       });
 
       it("runs the next instruction if VX equals NN", function() {
-        vm.pc = 10;
-        vm.v[5] = 0x0003;
-        vm.perform(0x4503);
-        expect(vm.pc).to.equal(12);
+        cpu.pc = 10;
+        cpu.v[5] = 0x0003;
+        cpu.perform(0x4503);
+        expect(cpu.pc).to.equal(12);
       });
     });
 
     context("0x5XY0", function() {
       it("skips the next instruction if VX equals VY", function() {
-        vm.pc = 10;
-        vm.v[4] = 3;
-        vm.v[5] = 3;
-        vm.perform(0x5450);
-        expect(vm.pc).to.equal(14);
+        cpu.pc = 10;
+        cpu.v[4] = 3;
+        cpu.v[5] = 3;
+        cpu.perform(0x5450);
+        expect(cpu.pc).to.equal(14);
       });
 
       it("runs the next instruction if VX equals VY", function() {
-        vm.pc = 10;
-        vm.v[4] = 3;
-        vm.v[5] = 4;
-        vm.perform(0x5450);
-        expect(vm.pc).to.equal(12);
+        cpu.pc = 10;
+        cpu.v[4] = 3;
+        cpu.v[5] = 4;
+        cpu.perform(0x5450);
+        expect(cpu.pc).to.equal(12);
       });
     });
 
     context("0x6XNN", function() {
       it("sets VX to NN", function() {
-        vm.perform(0x6321);
-        expect(vm.v[3]).to.equal(0x0021);
+        cpu.perform(0x6321);
+        expect(cpu.v[3]).to.equal(0x0021);
       });
 
       shouldIncrementProgramCounter(0x6321);
@@ -251,9 +251,9 @@ describe("Chip8.VM", function() {
 
     context("0x7XNN", function() {
       it("adds NN to VX", function() {
-        vm.v[5] = 0x0004;
-        vm.perform(0x7505);
-        expect(vm.v[5]).to.equal(0x0009);
+        cpu.v[5] = 0x0004;
+        cpu.perform(0x7505);
+        expect(cpu.v[5]).to.equal(0x0009);
       });
 
       shouldIncrementProgramCounter(0x7321);
@@ -261,11 +261,11 @@ describe("Chip8.VM", function() {
 
     context("0x8XY0", function() {
       it("sets VX to the value of VY", function() {
-        var vx = vm.v[1] = 1;
-        var vy = vm.v[2] = 2;
+        var vx = cpu.v[1] = 1;
+        var vy = cpu.v[2] = 2;
 
-        vm.perform(0x8120);
-        expect(vm.v[1]).to.equal(vy);
+        cpu.perform(0x8120);
+        expect(cpu.v[1]).to.equal(vy);
       });
 
       shouldIncrementProgramCounter(0x8120);
@@ -275,15 +275,15 @@ describe("Chip8.VM", function() {
       it("sets VX to VX or VY", function() {
         var vx, vy;
 
-        vx = vm.v[1] = 0;
-        vy = vm.v[2] = 2;
-        vm.perform(0x8121);
-        expect(vm.v[1]).to.equal(vy);
+        vx = cpu.v[1] = 0;
+        vy = cpu.v[2] = 2;
+        cpu.perform(0x8121);
+        expect(cpu.v[1]).to.equal(vy);
 
-        vx = vm.v[1] = 3;
-        vy = vm.v[2] = 2;
-        vm.perform(0x8121);
-        expect(vm.v[1]).to.equal(vx);
+        vx = cpu.v[1] = 3;
+        vy = cpu.v[2] = 2;
+        cpu.perform(0x8121);
+        expect(cpu.v[1]).to.equal(vx);
       });
 
       shouldIncrementProgramCounter(0x8001);
@@ -291,15 +291,15 @@ describe("Chip8.VM", function() {
 
     context("0x8XY2", function() {
       it("sets VX to VX and VY", function() {
-        var vx = vm.v[1] = 0;
-        var vy = vm.v[2] = 2;
-        vm.perform(0x8122);
-        expect(vm.v[1]).to.equal(0);
+        var vx = cpu.v[1] = 0;
+        var vy = cpu.v[2] = 2;
+        cpu.perform(0x8122);
+        expect(cpu.v[1]).to.equal(0);
 
-        vx = vm.v[1] = 2;
-        vy = vm.v[2] = 2;
-        vm.perform(0x8122);
-        expect(vm.v[1]).to.equal(2);
+        vx = cpu.v[1] = 2;
+        vy = cpu.v[2] = 2;
+        cpu.perform(0x8122);
+        expect(cpu.v[1]).to.equal(2);
       });
 
       shouldIncrementProgramCounter(0x8002);
@@ -309,20 +309,20 @@ describe("Chip8.VM", function() {
       it("sets VX to VX xor VY", function() {
         var vx, vy;
 
-        vx = vm.v[1] = 1;
-        vy = vm.v[2] = 1;
-        vm.perform(0x8123);
-        expect(vm.v[1]).to.equal(0);
+        vx = cpu.v[1] = 1;
+        vy = cpu.v[2] = 1;
+        cpu.perform(0x8123);
+        expect(cpu.v[1]).to.equal(0);
 
-        vx = vm.v[1] = 0;
-        vy = vm.v[2] = 0;
-        vm.perform(0x8123);
-        expect(vm.v[1]).to.equal(0);
+        vx = cpu.v[1] = 0;
+        vy = cpu.v[2] = 0;
+        cpu.perform(0x8123);
+        expect(cpu.v[1]).to.equal(0);
 
-        vx = vm.v[1] = 1;
-        vy = vm.v[2] = 0;
-        vm.perform(0x8123);
-        expect(vm.v[1]).to.equal(1);
+        vx = cpu.v[1] = 1;
+        vy = cpu.v[2] = 0;
+        cpu.perform(0x8123);
+        expect(cpu.v[1]).to.equal(1);
       });
 
       shouldIncrementProgramCounter(0x8003);
@@ -330,28 +330,28 @@ describe("Chip8.VM", function() {
 
     context("0x8XY4", function() {
       it("adds VY to VX", function() {
-        vm.v[1] = 3;
-        vm.v[2] = 4;
-        vm.perform(0x8124);
-        expect(vm.v[1]).to.equal(7);
+        cpu.v[1] = 3;
+        cpu.v[2] = 4;
+        cpu.perform(0x8124);
+        expect(cpu.v[1]).to.equal(7);
       });
 
       it("sets VF to 1 when there is a carry", function() {
-        vm.v[1] = 0xFF;
-        vm.v[2] = 0x01;
-        vm.v[0xF] = 0;
-        vm.perform(0x8124);
-        expect(vm.v[1]).to.equal(0);
-        expect(vm.v[0xF]).to.equal(1);
+        cpu.v[1] = 0xFF;
+        cpu.v[2] = 0x01;
+        cpu.v[0xF] = 0;
+        cpu.perform(0x8124);
+        expect(cpu.v[1]).to.equal(0);
+        expect(cpu.v[0xF]).to.equal(1);
       });
 
       it("sets VF to 0 when there isn't a carry", function() {
-        vm.v[1] = 0xFE;
-        vm.v[2] = 0x01;
-        vm.v[0xF] = 1;
-        vm.perform(0x8124);
-        expect(vm.v[1]).to.equal(0xFF);
-        expect(vm.v[0xF]).to.equal(0);
+        cpu.v[1] = 0xFE;
+        cpu.v[2] = 0x01;
+        cpu.v[0xF] = 1;
+        cpu.perform(0x8124);
+        expect(cpu.v[1]).to.equal(0xFF);
+        expect(cpu.v[0xF]).to.equal(0);
       });
 
       shouldIncrementProgramCounter(0x8004);
@@ -359,28 +359,28 @@ describe("Chip8.VM", function() {
 
     context("0x8XY5", function() {
       it("subtracts VY from VX", function() {
-        vm.v[1] = 5;
-        vm.v[2] = 4;
-        vm.perform(0x8125);
-        expect(vm.v[1]).to.equal(1);
+        cpu.v[1] = 5;
+        cpu.v[2] = 4;
+        cpu.perform(0x8125);
+        expect(cpu.v[1]).to.equal(1);
       });
 
       it("sets VF to 0 when there is a borrow", function() {
-        vm.v[1] = 5;
-        vm.v[2] = 6;
-        vm.v[0xF] = 1;
-        vm.perform(0x8125);
-        expect(vm.v[1]).to.equal(0xFF);
-        expect(vm.v[0xF]).to.equal(0);
+        cpu.v[1] = 5;
+        cpu.v[2] = 6;
+        cpu.v[0xF] = 1;
+        cpu.perform(0x8125);
+        expect(cpu.v[1]).to.equal(0xFF);
+        expect(cpu.v[0xF]).to.equal(0);
       });
 
       it("sets VF to 1 when there isn't a borrow", function() {
-        vm.v[1] = 5;
-        vm.v[2] = 3;
-        vm.v[0xF] = 0;
-        vm.perform(0x8125);
-        expect(vm.v[1]).to.equal(2);
-        expect(vm.v[0xF]).to.equal(1);
+        cpu.v[1] = 5;
+        cpu.v[2] = 3;
+        cpu.v[0xF] = 0;
+        cpu.perform(0x8125);
+        expect(cpu.v[1]).to.equal(2);
+        expect(cpu.v[0xF]).to.equal(1);
       });
 
       shouldIncrementProgramCounter(0x8005);
@@ -388,21 +388,21 @@ describe("Chip8.VM", function() {
 
     context("0x8XY6", function() {
       it("shifts VX right by one", function() {
-        vm.v[1] = 8;
-        vm.perform(0x8116);
-        expect(vm.v[1]).to.equal(4);
+        cpu.v[1] = 8;
+        cpu.perform(0x8116);
+        expect(cpu.v[1]).to.equal(4);
       });
 
       it("sets VF to the value of the least significant bit of VX before the shift", function() {
-        vm.v[1] = 8;
-        vm.v[0xF] = 1;
-        vm.perform(0x8116);
-        expect(vm.v[0xF]).to.equal(0);
+        cpu.v[1] = 8;
+        cpu.v[0xF] = 1;
+        cpu.perform(0x8116);
+        expect(cpu.v[0xF]).to.equal(0);
 
-        vm.v[1] = 9;
-        vm.v[0xF] = 0;
-        vm.perform(0x8116);
-        expect(vm.v[0xF]).to.equal(1);
+        cpu.v[1] = 9;
+        cpu.v[0xF] = 0;
+        cpu.perform(0x8116);
+        expect(cpu.v[0xF]).to.equal(1);
       });
 
       shouldIncrementProgramCounter(0x8006);
@@ -410,28 +410,28 @@ describe("Chip8.VM", function() {
 
     context("0x8XY7", function() {
       it("sets VX to VY minus VX", function() {
-        vm.v[1] = 8;
-        vm.v[2] = 10;
-        vm.perform(0x8127);
-        expect(vm.v[1]).to.equal(2);
+        cpu.v[1] = 8;
+        cpu.v[2] = 10;
+        cpu.perform(0x8127);
+        expect(cpu.v[1]).to.equal(2);
       });
 
       it("sets VF to 0 when there is a borrow", function() {
-        vm.v[1] = 11;
-        vm.v[2] = 10;
-        vm.v[0xF] = 1;
-        vm.perform(0x8127);
-        expect(vm.v[0xF]).to.equal(0);
-        expect(vm.v[1]).to.equal(0xFF);
+        cpu.v[1] = 11;
+        cpu.v[2] = 10;
+        cpu.v[0xF] = 1;
+        cpu.perform(0x8127);
+        expect(cpu.v[0xF]).to.equal(0);
+        expect(cpu.v[1]).to.equal(0xFF);
       });
 
       it("sets VF to 1 when there isn't a borrow", function() {
-        vm.v[1] = 10;
-        vm.v[2] = 10;
-        vm.v[0xF] = 0;
-        vm.perform(0x8127);
-        expect(vm.v[0xF]).to.equal(1);
-        expect(vm.v[1]).to.equal(0);
+        cpu.v[1] = 10;
+        cpu.v[2] = 10;
+        cpu.v[0xF] = 0;
+        cpu.perform(0x8127);
+        expect(cpu.v[0xF]).to.equal(1);
+        expect(cpu.v[1]).to.equal(0);
       });
 
       shouldIncrementProgramCounter(0x8127);
@@ -439,21 +439,21 @@ describe("Chip8.VM", function() {
 
     context("0x8XYE", function() {
       it("shifts VX left by one", function() {
-        vm.v[1] = 8;
-        vm.perform(0x811E);
-        expect(vm.v[1]).to.equal(16);
+        cpu.v[1] = 8;
+        cpu.perform(0x811E);
+        expect(cpu.v[1]).to.equal(16);
       });
 
       it("sets VF to the value of the most significant bit of VX before the shift", function() {
-        vm.v[1] = 0x08;
-        vm.v[0xF] = 1;
-        vm.perform(0x811E);
-        expect(vm.v[0xF]).to.equal(0);
+        cpu.v[1] = 0x08;
+        cpu.v[0xF] = 1;
+        cpu.perform(0x811E);
+        expect(cpu.v[0xF]).to.equal(0);
 
-        vm.v[1] = 0x88;
-        vm.v[0xF] = 0;
-        vm.perform(0x811E);
-        expect(vm.v[0xF]).to.equal(0x80);
+        cpu.v[1] = 0x88;
+        cpu.v[0xF] = 0;
+        cpu.perform(0x811E);
+        expect(cpu.v[0xF]).to.equal(0x80);
       });
 
       shouldIncrementProgramCounter(0x800E);
@@ -461,24 +461,24 @@ describe("Chip8.VM", function() {
 
     context("0x9XY0", function() {
       it("skips the next instruction if VX doesn't equal VY", function() {
-        vm.v[1] = 0;
-        vm.v[2] = 1;
-        vm.pc = 0;
-        vm.perform(0x9120);
-        expect(vm.pc).to.equal(4);
+        cpu.v[1] = 0;
+        cpu.v[2] = 1;
+        cpu.pc = 0;
+        cpu.perform(0x9120);
+        expect(cpu.pc).to.equal(4);
 
-        vm.v[1] = 1;
-        vm.v[2] = 1;
-        vm.pc = 0;
-        vm.perform(0x9120);
-        expect(vm.pc).to.equal(2);
+        cpu.v[1] = 1;
+        cpu.v[2] = 1;
+        cpu.pc = 0;
+        cpu.perform(0x9120);
+        expect(cpu.pc).to.equal(2);
       });
     });
 
     context("0xANNN", function() {
       it("sets I to address NNN", function() {
-        vm.perform(0xA123);
-        expect(vm.i).to.equal(0x0123);
+        cpu.perform(0xA123);
+        expect(cpu.i).to.equal(0x0123);
       });
 
       shouldIncrementProgramCounter(0xA123);
@@ -486,9 +486,9 @@ describe("Chip8.VM", function() {
 
     context("0xBNNN", function() {
       it("jumps to address NNN plus V0", function() {
-        vm.v[0] = 0x01;
-        vm.perform(0xB001);
-        expect(vm.pc).to.equal(0x0002);
+        cpu.v[0] = 0x01;
+        cpu.perform(0xB001);
+        expect(cpu.pc).to.equal(0x0002);
       });
     });
 
@@ -507,8 +507,8 @@ describe("Chip8.VM", function() {
         // Stubing out Math.random
         Math.random = function() { return 1 };
 
-        vm.perform(0xC102);
-        expect(vm.v[1]).to.equal(2);
+        cpu.perform(0xC102);
+        expect(cpu.v[1]).to.equal(2);
       });
 
       shouldIncrementProgramCounter(0xC102);
@@ -516,11 +516,11 @@ describe("Chip8.VM", function() {
 
     context("0xDXYN", function() {
       beforeEach(function() {
-        vm.i = 0;
+        cpu.i = 0;
 
         for (var i = 0; i < 16; i++) {
           for (var j = 0; j < 16; j++) {
-            vm.memory[i + j] = 0x80;
+            cpu.memory[i + j] = 0x80;
           }
         }
       });
@@ -528,7 +528,7 @@ describe("Chip8.VM", function() {
       it("draws a sprite at coordinate (VX, VY)", function(done) {
         var count = 0;
 
-        vm.screen.setPixel = function(x, y) {
+        cpu.screen.setPixel = function(x, y) {
           if (count == 0) {
             expect(x).to.equal(5);
             expect(y).to.equal(8);
@@ -538,16 +538,16 @@ describe("Chip8.VM", function() {
           }
         }
 
-        vm.v[1] = 5;
-        vm.v[2] = 8;
+        cpu.v[1] = 5;
+        cpu.v[2] = 8;
 
-        vm.perform(0xD122);
+        cpu.perform(0xD122);
       });
 
       it("draws a sprite with width of 8 pixels", function() {
         var xs = [];
 
-        vm.screen.setPixel = function(x, y) {
+        cpu.screen.setPixel = function(x, y) {
           xs.push(x);
 
           if (xs.length == 8) {
@@ -557,16 +557,16 @@ describe("Chip8.VM", function() {
           }
         }
 
-        vm.v[1] = 5;
-        vm.v[2] = 6;
+        cpu.v[1] = 5;
+        cpu.v[2] = 6;
 
-        vm.perform(0xD121);
+        cpu.perform(0xD121);
       });
 
       it("draws a sprite with height of N pixels", function() {
         var ys = [];
 
-        vm.screen.setPixel = function(x, y) {
+        cpu.screen.setPixel = function(x, y) {
           ys.push(y);
 
           if (ys.length == 3 * 8) {
@@ -576,20 +576,20 @@ describe("Chip8.VM", function() {
           }
         }
 
-        vm.v[1] = 5;
-        vm.v[2] = 6;
+        cpu.v[1] = 5;
+        cpu.v[2] = 6;
 
-        vm.perform(0xD123);
+        cpu.perform(0xD123);
       });
 
       it("sets VF to 1 if any screen pixels are flipped from set to unset when the sprite is drawn", function() {
-        vm.screen.setPixel = function() { return true }
-        vm.perform(0xD121);
+        cpu.screen.setPixel = function() { return true }
+        cpu.perform(0xD121);
       });
 
       it("sets VF to 0 if no screen pixels are flipped from set to unset when the sprite is drawn", function() {
-        vm.screen.setPixel = function() { return false }
-        vm.perform(0xD121);
+        cpu.screen.setPixel = function() { return false }
+        cpu.perform(0xD121);
       });
 
       shouldIncrementProgramCounter(0xD121);
@@ -597,65 +597,65 @@ describe("Chip8.VM", function() {
 
     context("0xEX9E", function() {
       it("skips the next instruction if the key stored in VX is pressed", function() {
-        vm.pc = 0;
-        vm.v[1] = 5;
+        cpu.pc = 0;
+        cpu.v[1] = 5;
 
-        vm.input.isKeyPressed = function(key) {
+        cpu.input.isKeyPressed = function(key) {
           expect(key).to.equal(5);
           return true;
         }
 
-        vm.perform(0xE19E);
-        expect(vm.pc).to.equal(4);
+        cpu.perform(0xE19E);
+        expect(cpu.pc).to.equal(4);
       });
 
       it("doesn't skip the next instruction if the key stored in VX is not pressed", function() {
-        vm.pc = 0;
-        vm.v[2] = 6;
+        cpu.pc = 0;
+        cpu.v[2] = 6;
 
-        vm.input.isKeyPressed = function(key) {
+        cpu.input.isKeyPressed = function(key) {
           expect(key).to.equal(6);
           return false;
         }
 
-        vm.perform(0xE29E);
-        expect(vm.pc).to.equal(2);
+        cpu.perform(0xE29E);
+        expect(cpu.pc).to.equal(2);
       });
     });
 
     context("0xEXA1", function() {
       it("skips the next instruction if the key stored in VX isn't pressed", function() {
-        vm.pc = 0;
-        vm.v[3] = 7;
+        cpu.pc = 0;
+        cpu.v[3] = 7;
 
-        vm.input.isKeyPressed = function(key) {
+        cpu.input.isKeyPressed = function(key) {
           expect(key).to.equal(7);
           return false;
         }
 
-        vm.perform(0xE3A1);
-        expect(vm.pc).to.equal(4);
+        cpu.perform(0xE3A1);
+        expect(cpu.pc).to.equal(4);
       });
 
       it("doesn't skip the next instruction if the key stored in VX is pressed", function() {
-        vm.pc = 0;
-        vm.v[4] = 8;
+        cpu.pc = 0;
+        cpu.v[4] = 8;
 
-        vm.input.isKeyPressed = function(key) {
+        cpu.input.isKeyPressed = function(key) {
           expect(key).to.equal(8);
           return true;
         }
 
-        vm.perform(0xE4A1);
-        expect(vm.pc).to.equal(2);
+        cpu.perform(0xE4A1);
+        expect(cpu.pc).to.equal(2);
       });
     });
 
     context("0xFX07", function() {
       it("sets VX to the value of the delay timer", function() {
-        vm.delayTimer = 20;
-        vm.perform(0xF207);
-        expect(vm.v[2]).to.equal(20);
+        cpu.delayTimer = 20;
+        cpu.perform(0xF207);
+        expect(cpu.v[2]).to.equal(20);
       });
 
       shouldIncrementProgramCounter(0xF207);
@@ -663,25 +663,25 @@ describe("Chip8.VM", function() {
 
     context("0xFX0A", function() {
       it("pauses the emulation until a key is pressed", function() {
-        vm.perform(0xF10A);
-        expect(vm.paused).to.be(true);
-        vm.input.onKeyPress(1);
-        expect(vm.paused).to.be(false);
+        cpu.perform(0xF10A);
+        expect(cpu.paused).to.be(true);
+        cpu.input.onKeyPress(1);
+        expect(cpu.paused).to.be(false);
       });
 
       it("stores the pressed key in VX", function() {
-        vm.perform(0xF10A);
-        vm.input.onKeyPress(5);
-        expect(vm.v[1]).to.equal(5);
+        cpu.perform(0xF10A);
+        cpu.input.onKeyPress(5);
+        expect(cpu.v[1]).to.equal(5);
       });
     });
 
     context("0xFX15", function() {
       it("sets the delay timer to VX", function() {
-        vm.delayTimer = 0;
-        vm.v[2] = 5;
-        vm.perform(0xF215);
-        expect(vm.delayTimer).to.equal(5);
+        cpu.delayTimer = 0;
+        cpu.v[2] = 5;
+        cpu.perform(0xF215);
+        expect(cpu.delayTimer).to.equal(5);
       });
 
       shouldIncrementProgramCounter(0xF215);
@@ -689,10 +689,10 @@ describe("Chip8.VM", function() {
 
     context("0xFX18", function() {
       it("sets the sound timer to VX", function() {
-        vm.soundTimer = 0;
-        vm.v[3] = 6;
-        vm.perform(0xF318);
-        expect(vm.soundTimer).to.equal(6);
+        cpu.soundTimer = 0;
+        cpu.v[3] = 6;
+        cpu.perform(0xF318);
+        expect(cpu.soundTimer).to.equal(6);
       });
 
       shouldIncrementProgramCounter(0xF318);
@@ -700,10 +700,10 @@ describe("Chip8.VM", function() {
 
     context("0xFX1E", function() {
       it("adds VX to I", function() {
-        vm.i = 5;
-        vm.v[1] = 3;
-        vm.perform(0xF11E);
-        expect(vm.i).to.equal(8);
+        cpu.i = 5;
+        cpu.v[1] = 3;
+        cpu.perform(0xF11E);
+        expect(cpu.i).to.equal(8);
       });
 
       shouldIncrementProgramCounter(0xF11E);
@@ -711,10 +711,10 @@ describe("Chip8.VM", function() {
 
     context("0xFX29", function() {
       it("sets the I to location of the sprite for the character in VX", function() {
-        vm.v[1] = 1;
-        vm.i = 0;
-        vm.perform(0xF129);
-        expect(vm.i).to.equal(5);
+        cpu.v[1] = 1;
+        cpu.i = 0;
+        cpu.perform(0xF129);
+        expect(cpu.i).to.equal(5);
       });
 
       shouldIncrementProgramCounter(0xF129);
@@ -722,12 +722,12 @@ describe("Chip8.VM", function() {
 
     context("0xFX33", function() {
       it("stores the BCD representation of VX in memory starting at I", function() {
-        vm.i = 0;
-        vm.v[1] = 198;
-        vm.perform(0xF133);
-        expect(vm.memory[0]).to.equal(1);
-        expect(vm.memory[1]).to.equal(9);
-        expect(vm.memory[2]).to.equal(8);
+        cpu.i = 0;
+        cpu.v[1] = 198;
+        cpu.perform(0xF133);
+        expect(cpu.memory[0]).to.equal(1);
+        expect(cpu.memory[1]).to.equal(9);
+        expect(cpu.memory[2]).to.equal(8);
       });
 
       shouldIncrementProgramCounter(0xF133);
@@ -735,18 +735,18 @@ describe("Chip8.VM", function() {
 
     context("0xFX55", function() {
       it("stores V0 to VX in memory starting at address I", function() {
-        vm.v[0x0] = 0x00;
-        vm.v[0x1] = 0x10;
-        vm.v[0x2] = 0x20;
-        vm.v[0x3] = 0x30;
+        cpu.v[0x0] = 0x00;
+        cpu.v[0x1] = 0x10;
+        cpu.v[0x2] = 0x20;
+        cpu.v[0x3] = 0x30;
 
-        vm.i = 5;
-        vm.perform(0xF355);
+        cpu.i = 5;
+        cpu.perform(0xF355);
 
-        expect(vm.memory[0x0 + 5]).to.equal(0x00);
-        expect(vm.memory[0x1 + 5]).to.equal(0x10);
-        expect(vm.memory[0x2 + 5]).to.equal(0x20);
-        expect(vm.memory[0x3 + 5]).to.equal(0x30);
+        expect(cpu.memory[0x0 + 5]).to.equal(0x00);
+        expect(cpu.memory[0x1 + 5]).to.equal(0x10);
+        expect(cpu.memory[0x2 + 5]).to.equal(0x20);
+        expect(cpu.memory[0x3 + 5]).to.equal(0x30);
       });
 
       shouldIncrementProgramCounter(0xF355);
@@ -754,19 +754,19 @@ describe("Chip8.VM", function() {
 
     context("0xFX65", function() {
       it("fills V0 to VX with values from memory starting at address I", function() {
-        vm.i = 6;
+        cpu.i = 6;
 
-        vm.memory[6 + 0x0] = 0x00;
-        vm.memory[6 + 0x1] = 0x10;
-        vm.memory[6 + 0x2] = 0x20;
-        vm.memory[6 + 0x3] = 0x30;
+        cpu.memory[6 + 0x0] = 0x00;
+        cpu.memory[6 + 0x1] = 0x10;
+        cpu.memory[6 + 0x2] = 0x20;
+        cpu.memory[6 + 0x3] = 0x30;
 
-        vm.perform(0xF365);
+        cpu.perform(0xF365);
 
-        expect(vm.v[0x0]).to.equal(0x00);
-        expect(vm.v[0x1]).to.equal(0x10);
-        expect(vm.v[0x2]).to.equal(0x20);
-        expect(vm.v[0x3]).to.equal(0x30);
+        expect(cpu.v[0x0]).to.equal(0x00);
+        expect(cpu.v[0x1]).to.equal(0x10);
+        expect(cpu.v[0x2]).to.equal(0x20);
+        expect(cpu.v[0x3]).to.equal(0x30);
       });
 
       shouldIncrementProgramCounter(0xF365);

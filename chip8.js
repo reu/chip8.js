@@ -5,6 +5,7 @@
    * @class Chip8
    * @constructor
    *
+   * @property {Chip8.CPU} vm the CHIP8 CPU
    * @property {Chip8.Screen} screen where the emulator will render the graphics
    * @property {Chip8.Input} input the input handler
    */
@@ -12,15 +13,15 @@
     var loop
       , step
       , counter = 0
-      , self = this
-      , vm = new Chip8.VM;
+      , cpu = new Chip8.CPU
+      , self = this;
 
     /**
      * An emulation cycle step.
      * @private
      */
     step = function step() {
-      vm.cycle();
+      cpu.cycle();
       loop = requestAnimationFrame(step);
     }
 
@@ -41,7 +42,7 @@
     }
 
     /**
-     * Load a rom into the VM memory.
+     * Load a rom into the CPU memory.
      * @method loadRom
      * @param {String, Chip8.ROMS} name of a rom
      */
@@ -49,11 +50,11 @@
       var request = new XMLHttpRequest;
       request.onload = function() {
         if (request.response) {
-          vm.screen = self.screen;
-          vm.input = self.input;
+          cpu.screen = self.screen;
+          cpu.input = self.input;
           self.stop();
-          vm.reset();
-          vm.loadProgram(new Uint8Array(request.response));
+          cpu.reset();
+          cpu.loadProgram(new Uint8Array(request.response));
           self.start();
         }
       }
@@ -98,7 +99,7 @@
   ];
 
   if (typeof module != "undefined") {
-    Chip8.VM = require("./src/vm.js");
+    Chip8.CPU = require("./src/cpu.js");
     Chip8.Keyboard = require("./src/keyboard.js");
     Chip8.Screen = require("./src/screen.js");
 
