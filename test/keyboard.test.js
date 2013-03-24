@@ -30,13 +30,30 @@ describe("Chip8.Keyboard", function() {
     });
   });
 
-  describe("#onKeyPress", function() {
+  describe("#onNextKeyPress", function() {
     it("triggers when the user press any key", function(done) {
-      keyboard.onKeyPress = function(keyCode) {
+      keyboard.onNextKeyPress = function(keyCode) {
         expect(keyCode).to.be(CHIP8_KEY_4);
         done();
       }
       triggerKeyDown(document, KEY_Q);
+    });
+
+    it("clears after the event was handled", function(done) {
+      var calls = 0;
+
+      keyboard.onNextKeyPress = function(keyCode) {
+        calls += 1;
+      }
+
+      triggerKeyDown(document, KEY_Q);
+      triggerKeyDown(document, KEY_Q);
+      triggerKeyDown(document, KEY_Q);
+
+      setTimeout(function() {
+        expect(calls).to.equal(1);
+        done();
+      }, 1);
     });
   });
 
@@ -48,10 +65,21 @@ describe("Chip8.Keyboard", function() {
       expect(keyboard.isKeyPressed(CHIP8_KEY_4)).to.be(false);
     });
 
-    it("clears onKeyPress event handlers", function() {
-      keyboard.onKeyPress = function() { throw "Called" }
+    it("clears onNextKeyPress event handlers", function(done) {
+      var calls = 0;
+
+      keyboard.onNextKeyPress = function(keyCode) {
+        calls += 1;
+      }
+
       keyboard.clear();
-      expect(function() { triggerKeyDown(document, KEY_Q) }).to.not.throwException();
+
+      triggerKeyDown(document, KEY_Q);
+
+      setTimeout(function() {
+        expect(calls).to.equal(0);
+        done();
+      }, 1);
     });
   });
 });

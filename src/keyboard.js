@@ -10,18 +10,18 @@
 
     /**
      * Fired when a key is pressed.
-     * @event onKeyPress
+     * @event onNextKeyPress
      * @param {Integer} keyCode
      */
-    this.onKeyPress = function() {}
+    this.onNextKeyPress = function() {}
 
     /**
-     * Clear all the memoty of keys that are pressed.
+     * Clear all the memory of keys that are pressed.
      * @method clear
      */
     this.clear = function() {
       keysPressed = [];
-      this.onKeyPress = function() {}
+      this.onNextKeyPress = function() {}
     }
 
     /**
@@ -49,7 +49,11 @@
         var keyCode = Keyboard.MAPPING[property];
 
         if (keyCode == key) {
-          self.onKeyPress(parseInt(property));
+          try {
+            self.onNextKeyPress(parseInt(property));
+          } finally {
+            self.onNextKeyPress = function() {}
+          }
         }
       }
     }

@@ -381,10 +381,9 @@
             case 0x000A:
               this.paused = true;
 
-              this.input.onKeyPress = function(key) {
+              this.input.onNextKeyPress = function(key) {
                 this.v[x] = key;
                 this.paused = false;
-                this.input.onKeyPress = function() {}
               }.bind(this);
 
             // Fx15 - LD DT, Vx

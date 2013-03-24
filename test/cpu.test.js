@@ -665,13 +665,13 @@ describe("Chip8.CPU", function() {
       it("pauses the emulation until a key is pressed", function() {
         cpu.perform(0xF10A);
         expect(cpu.paused).to.be(true);
-        cpu.input.onKeyPress(1);
+        cpu.input.onNextKeyPress(1);
         expect(cpu.paused).to.be(false);
       });
 
       it("stores the pressed key in VX", function() {
         cpu.perform(0xF10A);
-        cpu.input.onKeyPress(5);
+        cpu.input.onNextKeyPress(5);
         expect(cpu.v[1]).to.equal(5);
       });
     });
