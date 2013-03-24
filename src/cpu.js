@@ -87,10 +87,12 @@
         if (!this.paused) {
           var opcode = this.memory[this.pc] << 8 | this.memory[this.pc + 1];
           this.perform(opcode);
-          this.updateTimers();
         }
       }
 
+      if (!this.paused) {
+        this.updateTimers();
+      }
       this.render();
     }
 
