@@ -8,10 +8,10 @@ test-browser:
 	@./node_modules/.bin/serve .
 
 documentation:
-	@yuidoc .
+	@yuidoc -o doc .
 
 clean-documentation:
-	rm -rf out
+	rm -rf doc
 
 clean: clean-documentation
 	rm -f chip8.build.js

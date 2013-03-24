@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;keyboard.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Chip8.html">Chip8</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.CPU.html">Chip8.CPU</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Keyboard.html">Chip8.Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.html">Chip8.Screen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.CanvasScreen.html">Chip8.Screen.CanvasScreen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Speaker.html">Chip8.Speaker</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;keyboard.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function() {
+  &#x2F;**
+   * A Keyboard input handler
+   *
+   * @class Chip8.Keyboard
+   * @constructor
+   *&#x2F;
+  var Keyboard = function Keyboard() {
+    var keysPressed = [];
+
+    &#x2F;**
+     * Fired when a key is pressed.
+     * @event onNextKeyPress
+     * @param {Integer} keyCode
+     *&#x2F;
+    this.onNextKeyPress = function() {}
+
+    &#x2F;**
+     * Clear all the memory of keys that are pressed.
+     * @method clear
+     *&#x2F;
+    this.clear = function() {
+      keysPressed = [];
+      this.onNextKeyPress = function() {}
+    }
+
+    &#x2F;**
+     * Checks if a given keyCode is pressed or not.
+     * @param {Integer} keyCode
+     * @return {Boolean}
+     *&#x2F;
+    this.isKeyPressed = function(keyCode) {
+      var key = Keyboard.MAPPING[keyCode];
+      return !!keysPressed[key];
+    }
+
+    var self = this;
+
+    &#x2F;**
+     * Handler for the keyDown event
+     * @method keyDown
+     * @private
+     *&#x2F;
+    this.keyDown = function(event) {
+      var key = String.fromCharCode(event.which);
+      keysPressed[key] = true;
+
+      for (var property in Keyboard.MAPPING) {
+        var keyCode = Keyboard.MAPPING[property];
+
+        if (keyCode == key) {
+          try {
+            self.onNextKeyPress(parseInt(property));
+          } finally {
+            self.onNextKeyPress = function() {}
+          }
+        }
+      }
+    }
+
+    &#x2F;**
+     * Handler for the keyUp event
+     * @method keyUp
+     * @private
+     *&#x2F;
+    this.keyUp = function(event) {
+      var key = String.fromCharCode(event.which);
+      keysPressed[key] = false;
+    }
+
+    window.addEventListener(&quot;keydown&quot;, this.keyDown, false);
+    window.addEventListener(&quot;keyup&quot;, this.keyUp, false);
+  }
+
+  Keyboard.MAPPING = {
+    0x1: &quot;1&quot;,
+    0x2: &quot;2&quot;,
+    0x3: &quot;3&quot;,
+    0xC: &quot;4&quot;,
+    0x4: &quot;Q&quot;,
+    0x5: &quot;W&quot;,
+    0x6: &quot;E&quot;,
+    0xD: &quot;R&quot;,
+    0x7: &quot;A&quot;,
+    0x8: &quot;S&quot;,
+    0x9: &quot;D&quot;,
+    0xE: &quot;F&quot;,
+    0xA: &quot;Z&quot;,
+    0x0: &quot;X&quot;,
+    0xB: &quot;C&quot;,
+    0xF: &quot;V&quot;
+  }
+
+  if (typeof module != &quot;undefined&quot;) {
+    module.exports = Keyboard;
+  } else {
+    window.Chip8.Keyboard = Keyboard;
+  }
+})();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

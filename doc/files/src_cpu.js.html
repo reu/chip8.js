@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;cpu.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Chip8.html">Chip8</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.CPU.html">Chip8.CPU</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Keyboard.html">Chip8.Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.html">Chip8.Screen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.CanvasScreen.html">Chip8.Screen.CanvasScreen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Speaker.html">Chip8.Speaker</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;cpu.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function() {
+  &#x2F;**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.CPU
+   * @constructor
+   *&#x2F;
+  var CPU = function CPU() {
+    this.pc = 0x200;
+    this.stack = new Array;
+    this.screen = { clear: function() {}, render: function() {}, setPixel: function() {} };
+    this.input = { isKeyPressed: function(key) {}, clear: function() {} };
+    this.speaker = { clear: function() {}, play: function() {}, stop: function() {} };
+    this.v = new Uint8Array(16);
+    this.i = 0;
+    this.memory = new Uint8Array(4096);
+    this.delayTimer = 0;
+    this.soundTimer = 0;
+    this.paused = false;
+    this.speed = 10;
+
+    &#x2F;**
+     * Loads the CHIP8 fonts into memory.
+     * Detailed information can be found at: http:&#x2F;&#x2F;devernay.free.fr&#x2F;hacks&#x2F;chip8&#x2F;C8TECH10.HTM#font
+     * @method loadFonts
+     * @private
+     *&#x2F;
+    this.loadFonts = function() {
+      var fonts = [
+        0xF0, 0x90, 0x90, 0x90, 0xF0, &#x2F;&#x2F; 0
+        0x20, 0x60, 0x20, 0x20, 0x70, &#x2F;&#x2F; 1
+        0xF0, 0x10, 0xF0, 0x80, 0xF0, &#x2F;&#x2F; 2
+        0xF0, 0x10, 0xF0, 0x10, 0xF0, &#x2F;&#x2F; 3
+        0x90, 0x90, 0xF0, 0x10, 0x10, &#x2F;&#x2F; 4
+        0xF0, 0x80, 0xF0, 0x10, 0xF0, &#x2F;&#x2F; 5
+        0xF0, 0x80, 0xF0, 0x90, 0xF0, &#x2F;&#x2F; 6
+        0xF0, 0x10, 0x20, 0x40, 0x40, &#x2F;&#x2F; 7
+        0xF0, 0x90, 0xF0, 0x90, 0xF0, &#x2F;&#x2F; 8
+        0xF0, 0x90, 0xF0, 0x10, 0xF0, &#x2F;&#x2F; 9
+        0xF0, 0x90, 0xF0, 0x90, 0x90, &#x2F;&#x2F; A
+        0xE0, 0x90, 0xE0, 0x90, 0xE0, &#x2F;&#x2F; B
+        0xF0, 0x80, 0x80, 0x80, 0xF0, &#x2F;&#x2F; C
+        0xE0, 0x90, 0x90, 0x90, 0xE0, &#x2F;&#x2F; D
+        0xF0, 0x80, 0xF0, 0x80, 0xF0, &#x2F;&#x2F; E
+        0xF0, 0x80, 0xF0, 0x80, 0x80  &#x2F;&#x2F; F
+      ];
+
+      for (var i = 0, length = fonts.length; i &lt; length; i++) {
+        this.memory[i] = fonts[i];
+      }
+    }
+
+    &#x2F;**
+     * Reset the CPU with the default values.
+     * @method reset
+     *&#x2F;
+    this.reset = function() {
+      this.pc = 0x200;
+      this.stack = new Array;
+      this.v = new Uint8Array(16);
+      this.i = 0;
+      this.memory = new Uint8Array(4096);
+      this.delayTimer = 0;
+      this.soundTimer = 0;
+      this.screen.clear();
+      this.input.clear();
+      this.speaker.clear();
+      this.loadFonts();
+      this.paused = false;
+    }
+
+    &#x2F;**
+     * Loads a program into the memory.
+     * @method loadProgram
+     * @param {Array} program array of bytes of a CHIP8 program
+     *&#x2F;
+    this.loadProgram = function(program) {
+      for (var i = 0, length = program.length; i &lt; length; i++) {
+        this.memory[0x200 + i] = program[i];
+      }
+    }
+
+    &#x2F;**
+     * The main CPU cycle.
+     * @method cycle
+     *&#x2F;
+    this.cycle = function() {
+      for (var i = 0; i &lt; this.speed; i++) {
+        if (!this.paused) {
+          var opcode = this.memory[this.pc] &lt;&lt; 8 | this.memory[this.pc + 1];
+          this.perform(opcode);
+        }
+      }
+
+      if (!this.paused) {
+        this.updateTimers();
+      }
+
+      this.playSound();
+      this.render();
+    }
+
+    &#x2F;**
+     * Process a given opcode.
+     * @method perform
+     * @param {Integer} opcode
+     *&#x2F;
+    this.perform = function(opcode) {
+      this.pc += 2;
+
+      var x = (opcode &amp; 0x0F00) &gt;&gt; 8;
+      var y = (opcode &amp; 0x00F0) &gt;&gt; 4;
+
+      switch (opcode &amp; 0xF000) {
+        case 0x000:
+          switch(opcode) {
+            &#x2F;&#x2F; 00E0 - CLS
+            &#x2F;&#x2F; Clear the display.
+            case 0x00E0:
+              this.screen.clear();
+              break;
+
+            &#x2F;&#x2F; 00EE - RET
+            &#x2F;&#x2F; Return from a subroutine.
+            &#x2F;&#x2F; The interpreter sets the program counter to the address at the
+            &#x2F;&#x2F;   top of the stack, then subtracts 1 from the stack pointer.
+            case 0x00EE:
+              this.pc = this.stack.pop();
+              break;
+          }
+          break;
+
+        &#x2F;&#x2F; 1nnn - JP addr
+        &#x2F;&#x2F; Jump to location nnn.
+        &#x2F;&#x2F; The interpreter sets the program counter to nnn.
+        case 0x1000:
+          this.pc = opcode &amp; 0x0FFF;
+          break;
+
+        &#x2F;&#x2F; 2nnn - CALL addr
+        &#x2F;&#x2F; Call subroutine at nnn.
+        &#x2F;&#x2F; The interpreter increments the stack pointer, then puts the current
+        &#x2F;&#x2F;   PC on the top of the stack. The PC is then set to nnn.
+        case 0x2000:
+          this.stack.push(this.pc);
+          this.pc = opcode &amp; 0x0FFF;
+          break;
+
+        &#x2F;&#x2F; 3xkk - SE Vx, byte
+        &#x2F;&#x2F; Skip next instruction if Vx = kk.
+        &#x2F;&#x2F; The interpreter compares register Vx to kk, and if they are equal,
+        &#x2F;&#x2F;   increments the program counter by 2.
+        case 0x3000:
+          if (this.v[x] == (opcode &amp; 0x00FF)) {
+            this.pc += 2;
+          }
+          break;
+
+        &#x2F;&#x2F; 4xkk - SNE Vx, byte
+        &#x2F;&#x2F; Skip next instruction if Vx != kk.
+        &#x2F;&#x2F; The interpreter compares register Vx to kk, and if they are not
+        &#x2F;&#x2F;   equal, increments the program counter by 2.
+        case 0x4000:
+          if (this.v[x] != (opcode &amp; 0x00FF)) {
+            this.pc += 2;
+          }
+          break;
+
+        &#x2F;&#x2F; 5xy0 - SE Vx, Vy
+        &#x2F;&#x2F; Skip next instruction if Vx = Vy.
+        &#x2F;&#x2F; The interpreter compares register Vx to register Vy, and if they are
+        &#x2F;&#x2F;   equal, increments the program counter by 2.
+        case 0x5000:
+          if (this.v[x] == this.v[y]) {
+            this.pc += 2;
+          }
+          break;
+
+        &#x2F;&#x2F; 6xkk - LD Vx, byte
+        &#x2F;&#x2F; Set Vx = kk.
+        &#x2F;&#x2F; The interpreter puts the value kk into register Vx.
+        case 0x6000:
+          this.v[x] = opcode &amp; 0x00FF;
+          break;
+
+        &#x2F;&#x2F; 7xkk - ADD Vx, byte
+        &#x2F;&#x2F; Set Vx = Vx + kk.
+        &#x2F;&#x2F; Adds the value kk to the value of register Vx, then stores the
+        &#x2F;&#x2F;   result in Vx.
+        case 0x7000:
+          this.v[x] += opcode &amp; 0x00FF;
+          break;
+
+        case 0x8000:
+          switch (opcode &amp; 0x000F) {
+            &#x2F;&#x2F; 8xy0 - LD Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vy.
+            &#x2F;&#x2F; Stores the value of register Vy in register Vx.
+            case 0x0000:
+              this.v[x] = this.v[y];
+              break;
+
+            &#x2F;&#x2F; 8xy1 - OR Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vx OR Vy.
+            &#x2F;&#x2F; Performs a bitwise OR on the values of Vx and Vy, then stores the
+            &#x2F;&#x2F;   result in Vx. A bitwise OR compares the corrseponding
+            &#x2F;&#x2F;   bits from two values, and if either bit is 1, then the same bit
+            &#x2F;&#x2F;   in the result is also 1. Otherwise, it is 0.
+            case 0x0001:
+              this.v[x] = this.v[x] | this.v[y];
+              break;
+
+            &#x2F;&#x2F; 8xy2 - AND Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vx AND Vy.
+            &#x2F;&#x2F; Performs a bitwise AND on the values of Vx and Vy, then stores
+            &#x2F;&#x2F;   the result in Vx. A bitwise AND compares the corrseponding
+            &#x2F;&#x2F;   bits from two values, and if both bits are 1, then the same
+            &#x2F;&#x2F;   bit in the result is also 1. Otherwise, it is 0.
+            case 0x0002:
+              this.v[x] = this.v[x] &amp; this.v[y];
+              break;
+
+            &#x2F;&#x2F; 8xy3 - XOR Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vx XOR Vy.
+            &#x2F;&#x2F; Performs a bitwise exclusive OR on the values of Vx and Vy, then
+            &#x2F;&#x2F;   stores the result in Vx. An exclusive OR compares the
+            &#x2F;&#x2F;   corrseponding bits from two values, and if the bits are not
+            &#x2F;&#x2F;   both the same, then the corresponding bit in the result is set
+            &#x2F;&#x2F;   to 1. Otherwise, it is 0.
+            case 0x0003:
+              this.v[x] = this.v[x] ^ this.v[y];
+              break;
+
+            &#x2F;&#x2F; 8xy4 - ADD Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vx + Vy, set VF = carry.
+            &#x2F;&#x2F; The values of Vx and Vy are added together. If the result is
+            &#x2F;&#x2F;   greater than 8 bits (i.e., &gt; 255,) VF is set to 1,
+            &#x2F;&#x2F;   otherwise 0. Only the lowest 8 bits of the result are kept,
+            &#x2F;&#x2F;   and stored in Vx.
+            case 0x0004:
+              var sum = this.v[x] + this.v[y];
+
+              if (sum &gt; 0xFF) {
+                this.v[0xF] = 1;
+              } else {
+                this.v[0xF] = 0;
+              }
+
+              this.v[x] = sum;
+              break;
+
+            &#x2F;&#x2F; 8xy5 - SUB Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vx - Vy, set VF = NOT borrow.
+            &#x2F;&#x2F; If Vx &gt; Vy, then VF is set to 1, otherwise 0. Then Vy is
+            &#x2F;&#x2F;   subtracted from Vx, and the results stored in Vx.
+            case 0x0005:
+              if(this.v[x] &gt; this.v[y]) {
+                this.v[0xF] = 1;
+              } else {
+                this.v[0xF] = 0;
+              }
+
+              this.v[x] = this.v[x] - this.v[y];
+              break;
+
+            &#x2F;&#x2F; 8xy6 - SHR Vx {, Vy}
+            &#x2F;&#x2F; Set Vx = Vx SHR 1.
+            &#x2F;&#x2F; If the least-significant bit of Vx is 1, then VF is set to 1,
+            &#x2F;&#x2F;   otherwise 0. Then Vx is divided by 2.
+            case 0x0006:
+              this.v[0xF] = this.v[x] &amp; 0x01;
+              this.v[x] = this.v[x] &gt;&gt; 1;
+              break;
+
+            &#x2F;&#x2F; 8xy7 - SUBN Vx, Vy
+            &#x2F;&#x2F; Set Vx = Vy - Vx, set VF = NOT borrow.
+            &#x2F;&#x2F; If Vy &gt; Vx, then VF is set to 1, otherwise 0. Then Vx is
+            &#x2F;&#x2F;   subtracted from Vy, and the results stored in Vx.
+            case 0x0007:
+              if (this.v[x] &gt; this.v[y]) {
+                this.v[0xF] = 0;
+              } else {
+                this.v[0xF] = 1;
+              }
+
+              this.v[x] = this.v[y] - this.v[x];
+              break;
+
+            &#x2F;&#x2F; 8xyE - SHL Vx {, Vy}
+            &#x2F;&#x2F; Set Vx = Vx SHL 1.
+            &#x2F;&#x2F; If the most-significant bit of Vx is 1, then VF is set to 1,
+            &#x2F;&#x2F;   otherwise to 0. Then Vx is multiplied by 2.
+            case 0x000E:
+              this.v[0xF] = this.v[x] &amp; 0x80;
+              this.v[x] = this.v[x] &lt;&lt; 1;
+              break;
+          }
+          break;
+
+        &#x2F;&#x2F; 9xy0 - SNE Vx, Vy
+        &#x2F;&#x2F; Skip next instruction if Vx != Vy.
+        &#x2F;&#x2F; The values of Vx and Vy are compared, and if they are not equal, the
+        &#x2F;&#x2F;   program counter is increased by 2.
+        case 0x9000:
+          if (this.v[x] != this.v[y]) this.pc += 2;
+          break;
+
+        &#x2F;&#x2F; Annn - LD I, addr
+        &#x2F;&#x2F; Set I = nnn.
+        &#x2F;&#x2F; The value of register I is set to nnn.
+        case 0xA000:
+          this.i = opcode &amp; 0x0FFF;
+          break;
+
+        &#x2F;&#x2F; Bnnn - JP V0, addr
+        &#x2F;&#x2F; Jump to location nnn + V0.
+        &#x2F;&#x2F; The program counter is set to nnn plus the value of V0.
+        case 0xB000:
+          this.pc = (opcode &amp; 0x0FFF) + this.v[0];
+          break;
+
+        &#x2F;&#x2F; Cxkk - RND Vx, byte
+        &#x2F;&#x2F; Set Vx = random byte AND kk.
+        &#x2F;&#x2F; The interpreter generates a random number from 0 to 255, which is
+        &#x2F;&#x2F;   then ANDed with the value kk. The results are stored in Vx. See
+        &#x2F;&#x2F;   instruction 8xy2 for more information on AND.
+        case 0xC000:
+          this.v[x] = Math.floor(Math.random() * 0xFF) &amp; (opcode &amp; 0x00FF);
+          break;
+
+        &#x2F;&#x2F; Dxyn - DRW Vx, Vy, nibble
+        &#x2F;&#x2F; Display n-byte sprite starting at memory location I at (Vx, Vy),
+        &#x2F;&#x2F;   set VF = collision.
+        case 0xD000:
+          var row, col, sprite
+            , width = 8
+            , height = opcode &amp; 0x000F;
+
+          this.v[0xF] = 0;
+
+          for (row = 0; row &lt; height; row++) {
+            sprite = this.memory[this.i + row];
+
+            for (col = 0; col &lt; width; col++) {
+              if ((sprite &amp; 0x80) &gt; 0) {
+                if (this.screen.setPixel(this.v[x] + col, this.v[y] + row)) {
+                  this.v[0xF] = 1;
+                }
+              }
+
+              sprite = sprite &lt;&lt; 1;
+            }
+          }
+
+          break;
+
+        case 0xE000:
+          switch (opcode &amp; 0x00FF) {
+            &#x2F;&#x2F; Ex9E - SKP Vx
+            &#x2F;&#x2F; Skip next instruction if key with the value of Vx is pressed.
+            case 0x009E:
+              if (this.input.isKeyPressed(this.v[x])) {
+                this.pc += 2;
+              }
+              break;
+
+            &#x2F;&#x2F; ExA1 - SKNP Vx
+            &#x2F;&#x2F; Skip next instruction if key with the value of Vx is not pressed.
+            case 0x00A1:
+              if (!this.input.isKeyPressed(this.v[x])) {
+                this.pc += 2;
+              }
+              break;
+          }
+          break;
+
+        case 0xF000:
+          switch (opcode &amp; 0x00FF) {
+            &#x2F;&#x2F; Fx07 - LD Vx, DT
+            &#x2F;&#x2F; Set Vx = delay timer value.
+            case 0x0007:
+              this.v[x] = this.delayTimer;
+              break;
+
+            &#x2F;&#x2F; Fx0A - LD Vx, K
+            &#x2F;&#x2F; Wait for a key press, store the value of the key in Vx.
+            case 0x000A:
+              this.paused = true;
+
+              this.input.onNextKeyPress = function(key) {
+                this.v[x] = key;
+                this.paused = false;
+              }.bind(this);
+
+            &#x2F;&#x2F; Fx15 - LD DT, Vx
+            &#x2F;&#x2F; Set delay timer = Vx.
+            case 0x0015:
+              this.delayTimer = this.v[x];
+              break;
+
+            &#x2F;&#x2F; Fx18 - LD ST, Vx
+            &#x2F;&#x2F; Set sound timer = Vx.
+            case 0x0018:
+              this.soundTimer = this.v[x];
+              break;
+
+            &#x2F;&#x2F; Fx29 - LD F, Vx
+            &#x2F;&#x2F; Set I = location of sprite for digit Vx.
+            case 0x0029:
+              this.i = this.v[x] * 5;
+              break;
+
+            &#x2F;&#x2F; Fx33 - LD B, Vx
+            &#x2F;&#x2F; Store BCD representation of Vx in memory locations I,
+            &#x2F;&#x2F;   I+1, and I+2.
+            case 0x0033:
+              this.memory[this.i]     = parseInt(this.v[x] &#x2F; 100);
+              this.memory[this.i + 1] = parseInt(this.v[x] % 100 &#x2F; 10);
+              this.memory[this.i + 2] = this.v[x] % 10;
+              break;
+
+            &#x2F;&#x2F; Fx55 - LD [I], Vx
+            &#x2F;&#x2F; Store registers V0 through Vx in memory starting at location I.
+            case 0x0055:
+              for (var i = 0; i &lt;= x; i++) {
+                this.memory[this.i + i] = this.v[i];
+              }
+              break;
+
+            &#x2F;&#x2F; Fx65 - LD Vx, [I]
+            &#x2F;&#x2F; Read registers V0 through Vx from memory starting at location I.
+            case 0x0065:
+              for (var i = 0; i &lt;= x; i++) {
+                this.v[i] = this.memory[this.i + i];
+              }
+              break;
+
+            &#x2F;&#x2F; Fx1E - ADD I, Vx
+            &#x2F;&#x2F; Set I = I + Vx.
+            case 0x001E:
+              this.i += this.v[x];
+              break;
+          }
+
+          break;
+
+        default:
+          throw new Error(&quot;Unknow opcode &quot; + opcode.toString(16) + &quot; informed.&quot;);
+      }
+    }
+
+    &#x2F;**
+     * Renders the screen.
+     * @method render
+     *&#x2F;
+    this.render = function() {
+      this.screen.render();
+    }
+
+    &#x2F;**
+     * Play the speaker until the sound timer reaches zero.
+     * @method playSound
+     *&#x2F;
+    this.playSound = function() {
+      if (this.soundTimer &gt; 0) {
+        this.speaker.play();
+      } else {
+        this.speaker.stop();
+      }
+    }
+
+    &#x2F;**
+     * Updates the CPU delay and sound timers.
+     * More info at: http:&#x2F;&#x2F;devernay.free.fr&#x2F;hacks&#x2F;chip8&#x2F;C8TECH10.HTM#2.5
+     * @method updateTimers
+     *&#x2F;
+    this.updateTimers = function() {
+      if (this.delayTimer &gt; 0) this.delayTimer -= 1;
+      if (this.soundTimer &gt; 0) this.soundTimer -= 1;
+    }
+  }
+
+  if (typeof module != &quot;undefined&quot;) {
+    module.exports = CPU;
+  } else {
+    window.Chip8.CPU = CPU;
+  }
+})();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

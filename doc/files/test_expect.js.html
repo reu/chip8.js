@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>test&#x2F;expect.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Chip8.html">Chip8</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.CPU.html">Chip8.CPU</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Keyboard.html">Chip8.Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.html">Chip8.Screen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.CanvasScreen.html">Chip8.Screen.CanvasScreen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Speaker.html">Chip8.Speaker</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: test&#x2F;expect.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+
+(function (global, module) {
+
+  if (&#x27;undefined&#x27; == typeof module) {
+    var module = { exports: {} }
+      , exports = module.exports
+  }
+
+  &#x2F;**
+   * Exports.
+   *&#x2F;
+
+  module.exports = expect;
+  expect.Assertion = Assertion;
+
+  &#x2F;**
+   * Exports version.
+   *&#x2F;
+
+  expect.version = &#x27;0.1.2&#x27;;
+
+  &#x2F;**
+   * Possible assertion flags.
+   *&#x2F;
+
+  var flags = {
+      not: [&#x27;to&#x27;, &#x27;be&#x27;, &#x27;have&#x27;, &#x27;include&#x27;, &#x27;only&#x27;]
+    , to: [&#x27;be&#x27;, &#x27;have&#x27;, &#x27;include&#x27;, &#x27;only&#x27;, &#x27;not&#x27;]
+    , only: [&#x27;have&#x27;]
+    , have: [&#x27;own&#x27;]
+    , be: [&#x27;an&#x27;]
+  };
+
+  function expect (obj) {
+    return new Assertion(obj);
+  }
+
+  &#x2F;**
+   * Constructor
+   *
+   * @api private
+   *&#x2F;
+
+  function Assertion (obj, flag, parent) {
+    this.obj = obj;
+    this.flags = {};
+
+    if (undefined != parent) {
+      this.flags[flag] = true;
+
+      for (var i in parent.flags) {
+        if (parent.flags.hasOwnProperty(i)) {
+          this.flags[i] = true;
+        }
+      }
+    }
+
+    var $flags = flag ? flags[flag] : keys(flags)
+      , self = this
+
+    if ($flags) {
+      for (var i = 0, l = $flags.length; i &lt; l; i++) {
+        &#x2F;&#x2F; avoid recursion
+        if (this.flags[$flags[i]]) continue;
+
+        var name = $flags[i]
+          , assertion = new Assertion(this.obj, name, this)
+
+        if (&#x27;function&#x27; == typeof Assertion.prototype[name]) {
+          &#x2F;&#x2F; clone the function, make sure we dont touch the prot reference
+          var old = this[name];
+          this[name] = function () {
+            return old.apply(self, arguments);
+          }
+
+          for (var fn in Assertion.prototype) {
+            if (Assertion.prototype.hasOwnProperty(fn) &amp;&amp; fn != name) {
+              this[name][fn] = bind(assertion[fn], assertion);
+            }
+          }
+        } else {
+          this[name] = assertion;
+        }
+      }
+    }
+  };
+
+  &#x2F;**
+   * Performs an assertion
+   *
+   * @api private
+   *&#x2F;
+
+  Assertion.prototype.assert = function (truth, msg, error) {
+    var msg = this.flags.not ? error : msg
+      , ok = this.flags.not ? !truth : truth;
+
+    if (!ok) {
+      throw new Error(msg.call(this));
+    }
+
+    this.and = new Assertion(this.obj);
+  };
+
+  &#x2F;**
+   * Check if the value is truthy
+   *
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.ok = function () {
+    this.assert(
+        !!this.obj
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be truthy&#x27; }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be falsy&#x27; });
+  };
+
+  &#x2F;**
+   * Assert that the function throws.
+   *
+   * @param {Function|RegExp} callback, or regexp to match error string against
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.throwError =
+  Assertion.prototype.throwException = function (fn) {
+    expect(this.obj).to.be.a(&#x27;function&#x27;);
+
+    var thrown = false
+      , not = this.flags.not
+
+    try {
+      this.obj();
+    } catch (e) {
+      if (&#x27;function&#x27; == typeof fn) {
+        fn(e);
+      } else if (&#x27;object&#x27; == typeof fn) {
+        var subject = &#x27;string&#x27; == typeof e ? e : e.message;
+        if (not) {
+          expect(subject).to.not.match(fn);
+        } else {
+          expect(subject).to.match(fn);
+        }
+      }
+      thrown = true;
+    }
+
+    if (&#x27;object&#x27; == typeof fn &amp;&amp; not) {
+      &#x2F;&#x2F; in the presence of a matcher, ensure the &#x60;not&#x60; only applies to
+      &#x2F;&#x2F; the matching.
+      this.flags.not = false;
+    }
+
+    var name = this.obj.name || &#x27;fn&#x27;;
+    this.assert(
+        thrown
+      , function(){ return &#x27;expected &#x27; + name + &#x27; to throw an exception&#x27; }
+      , function(){ return &#x27;expected &#x27; + name + &#x27; not to throw an exception&#x27; });
+  };
+
+  &#x2F;**
+   * Checks if the array is empty.
+   *
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.empty = function () {
+    var expectation;
+
+    if (&#x27;object&#x27; == typeof this.obj &amp;&amp; null !== this.obj &amp;&amp; !isArray(this.obj)) {
+      if (&#x27;number&#x27; == typeof this.obj.length) {
+        expectation = !this.obj.length;
+      } else {
+        expectation = !keys(this.obj).length;
+      }
+    } else {
+      if (&#x27;string&#x27; != typeof this.obj) {
+        expect(this.obj).to.be.an(&#x27;object&#x27;);
+      }
+
+      expect(this.obj).to.have.property(&#x27;length&#x27;);
+      expectation = !this.obj.length;
+    }
+
+    this.assert(
+        expectation
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be empty&#x27; }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not be empty&#x27; });
+    return this;
+  };
+
+  &#x2F;**
+   * Checks if the obj exactly equals another.
+   *
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.be =
+  Assertion.prototype.equal = function (obj) {
+    this.assert(
+        obj === this.obj
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to equal &#x27; + i(obj) }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not equal &#x27; + i(obj) });
+    return this;
+  };
+
+  &#x2F;**
+   * Checks if the obj sortof equals another.
+   *
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.eql = function (obj) {
+    this.assert(
+        expect.eql(obj, this.obj)
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to sort of equal &#x27; + i(obj) }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to sort of not equal &#x27; + i(obj) });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert within start to finish (inclusive).
+   *
+   * @param {Number} start
+   * @param {Number} finish
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.within = function (start, finish) {
+    var range = start + &#x27;..&#x27; + finish;
+    this.assert(
+        this.obj &gt;= start &amp;&amp; this.obj &lt;= finish
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be within &#x27; + range }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not be within &#x27; + range });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert typeof &#x2F; instance of
+   *
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.a =
+  Assertion.prototype.an = function (type) {
+    if (&#x27;string&#x27; == typeof type) {
+      &#x2F;&#x2F; proper english in error msg
+      var n = &#x2F;^[aeiou]&#x2F;.test(type) ? &#x27;n&#x27; : &#x27;&#x27;;
+
+      &#x2F;&#x2F; typeof with support for &#x27;array&#x27;
+      this.assert(
+          &#x27;array&#x27; == type ? isArray(this.obj) :
+            &#x27;object&#x27; == type
+              ? &#x27;object&#x27; == typeof this.obj &amp;&amp; null !== this.obj
+              : type == typeof this.obj
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be a&#x27; + n + &#x27; &#x27; + type }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; not to be a&#x27; + n + &#x27; &#x27; + type });
+    } else {
+      &#x2F;&#x2F; instanceof
+      var name = type.name || &#x27;supplied constructor&#x27;;
+      this.assert(
+          this.obj instanceof type
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be an instance of &#x27; + name }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; not to be an instance of &#x27; + name });
+    }
+
+    return this;
+  };
+
+  &#x2F;**
+   * Assert numeric value above _n_.
+   *
+   * @param {Number} n
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.greaterThan =
+  Assertion.prototype.above = function (n) {
+    this.assert(
+        this.obj &gt; n
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be above &#x27; + n }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be below &#x27; + n });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert numeric value below _n_.
+   *
+   * @param {Number} n
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.lessThan =
+  Assertion.prototype.below = function (n) {
+    this.assert(
+        this.obj &lt; n
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be below &#x27; + n }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to be above &#x27; + n });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert string value matches _regexp_.
+   *
+   * @param {RegExp} regexp
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.match = function (regexp) {
+    this.assert(
+        regexp.exec(this.obj)
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to match &#x27; + regexp }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; not to match &#x27; + regexp });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert property &quot;length&quot; exists and has value of _n_.
+   *
+   * @param {Number} n
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.length = function (n) {
+    expect(this.obj).to.have.property(&#x27;length&#x27;);
+    var len = this.obj.length;
+    this.assert(
+        n == len
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to have a length of &#x27; + n + &#x27; but got &#x27; + len }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not have a length of &#x27; + len });
+    return this;
+  };
+
+  &#x2F;**
+   * Assert property _name_ exists, with optional _val_.
+   *
+   * @param {String} name
+   * @param {Mixed} val
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.property = function (name, val) {
+    if (this.flags.own) {
+      this.assert(
+          Object.prototype.hasOwnProperty.call(this.obj, name)
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to have own property &#x27; + i(name) }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not have own property &#x27; + i(name) });
+      return this;
+    }
+
+    if (this.flags.not &amp;&amp; undefined !== val) {
+      if (undefined === this.obj[name]) {
+        throw new Error(i(this.obj) + &#x27; has no property &#x27; + i(name));
+      }
+    } else {
+      var hasProp;
+      try {
+        hasProp = name in this.obj
+      } catch (e) {
+        hasProp = undefined !== this.obj[name]
+      }
+
+      this.assert(
+          hasProp
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to have a property &#x27; + i(name) }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not have a property &#x27; + i(name) });
+    }
+
+    if (undefined !== val) {
+      this.assert(
+          val === this.obj[name]
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to have a property &#x27; + i(name)
+          + &#x27; of &#x27; + i(val) + &#x27;, but got &#x27; + i(this.obj[name]) }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not have a property &#x27; + i(name)
+          + &#x27; of &#x27; + i(val) });
+    }
+
+    this.obj = this.obj[name];
+    return this;
+  };
+
+  &#x2F;**
+   * Assert that the array contains _obj_ or string contains _obj_.
+   *
+   * @param {Mixed} obj|string
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.string =
+  Assertion.prototype.contain = function (obj) {
+    if (&#x27;string&#x27; == typeof this.obj) {
+      this.assert(
+          ~this.obj.indexOf(obj)
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to contain &#x27; + i(obj) }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not contain &#x27; + i(obj) });
+    } else {
+      this.assert(
+          ~indexOf(this.obj, obj)
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to contain &#x27; + i(obj) }
+        , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not contain &#x27; + i(obj) });
+    }
+    return this;
+  };
+
+  &#x2F;**
+   * Assert exact keys or inclusion of keys by using
+   * the &#x60;.own&#x60; modifier.
+   *
+   * @param {Array|String ...} keys
+   * @api public
+   *&#x2F;
+
+  Assertion.prototype.key =
+  Assertion.prototype.keys = function ($keys) {
+    var str
+      , ok = true;
+
+    $keys = isArray($keys)
+      ? $keys
+      : Array.prototype.slice.call(arguments);
+
+    if (!$keys.length) throw new Error(&#x27;keys required&#x27;);
+
+    var actual = keys(this.obj)
+      , len = $keys.length;
+
+    &#x2F;&#x2F; Inclusion
+    ok = every($keys, function (key) {
+      return ~indexOf(actual, key);
+    });
+
+    &#x2F;&#x2F; Strict
+    if (!this.flags.not &amp;&amp; this.flags.only) {
+      ok = ok &amp;&amp; $keys.length == actual.length;
+    }
+
+    &#x2F;&#x2F; Key string
+    if (len &gt; 1) {
+      $keys = map($keys, function (key) {
+        return i(key);
+      });
+      var last = $keys.pop();
+      str = $keys.join(&#x27;, &#x27;) + &#x27;, and &#x27; + last;
+    } else {
+      str = i($keys[0]);
+    }
+
+    &#x2F;&#x2F; Form
+    str = (len &gt; 1 ? &#x27;keys &#x27; : &#x27;key &#x27;) + str;
+
+    &#x2F;&#x2F; Have &#x2F; include
+    str = (!this.flags.only ? &#x27;include &#x27; : &#x27;only have &#x27;) + str;
+
+    &#x2F;&#x2F; Assertion
+    this.assert(
+        ok
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to &#x27; + str }
+      , function(){ return &#x27;expected &#x27; + i(this.obj) + &#x27; to not &#x27; + str });
+
+    return this;
+  };
+  &#x2F;**
+   * Assert a failure.
+   *
+   * @param {String ...} custom message
+   * @api public
+   *&#x2F;
+  Assertion.prototype.fail = function (msg) {
+    msg = msg || &quot;explicit failure&quot;;
+    this.assert(false, msg, msg);
+    return this;
+  };
+
+  &#x2F;**
+   * Function bind implementation.
+   *&#x2F;
+
+  function bind (fn, scope) {
+    return function () {
+      return fn.apply(scope, arguments);
+    }
+  }
+
+  &#x2F;**
+   * Array every compatibility
+   *
+   * @see bit.ly&#x2F;5Fq1N2
+   * @api public
+   *&#x2F;
+
+  function every (arr, fn, thisObj) {
+    var scope = thisObj || global;
+    for (var i = 0, j = arr.length; i &lt; j; ++i) {
+      if (!fn.call(scope, arr[i], i, arr)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  &#x2F;**
+   * Array indexOf compatibility.
+   *
+   * @see bit.ly&#x2F;a5Dxa2
+   * @api public
+   *&#x2F;
+
+  function indexOf (arr, o, i) {
+    if (Array.prototype.indexOf) {
+      return Array.prototype.indexOf.call(arr, o, i);
+    }
+
+    if (arr.length === undefined) {
+      return -1;
+    }
+
+    for (var j = arr.length, i = i &lt; 0 ? i + j &lt; 0 ? 0 : i + j : i || 0
+        ; i &lt; j &amp;&amp; arr[i] !== o; i++);
+
+    return j &lt;= i ? -1 : i;
+  };
+
+  &#x2F;&#x2F; https:&#x2F;&#x2F;gist.github.com&#x2F;1044128&#x2F;
+  var getOuterHTML = function(element) {
+    if (&#x27;outerHTML&#x27; in element) return element.outerHTML;
+    var ns = &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;1999&#x2F;xhtml&quot;;
+    var container = document.createElementNS(ns, &#x27;_&#x27;);
+    var elemProto = (window.HTMLElement || window.Element).prototype;
+    var xmlSerializer = new XMLSerializer();
+    var html;
+    if (document.xmlVersion) {
+      return xmlSerializer.serializeToString(element);
+    } else {
+      container.appendChild(element.cloneNode(false));
+      html = container.innerHTML.replace(&#x27;&gt;&lt;&#x27;, &#x27;&gt;&#x27; + element.innerHTML + &#x27;&lt;&#x27;);
+      container.innerHTML = &#x27;&#x27;;
+      return html;
+    }
+  };
+
+  &#x2F;&#x2F; Returns true if object is a DOM element.
+  var isDOMElement = function (object) {
+    if (typeof HTMLElement === &#x27;object&#x27;) {
+      return object instanceof HTMLElement;
+    } else {
+      return object &amp;&amp;
+        typeof object === &#x27;object&#x27; &amp;&amp;
+        object.nodeType === 1 &amp;&amp;
+        typeof object.nodeName === &#x27;string&#x27;;
+    }
+  };
+
+  &#x2F;**
+   * Inspects an object.
+   *
+   * @see taken from node.js &#x60;util&#x60; module (copyright Joyent, MIT license)
+   * @api private
+   *&#x2F;
+
+  function i (obj, showHidden, depth) {
+    var seen = [];
+
+    function stylize (str) {
+      return str;
+    };
+
+    function format (value, recurseTimes) {
+      &#x2F;&#x2F; Provide a hook for user-specified inspect functions.
+      &#x2F;&#x2F; Check that value is an object with an inspect function on it
+      if (value &amp;&amp; typeof value.inspect === &#x27;function&#x27; &amp;&amp;
+          &#x2F;&#x2F; Filter out the util module, it&#x27;s inspect function is special
+          value !== exports &amp;&amp;
+          &#x2F;&#x2F; Also filter out any prototype objects using the circular check.
+          !(value.constructor &amp;&amp; value.constructor.prototype === value)) {
+        return value.inspect(recurseTimes);
+      }
+
+      &#x2F;&#x2F; Primitive types cannot have properties
+      switch (typeof value) {
+        case &#x27;undefined&#x27;:
+          return stylize(&#x27;undefined&#x27;, &#x27;undefined&#x27;);
+
+        case &#x27;string&#x27;:
+          var simple = &#x27;\&#x27;&#x27; + json.stringify(value).replace(&#x2F;^&quot;|&quot;$&#x2F;g, &#x27;&#x27;)
+                                                   .replace(&#x2F;&#x27;&#x2F;g, &quot;\\&#x27;&quot;)
+                                                   .replace(&#x2F;\\&quot;&#x2F;g, &#x27;&quot;&#x27;) + &#x27;\&#x27;&#x27;;
+          return stylize(simple, &#x27;string&#x27;);
+
+        case &#x27;number&#x27;:
+          return stylize(&#x27;&#x27; + value, &#x27;number&#x27;);
+
+        case &#x27;boolean&#x27;:
+          return stylize(&#x27;&#x27; + value, &#x27;boolean&#x27;);
+      }
+      &#x2F;&#x2F; For some reason typeof null is &quot;object&quot;, so special case here.
+      if (value === null) {
+        return stylize(&#x27;null&#x27;, &#x27;null&#x27;);
+      }
+
+      if (isDOMElement(value)) {
+        return getOuterHTML(value);
+      }
+
+      &#x2F;&#x2F; Look up the keys of the object.
+      var visible_keys = keys(value);
+      var $keys = showHidden ? Object.getOwnPropertyNames(value) : visible_keys;
+
+      &#x2F;&#x2F; Functions without properties can be shortcutted.
+      if (typeof value === &#x27;function&#x27; &amp;&amp; $keys.length === 0) {
+        if (isRegExp(value)) {
+          return stylize(&#x27;&#x27; + value, &#x27;regexp&#x27;);
+        } else {
+          var name = value.name ? &#x27;: &#x27; + value.name : &#x27;&#x27;;
+          return stylize(&#x27;[Function&#x27; + name + &#x27;]&#x27;, &#x27;special&#x27;);
+        }
+      }
+
+      &#x2F;&#x2F; Dates without properties can be shortcutted
+      if (isDate(value) &amp;&amp; $keys.length === 0) {
+        return stylize(value.toUTCString(), &#x27;date&#x27;);
+      }
+
+      var base, type, braces;
+      &#x2F;&#x2F; Determine the object type
+      if (isArray(value)) {
+        type = &#x27;Array&#x27;;
+        braces = [&#x27;[&#x27;, &#x27;]&#x27;];
+      } else {
+        type = &#x27;Object&#x27;;
+        braces = [&#x27;{&#x27;, &#x27;}&#x27;];
+      }
+
+      &#x2F;&#x2F; Make functions say that they are functions
+      if (typeof value === &#x27;function&#x27;) {
+        var n = value.name ? &#x27;: &#x27; + value.name : &#x27;&#x27;;
+        base = (isRegExp(value)) ? &#x27; &#x27; + value : &#x27; [Function&#x27; + n + &#x27;]&#x27;;
+      } else {
+        base = &#x27;&#x27;;
+      }
+
+      &#x2F;&#x2F; Make dates with properties first say the date
+      if (isDate(value)) {
+        base = &#x27; &#x27; + value.toUTCString();
+      }
+
+      if ($keys.length === 0) {
+        return braces[0] + base + braces[1];
+      }
+
+      if (recurseTimes &lt; 0) {
+        if (isRegExp(value)) {
+          return stylize(&#x27;&#x27; + value, &#x27;regexp&#x27;);
+        } else {
+          return stylize(&#x27;[Object]&#x27;, &#x27;special&#x27;);
+        }
+      }
+
+      seen.push(value);
+
+      var output = map($keys, function (key) {
+        var name, str;
+        if (value.__lookupGetter__) {
+          if (value.__lookupGetter__(key)) {
+            if (value.__lookupSetter__(key)) {
+              str = stylize(&#x27;[Getter&#x2F;Setter]&#x27;, &#x27;special&#x27;);
+            } else {
+              str = stylize(&#x27;[Getter]&#x27;, &#x27;special&#x27;);
+            }
+          } else {
+            if (value.__lookupSetter__(key)) {
+              str = stylize(&#x27;[Setter]&#x27;, &#x27;special&#x27;);
+            }
+          }
+        }
+        if (indexOf(visible_keys, key) &lt; 0) {
+          name = &#x27;[&#x27; + key + &#x27;]&#x27;;
+        }
+        if (!str) {
+          if (indexOf(seen, value[key]) &lt; 0) {
+            if (recurseTimes === null) {
+              str = format(value[key]);
+            } else {
+              str = format(value[key], recurseTimes - 1);
+            }
+            if (str.indexOf(&#x27;\n&#x27;) &gt; -1) {
+              if (isArray(value)) {
+                str = map(str.split(&#x27;\n&#x27;), function (line) {
+                  return &#x27;  &#x27; + line;
+                }).join(&#x27;\n&#x27;).substr(2);
+              } else {
+                str = &#x27;\n&#x27; + map(str.split(&#x27;\n&#x27;), function (line) {
+                  return &#x27;   &#x27; + line;
+                }).join(&#x27;\n&#x27;);
+              }
+            }
+          } else {
+            str = stylize(&#x27;[Circular]&#x27;, &#x27;special&#x27;);
+          }
+        }
+        if (typeof name === &#x27;undefined&#x27;) {
+          if (type === &#x27;Array&#x27; &amp;&amp; key.match(&#x2F;^\d+$&#x2F;)) {
+            return str;
+          }
+          name = json.stringify(&#x27;&#x27; + key);
+          if (name.match(&#x2F;^&quot;([a-zA-Z_][a-zA-Z_0-9]*)&quot;$&#x2F;)) {
+            name = name.substr(1, name.length - 2);
+            name = stylize(name, &#x27;name&#x27;);
+          } else {
+            name = name.replace(&#x2F;&#x27;&#x2F;g, &quot;\\&#x27;&quot;)
+                       .replace(&#x2F;\\&quot;&#x2F;g, &#x27;&quot;&#x27;)
+                       .replace(&#x2F;(^&quot;|&quot;$)&#x2F;g, &quot;&#x27;&quot;);
+            name = stylize(name, &#x27;string&#x27;);
+          }
+        }
+
+        return name + &#x27;: &#x27; + str;
+      });
+
+      seen.pop();
+
+      var numLinesEst = 0;
+      var length = reduce(output, function (prev, cur) {
+        numLinesEst++;
+        if (indexOf(cur, &#x27;\n&#x27;) &gt;= 0) numLinesEst++;
+        return prev + cur.length + 1;
+      }, 0);
+
+      if (length &gt; 50) {
+        output = braces[0] +
+                 (base === &#x27;&#x27; ? &#x27;&#x27; : base + &#x27;\n &#x27;) +
+                 &#x27; &#x27; +
+                 output.join(&#x27;,\n  &#x27;) +
+                 &#x27; &#x27; +
+                 braces[1];
+
+      } else {
+        output = braces[0] + base + &#x27; &#x27; + output.join(&#x27;, &#x27;) + &#x27; &#x27; + braces[1];
+      }
+
+      return output;
+    }
+    return format(obj, (typeof depth === &#x27;undefined&#x27; ? 2 : depth));
+  };
+
+  function isArray (ar) {
+    return Object.prototype.toString.call(ar) == &#x27;[object Array]&#x27;;
+  };
+
+  function isRegExp(re) {
+    var s;
+    try {
+      s = &#x27;&#x27; + re;
+    } catch (e) {
+      return false;
+    }
+
+    return re instanceof RegExp || &#x2F;&#x2F; easy case
+           &#x2F;&#x2F; duck-type for context-switching evalcx case
+           typeof(re) === &#x27;function&#x27; &amp;&amp;
+           re.constructor.name === &#x27;RegExp&#x27; &amp;&amp;
+           re.compile &amp;&amp;
+           re.test &amp;&amp;
+           re.exec &amp;&amp;
+           s.match(&#x2F;^\&#x2F;.*\&#x2F;[gim]{0,3}$&#x2F;);
+  };
+
+  function isDate(d) {
+    if (d instanceof Date) return true;
+    return false;
+  };
+
+  function keys (obj) {
+    if (Object.keys) {
+      return Object.keys(obj);
+    }
+
+    var keys = [];
+
+    for (var i in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, i)) {
+        keys.push(i);
+      }
+    }
+
+    return keys;
+  }
+
+  function map (arr, mapper, that) {
+    if (Array.prototype.map) {
+      return Array.prototype.map.call(arr, mapper, that);
+    }
+
+    var other= new Array(arr.length);
+
+    for (var i= 0, n = arr.length; i&lt;n; i++)
+      if (i in arr)
+        other[i] = mapper.call(that, arr[i], i, arr);
+
+    return other;
+  };
+
+  function reduce (arr, fun) {
+    if (Array.prototype.reduce) {
+      return Array.prototype.reduce.apply(
+          arr
+        , Array.prototype.slice.call(arguments, 1)
+      );
+    }
+
+    var len = +this.length;
+
+    if (typeof fun !== &quot;function&quot;)
+      throw new TypeError();
+
+    &#x2F;&#x2F; no value to return if no initial value and an empty array
+    if (len === 0 &amp;&amp; arguments.length === 1)
+      throw new TypeError();
+
+    var i = 0;
+    if (arguments.length &gt;= 2) {
+      var rv = arguments[1];
+    } else {
+      do {
+        if (i in this) {
+          rv = this[i++];
+          break;
+        }
+
+        &#x2F;&#x2F; if array contains no values, no initial value to return
+        if (++i &gt;= len)
+          throw new TypeError();
+      } while (true);
+    }
+
+    for (; i &lt; len; i++) {
+      if (i in this)
+        rv = fun.call(null, rv, this[i], i, this);
+    }
+
+    return rv;
+  };
+
+  &#x2F;**
+   * Asserts deep equality
+   *
+   * @see taken from node.js &#x60;assert&#x60; module (copyright Joyent, MIT license)
+   * @api private
+   *&#x2F;
+
+  expect.eql = function eql (actual, expected) {
+    &#x2F;&#x2F; 7.1. All identical values are equivalent, as determined by ===.
+    if (actual === expected) {
+      return true;
+    } else if (&#x27;undefined&#x27; != typeof Buffer
+        &amp;&amp; Buffer.isBuffer(actual) &amp;&amp; Buffer.isBuffer(expected)) {
+      if (actual.length != expected.length) return false;
+
+      for (var i = 0; i &lt; actual.length; i++) {
+        if (actual[i] !== expected[i]) return false;
+      }
+
+      return true;
+
+    &#x2F;&#x2F; 7.2. If the expected value is a Date object, the actual value is
+    &#x2F;&#x2F; equivalent if it is also a Date object that refers to the same time.
+    } else if (actual instanceof Date &amp;&amp; expected instanceof Date) {
+      return actual.getTime() === expected.getTime();
+
+    &#x2F;&#x2F; 7.3. Other pairs that do not both pass typeof value == &quot;object&quot;,
+    &#x2F;&#x2F; equivalence is determined by ==.
+    } else if (typeof actual != &#x27;object&#x27; &amp;&amp; typeof expected != &#x27;object&#x27;) {
+      return actual == expected;
+
+    &#x2F;&#x2F; 7.4. For all other Object pairs, including Array objects, equivalence is
+    &#x2F;&#x2F; determined by having the same number of owned properties (as verified
+    &#x2F;&#x2F; with Object.prototype.hasOwnProperty.call), the same set of keys
+    &#x2F;&#x2F; (although not necessarily the same order), equivalent values for every
+    &#x2F;&#x2F; corresponding key, and an identical &quot;prototype&quot; property. Note: this
+    &#x2F;&#x2F; accounts for both named and indexed properties on Arrays.
+    } else {
+      return objEquiv(actual, expected);
+    }
+  }
+
+  function isUndefinedOrNull (value) {
+    return value === null || value === undefined;
+  }
+
+  function isArguments (object) {
+    return Object.prototype.toString.call(object) == &#x27;[object Arguments]&#x27;;
+  }
+
+  function objEquiv (a, b) {
+    if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
+      return false;
+    &#x2F;&#x2F; an identical &quot;prototype&quot; property.
+    if (a.prototype !== b.prototype) return false;
+    &#x2F;&#x2F;~~~I&#x27;ve managed to break Object.keys through screwy arguments passing.
+    &#x2F;&#x2F;   Converting to array solves the problem.
+    if (isArguments(a)) {
+      if (!isArguments(b)) {
+        return false;
+      }
+      a = pSlice.call(a);
+      b = pSlice.call(b);
+      return expect.eql(a, b);
+    }
+    try{
+      var ka = keys(a),
+        kb = keys(b),
+        key, i;
+    } catch (e) {&#x2F;&#x2F;happens when one is a string literal and the other isn&#x27;t
+      return false;
+    }
+    &#x2F;&#x2F; having the same number of owned properties (keys incorporates hasOwnProperty)
+    if (ka.length != kb.length)
+      return false;
+    &#x2F;&#x2F;the same set of keys (although not necessarily the same order),
+    ka.sort();
+    kb.sort();
+    &#x2F;&#x2F;~~~cheap key test
+    for (i = ka.length - 1; i &gt;= 0; i--) {
+      if (ka[i] != kb[i])
+        return false;
+    }
+    &#x2F;&#x2F;equivalent values for every corresponding key, and
+    &#x2F;&#x2F;~~~possibly expensive deep test
+    for (i = ka.length - 1; i &gt;= 0; i--) {
+      key = ka[i];
+      if (!expect.eql(a[key], b[key]))
+         return false;
+    }
+    return true;
+  }
+
+  var json = (function () {
+    &quot;use strict&quot;;
+
+    if (&#x27;object&#x27; == typeof JSON &amp;&amp; JSON.parse &amp;&amp; JSON.stringify) {
+      return {
+          parse: nativeJSON.parse
+        , stringify: nativeJSON.stringify
+      }
+    }
+
+    var JSON = {};
+
+    function f(n) {
+        &#x2F;&#x2F; Format integers to have at least two digits.
+        return n &lt; 10 ? &#x27;0&#x27; + n : n;
+    }
+
+    function date(d, key) {
+      return isFinite(d.valueOf()) ?
+          d.getUTCFullYear()     + &#x27;-&#x27; +
+          f(d.getUTCMonth() + 1) + &#x27;-&#x27; +
+          f(d.getUTCDate())      + &#x27;T&#x27; +
+          f(d.getUTCHours())     + &#x27;:&#x27; +
+          f(d.getUTCMinutes())   + &#x27;:&#x27; +
+          f(d.getUTCSeconds())   + &#x27;Z&#x27; : null;
+    };
+
+    var cx = &#x2F;[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]&#x2F;g,
+        escapable = &#x2F;[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]&#x2F;g,
+        gap,
+        indent,
+        meta = {    &#x2F;&#x2F; table of character substitutions
+            &#x27;\b&#x27;: &#x27;\\b&#x27;,
+            &#x27;\t&#x27;: &#x27;\\t&#x27;,
+            &#x27;\n&#x27;: &#x27;\\n&#x27;,
+            &#x27;\f&#x27;: &#x27;\\f&#x27;,
+            &#x27;\r&#x27;: &#x27;\\r&#x27;,
+            &#x27;&quot;&#x27; : &#x27;\\&quot;&#x27;,
+            &#x27;\\&#x27;: &#x27;\\\\&#x27;
+        },
+        rep;
+
+
+    function quote(string) {
+
+  &#x2F;&#x2F; If the string contains no control characters, no quote characters, and no
+  &#x2F;&#x2F; backslash characters, then we can safely slap some quotes around it.
+  &#x2F;&#x2F; Otherwise we must also replace the offending characters with safe escape
+  &#x2F;&#x2F; sequences.
+
+        escapable.lastIndex = 0;
+        return escapable.test(string) ? &#x27;&quot;&#x27; + string.replace(escapable, function (a) {
+            var c = meta[a];
+            return typeof c === &#x27;string&#x27; ? c :
+                &#x27;\\u&#x27; + (&#x27;0000&#x27; + a.charCodeAt(0).toString(16)).slice(-4);
+        }) + &#x27;&quot;&#x27; : &#x27;&quot;&#x27; + string + &#x27;&quot;&#x27;;
+    }
+
+
+    function str(key, holder) {
+
+  &#x2F;&#x2F; Produce a string from holder[key].
+
+        var i,          &#x2F;&#x2F; The loop counter.
+            k,          &#x2F;&#x2F; The member key.
+            v,          &#x2F;&#x2F; The member value.
+            length,
+            mind = gap,
+            partial,
+            value = holder[key];
+
+  &#x2F;&#x2F; If the value has a toJSON method, call it to obtain a replacement value.
+
+        if (value instanceof Date) {
+            value = date(key);
+        }
+
+  &#x2F;&#x2F; If we were called with a replacer function, then call the replacer to
+  &#x2F;&#x2F; obtain a replacement value.
+
+        if (typeof rep === &#x27;function&#x27;) {
+            value = rep.call(holder, key, value);
+        }
+
+  &#x2F;&#x2F; What happens next depends on the value&#x27;s type.
+
+        switch (typeof value) {
+        case &#x27;string&#x27;:
+            return quote(value);
+
+        case &#x27;number&#x27;:
+
+  &#x2F;&#x2F; JSON numbers must be finite. Encode non-finite numbers as null.
+
+            return isFinite(value) ? String(value) : &#x27;null&#x27;;
+
+        case &#x27;boolean&#x27;:
+        case &#x27;null&#x27;:
+
+  &#x2F;&#x2F; If the value is a boolean or null, convert it to a string. Note:
+  &#x2F;&#x2F; typeof null does not produce &#x27;null&#x27;. The case is included here in
+  &#x2F;&#x2F; the remote chance that this gets fixed someday.
+
+            return String(value);
+
+  &#x2F;&#x2F; If the type is &#x27;object&#x27;, we might be dealing with an object or an array or
+  &#x2F;&#x2F; null.
+
+        case &#x27;object&#x27;:
+
+  &#x2F;&#x2F; Due to a specification blunder in ECMAScript, typeof null is &#x27;object&#x27;,
+  &#x2F;&#x2F; so watch out for that case.
+
+            if (!value) {
+                return &#x27;null&#x27;;
+            }
+
+  &#x2F;&#x2F; Make an array to hold the partial results of stringifying this object value.
+
+            gap += indent;
+            partial = [];
+
+  &#x2F;&#x2F; Is the value an array?
+
+            if (Object.prototype.toString.apply(value) === &#x27;[object Array]&#x27;) {
+
+  &#x2F;&#x2F; The value is an array. Stringify every element. Use null as a placeholder
+  &#x2F;&#x2F; for non-JSON values.
+
+                length = value.length;
+                for (i = 0; i &lt; length; i += 1) {
+                    partial[i] = str(i, value) || &#x27;null&#x27;;
+                }
+
+  &#x2F;&#x2F; Join all of the elements together, separated with commas, and wrap them in
+  &#x2F;&#x2F; brackets.
+
+                v = partial.length === 0 ? &#x27;[]&#x27; : gap ?
+                    &#x27;[\n&#x27; + gap + partial.join(&#x27;,\n&#x27; + gap) + &#x27;\n&#x27; + mind + &#x27;]&#x27; :
+                    &#x27;[&#x27; + partial.join(&#x27;,&#x27;) + &#x27;]&#x27;;
+                gap = mind;
+                return v;
+            }
+
+  &#x2F;&#x2F; If the replacer is an array, use it to select the members to be stringified.
+
+            if (rep &amp;&amp; typeof rep === &#x27;object&#x27;) {
+                length = rep.length;
+                for (i = 0; i &lt; length; i += 1) {
+                    if (typeof rep[i] === &#x27;string&#x27;) {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? &#x27;: &#x27; : &#x27;:&#x27;) + v);
+                        }
+                    }
+                }
+            } else {
+
+  &#x2F;&#x2F; Otherwise, iterate through all of the keys in the object.
+
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (gap ? &#x27;: &#x27; : &#x27;:&#x27;) + v);
+                        }
+                    }
+                }
+            }
+
+  &#x2F;&#x2F; Join all of the member texts together, separated with commas,
+  &#x2F;&#x2F; and wrap them in braces.
+
+            v = partial.length === 0 ? &#x27;{}&#x27; : gap ?
+                &#x27;{\n&#x27; + gap + partial.join(&#x27;,\n&#x27; + gap) + &#x27;\n&#x27; + mind + &#x27;}&#x27; :
+                &#x27;{&#x27; + partial.join(&#x27;,&#x27;) + &#x27;}&#x27;;
+            gap = mind;
+            return v;
+        }
+    }
+
+  &#x2F;&#x2F; If the JSON object does not yet have a stringify method, give it one.
+
+    JSON.stringify = function (value, replacer, space) {
+
+  &#x2F;&#x2F; The stringify method takes a value and an optional replacer, and an optional
+  &#x2F;&#x2F; space parameter, and returns a JSON text. The replacer can be a function
+  &#x2F;&#x2F; that can replace values, or an array of strings that will select the keys.
+  &#x2F;&#x2F; A default replacer method can be provided. Use of the space parameter can
+  &#x2F;&#x2F; produce text that is more easily readable.
+
+        var i;
+        gap = &#x27;&#x27;;
+        indent = &#x27;&#x27;;
+
+  &#x2F;&#x2F; If the space parameter is a number, make an indent string containing that
+  &#x2F;&#x2F; many spaces.
+
+        if (typeof space === &#x27;number&#x27;) {
+            for (i = 0; i &lt; space; i += 1) {
+                indent += &#x27; &#x27;;
+            }
+
+  &#x2F;&#x2F; If the space parameter is a string, it will be used as the indent string.
+
+        } else if (typeof space === &#x27;string&#x27;) {
+            indent = space;
+        }
+
+  &#x2F;&#x2F; If there is a replacer, it must be a function or an array.
+  &#x2F;&#x2F; Otherwise, throw an error.
+
+        rep = replacer;
+        if (replacer &amp;&amp; typeof replacer !== &#x27;function&#x27; &amp;&amp;
+                (typeof replacer !== &#x27;object&#x27; ||
+                typeof replacer.length !== &#x27;number&#x27;)) {
+            throw new Error(&#x27;JSON.stringify&#x27;);
+        }
+
+  &#x2F;&#x2F; Make a fake root object containing our value under the key of &#x27;&#x27;.
+  &#x2F;&#x2F; Return the result of stringifying the value.
+
+        return str(&#x27;&#x27;, {&#x27;&#x27;: value});
+    };
+
+  &#x2F;&#x2F; If the JSON object does not yet have a parse method, give it one.
+
+    JSON.parse = function (text, reviver) {
+    &#x2F;&#x2F; The parse method takes a text and an optional reviver function, and returns
+    &#x2F;&#x2F; a JavaScript value if the text is a valid JSON text.
+
+        var j;
+
+        function walk(holder, key) {
+
+    &#x2F;&#x2F; The walk method is used to recursively walk the resulting structure so
+    &#x2F;&#x2F; that modifications can be made.
+
+            var k, v, value = holder[key];
+            if (value &amp;&amp; typeof value === &#x27;object&#x27;) {
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = walk(value, k);
+                        if (v !== undefined) {
+                            value[k] = v;
+                        } else {
+                            delete value[k];
+                        }
+                    }
+                }
+            }
+            return reviver.call(holder, key, value);
+        }
+
+
+    &#x2F;&#x2F; Parsing happens in four stages. In the first stage, we replace certain
+    &#x2F;&#x2F; Unicode characters with escape sequences. JavaScript handles many characters
+    &#x2F;&#x2F; incorrectly, either silently deleting them, or treating them as line endings.
+
+        text = String(text);
+        cx.lastIndex = 0;
+        if (cx.test(text)) {
+            text = text.replace(cx, function (a) {
+                return &#x27;\\u&#x27; +
+                    (&#x27;0000&#x27; + a.charCodeAt(0).toString(16)).slice(-4);
+            });
+        }
+
+    &#x2F;&#x2F; In the second stage, we run the text against regular expressions that look
+    &#x2F;&#x2F; for non-JSON patterns. We are especially concerned with &#x27;()&#x27; and &#x27;new&#x27;
+    &#x2F;&#x2F; because they can cause invocation, and &#x27;=&#x27; because it can cause mutation.
+    &#x2F;&#x2F; But just to be safe, we want to reject all unexpected forms.
+
+    &#x2F;&#x2F; We split the second stage into 4 regexp operations in order to work around
+    &#x2F;&#x2F; crippling inefficiencies in IE&#x27;s and Safari&#x27;s regexp engines. First we
+    &#x2F;&#x2F; replace the JSON backslash pairs with &#x27;@&#x27; (a non-JSON character). Second, we
+    &#x2F;&#x2F; replace all simple value tokens with &#x27;]&#x27; characters. Third, we delete all
+    &#x2F;&#x2F; open brackets that follow a colon or comma or that begin the text. Finally,
+    &#x2F;&#x2F; we look to see that the remaining characters are only whitespace or &#x27;]&#x27; or
+    &#x2F;&#x2F; &#x27;,&#x27; or &#x27;:&#x27; or &#x27;{&#x27; or &#x27;}&#x27;. If that is so, then the text is safe for eval.
+
+        if (&#x2F;^[\],:{}\s]*$&#x2F;
+                .test(text.replace(&#x2F;\\(?:[&quot;\\\&#x2F;bfnrt]|u[0-9a-fA-F]{4})&#x2F;g, &#x27;@&#x27;)
+                    .replace(&#x2F;&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?&#x2F;g, &#x27;]&#x27;)
+                    .replace(&#x2F;(?:^|:|,)(?:\s*\[)+&#x2F;g, &#x27;&#x27;))) {
+
+    &#x2F;&#x2F; In the third stage we use the eval function to compile the text into a
+    &#x2F;&#x2F; JavaScript structure. The &#x27;{&#x27; operator is subject to a syntactic ambiguity
+    &#x2F;&#x2F; in JavaScript: it can begin a block or an object literal. We wrap the text
+    &#x2F;&#x2F; in parens to eliminate the ambiguity.
+
+            j = eval(&#x27;(&#x27; + text + &#x27;)&#x27;);
+
+    &#x2F;&#x2F; In the optional fourth stage, we recursively walk the new structure, passing
+    &#x2F;&#x2F; each name&#x2F;value pair to a reviver function for possible transformation.
+
+            return typeof reviver === &#x27;function&#x27; ?
+                walk({&#x27;&#x27;: j}, &#x27;&#x27;) : j;
+        }
+
+    &#x2F;&#x2F; If the text is not JSON parseable, then a SyntaxError is thrown.
+
+        throw new SyntaxError(&#x27;JSON.parse&#x27;);
+    };
+
+    return JSON;
+  })();
+
+  if (&#x27;undefined&#x27; != typeof window) {
+    window.expect = module.exports;
+  }
+
+})(
+    this
+  , &#x27;undefined&#x27; != typeof module ? module : {}
+  , &#x27;undefined&#x27; != typeof exports ? exports : {}
+);
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

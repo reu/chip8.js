@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;screen.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Chip8.html">Chip8</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.CPU.html">Chip8.CPU</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Keyboard.html">Chip8.Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.html">Chip8.Screen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.CanvasScreen.html">Chip8.Screen.CanvasScreen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Speaker.html">Chip8.Speaker</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;screen.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function() {
+  &#x2F;**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.Screen
+   * @constructor
+   *
+   * @property {Array} bitMap the display map
+   *&#x2F;
+  var Screen = function Screen() {
+    this.rows = 32;
+    this.columns = 64;
+    this.resolution = this.rows * this.columns;
+    this.bitMap = new Array(this.resolution);
+
+    &#x2F;**
+     * Clear the bitMap.
+     * @method clear
+     *&#x2F;
+    this.clear = function() {
+      this.bitMap = new Array(this.resolution);
+    }
+
+    &#x2F;**
+     * @method setPixel
+     * @param {Integer} x the starting x coordinate of the pixel
+     * @param {Integer} y the starting y coordinate of the pixel
+     *&#x2F;
+    this.setPixel = function(x, y) {
+      &#x2F;&#x2F; Wrap around pixels that overflow the screen
+      if (x &gt; this.columns) {
+        x -= this.columns;
+      } else if (x &lt; 0) {
+        x += this.columns;
+      }
+
+      if (y &gt; this.rows) {
+        y -= this.rows;
+      } else if (y &lt; 0) {
+        y += this.rows;
+      }
+
+      var location = x + (y * this.columns);
+      this.bitMap[location] = this.bitMap[location] ^ 1;
+
+      return !this.bitMap[location];
+    }
+
+    this.render = function(output) {}
+  }
+
+  &#x2F;**
+   * The CPU of the emulator, responsible for processing memory opcodes.
+   *
+   * @class Chip8.Screen.CanvasScreen
+   * @extends Chip8.Screen
+   * @constructor
+   * @param {CanvasRenderingContext2D} ctx context 2D of a canvas element
+   * @param {Integer} scale the scale of the rendering, defaults to 10.
+   *&#x2F;
+  Screen.CanvasScreen = function CanvasScreen(ctx, scale) {
+    Screen.apply(this, arguments);
+
+    this.scale = scale || 10;
+
+    var width = ctx.canvas.width = this.columns * this.scale;
+    var height = ctx.canvas.height = this.rows * this.scale;
+
+    &#x2F;**
+     * Renders the bitMap array into the canvas context.
+     * @method render
+     *&#x2F;
+    this.render = function() {
+      var i, x, y;
+
+      ctx.clearRect(0, 0, width, height);
+
+      for (i = 0; i &lt; this.resolution; i++) {
+        x = (i % this.columns) * this.scale;
+        y = Math.floor(i &#x2F; this.columns) * this.scale;
+
+        if (this.bitMap[i]) {
+          ctx.fillStyle = &quot;#000&quot;;
+          ctx.fillRect(x, y, this.scale, this.scale);
+        }
+      }
+    }
+  }
+
+  if (typeof module != &quot;undefined&quot;) {
+    module.exports = Screen;
+  } else {
+    window.Chip8.Screen = Screen;
+  }
+})();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

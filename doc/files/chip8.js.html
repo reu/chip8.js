@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>chip8.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Chip8.html">Chip8</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.CPU.html">Chip8.CPU</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Keyboard.html">Chip8.Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.html">Chip8.Screen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Screen.CanvasScreen.html">Chip8.Screen.CanvasScreen</a></li>
+            
+                <li><a href="..&#x2F;classes/Chip8.Speaker.html">Chip8.Speaker</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: chip8.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function() {
+  &#x2F;**
+   * The CHIP8 emulator class.
+   *
+   * @class Chip8
+   * @constructor
+   *
+   * @property {Chip8.CPU} vm the CHIP8 CPU
+   * @property {Chip8.Screen} screen where the emulator will render the graphics
+   * @property {Chip8.Speaker} speaker the audio engine used to play the sound
+   * @property {Chip8.Input} input the input handler
+   *&#x2F;
+  var Chip8 = function Chip8() {
+    var loop
+      , step
+      , counter = 0
+      , cpu = new Chip8.CPU
+      , self = this;
+
+    &#x2F;**
+     * An emulation cycle step.
+     * @private
+     *&#x2F;
+    step = function step() {
+      cpu.cycle();
+      loop = requestAnimationFrame(step);
+    }
+
+    &#x2F;**
+     * Start the emulator main loop.
+     * @method start
+     *&#x2F;
+    this.start = function() {
+      loop = requestAnimationFrame(step);
+    }
+
+    &#x2F;**
+     * Stop the emulator main loop.
+     * @method stop
+     *&#x2F;
+    this.stop = function() {
+      cancelAnimationFrame(loop);
+    }
+
+    &#x2F;**
+     * Load a rom into the CPU memory.
+     * @method loadRom
+     * @param {String, Chip8.ROMS} name of a rom
+     *&#x2F;
+    this.loadRom = function(name) {
+      var request = new XMLHttpRequest;
+      request.onload = function() {
+        if (request.response) {
+          cpu.screen = self.screen;
+          cpu.input = self.input;
+          cpu.speaker = self.speaker;
+          self.stop();
+          cpu.reset();
+          cpu.loadProgram(new Uint8Array(request.response));
+          self.start();
+        }
+      }
+      request.open(&quot;GET&quot;, &quot;roms&#x2F;&quot; + name, true);
+      request.responseType = &quot;arraybuffer&quot;;
+      request.send();
+    }
+  }
+
+  &#x2F;**
+   * List of known CHIP8 roms.
+   * @property ROMS
+   * @type Array
+   * @static
+   * @final
+   *&#x2F;
+  Chip8.ROMS = [
+    &quot;15PUZZLE&quot;,
+    &quot;BLINKY&quot;,
+    &quot;BLITZ&quot;,
+    &quot;BRIX&quot;,
+    &quot;CONNECT4&quot;,
+    &quot;GUESS&quot;,
+    &quot;HIDDEN&quot;,
+    &quot;IBM&quot;,
+    &quot;INVADERS&quot;,
+    &quot;KALEID&quot;,
+    &quot;MAZE&quot;,
+    &quot;MERLIN&quot;,
+    &quot;MISSILE&quot;,
+    &quot;PONG&quot;,
+    &quot;PONG2&quot;,
+    &quot;PUZZLE&quot;,
+    &quot;SYZYGY&quot;,
+    &quot;TANK&quot;,
+    &quot;TETRIS&quot;,
+    &quot;TICTAC&quot;,
+    &quot;UFO&quot;,
+    &quot;VBRIX&quot;,
+    &quot;VERS&quot;,
+    &quot;WIPEOFF&quot;
+  ];
+
+  if (typeof module != &quot;undefined&quot;) {
+    Chip8.CPU = require(&quot;.&#x2F;src&#x2F;cpu.js&quot;);
+    Chip8.Keyboard = require(&quot;.&#x2F;src&#x2F;keyboard.js&quot;);
+    Chip8.Screen = require(&quot;.&#x2F;src&#x2F;screen.js&quot;);
+    Chip8.Speaker = require(&quot;.&#x2F;src&#x2F;speaker.js&quot;);
+
+    module.exports = Chip8;
+  } else {
+    window.Chip8 = Chip8;
+  }
+})();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

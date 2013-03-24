@@ -1,0 +1,5516 @@
+{
+    "project": {},
+    "files": {
+        "src/cpu.js": {
+            "name": "src/cpu.js",
+            "modules": {},
+            "classes": {
+                "Chip8.CPU": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/keyboard.js": {
+            "name": "src/keyboard.js",
+            "modules": {},
+            "classes": {
+                "Chip8.Keyboard": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/screen.js": {
+            "name": "src/screen.js",
+            "modules": {},
+            "classes": {
+                "Chip8.Screen": 1,
+                "Chip8.Screen.CanvasScreen": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/speaker.js": {
+            "name": "src/speaker.js",
+            "modules": {},
+            "classes": {
+                "Chip8.Speaker": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "test/expect.js": {
+            "name": "test/expect.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "test/mocha.js": {
+            "name": "test/mocha.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "chip8.js": {
+            "name": "chip8.js",
+            "modules": {},
+            "classes": {
+                "Chip8": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Chip8.CPU": {
+            "name": "Chip8.CPU",
+            "shortname": "Chip8.CPU",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/cpu.js",
+            "line": 2,
+            "description": "The CPU of the emulator, responsible for processing memory opcodes.",
+            "is_constructor": 1
+        },
+        "Chip8.Keyboard": {
+            "name": "Chip8.Keyboard",
+            "shortname": "Chip8.Keyboard",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/keyboard.js",
+            "line": 2,
+            "description": "A Keyboard input handler",
+            "is_constructor": 1
+        },
+        "Chip8.Screen": {
+            "name": "Chip8.Screen",
+            "shortname": "Chip8.Screen",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/screen.js",
+            "line": 2,
+            "description": "The CPU of the emulator, responsible for processing memory opcodes.",
+            "is_constructor": 1,
+            "itemtype": "property",
+            "type": "Array"
+        },
+        "Chip8.Screen.CanvasScreen": {
+            "name": "Chip8.Screen.CanvasScreen",
+            "shortname": "Chip8.Screen.CanvasScreen",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/screen.js",
+            "line": 52,
+            "description": "The CPU of the emulator, responsible for processing memory opcodes.",
+            "extends": "Chip8.Screen",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "context 2D of a canvas element",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "scale",
+                    "description": "the scale of the rendering, defaults to 10.",
+                    "type": "Integer"
+                }
+            ]
+        },
+        "Chip8.Speaker": {
+            "name": "Chip8.Speaker",
+            "shortname": "Chip8.Speaker",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/speaker.js",
+            "line": 2,
+            "description": "A speaker used to emit sounds.",
+            "is_constructor": 1
+        },
+        "Chip8": {
+            "name": "Chip8",
+            "shortname": "Chip8",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "chip8.js",
+            "line": 2,
+            "description": "The CHIP8 emulator class.",
+            "is_constructor": 1,
+            "itemtype": "property",
+            "type": "Chip8.CPU"
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/cpu.js",
+            "line": 22,
+            "description": "Loads the CHIP8 fonts into memory.\nDetailed information can be found at: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font",
+            "itemtype": "method",
+            "name": "loadFonts",
+            "access": "private",
+            "tagname": "",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 53,
+            "description": "Reset the CPU with the default values.",
+            "itemtype": "method",
+            "name": "reset",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 72,
+            "description": "Loads a program into the memory.",
+            "itemtype": "method",
+            "name": "loadProgram",
+            "params": [
+                {
+                    "name": "program",
+                    "description": "array of bytes of a CHIP8 program",
+                    "type": "Array"
+                }
+            ],
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 83,
+            "description": "The main CPU cycle.",
+            "itemtype": "method",
+            "name": "cycle",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 103,
+            "description": "Process a given opcode.",
+            "itemtype": "method",
+            "name": "perform",
+            "params": [
+                {
+                    "name": "opcode",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 452,
+            "description": "Renders the screen.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 460,
+            "description": "Play the speaker until the sound timer reaches zero.",
+            "itemtype": "method",
+            "name": "playSound",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/cpu.js",
+            "line": 472,
+            "description": "Updates the CPU delay and sound timers.\nMore info at: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.5",
+            "itemtype": "method",
+            "name": "updateTimers",
+            "class": "Chip8.CPU"
+        },
+        {
+            "file": "src/keyboard.js",
+            "line": 11,
+            "description": "Fired when a key is pressed.",
+            "itemtype": "event",
+            "name": "onNextKeyPress",
+            "params": [
+                {
+                    "name": "keyCode",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Chip8.Keyboard"
+        },
+        {
+            "file": "src/keyboard.js",
+            "line": 18,
+            "description": "Clear all the memory of keys that are pressed.",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "Chip8.Keyboard"
+        },
+        {
+            "file": "src/keyboard.js",
+            "line": 27,
+            "description": "Checks if a given keyCode is pressed or not.",
+            "params": [
+                {
+                    "name": "keyCode",
+                    "description": "",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Chip8.Keyboard"
+        },
+        {
+            "file": "src/keyboard.js",
+            "line": 39,
+            "description": "Handler for the keyDown event",
+            "itemtype": "method",
+            "name": "keyDown",
+            "access": "private",
+            "tagname": "",
+            "class": "Chip8.Keyboard"
+        },
+        {
+            "file": "src/keyboard.js",
+            "line": 61,
+            "description": "Handler for the keyUp event",
+            "itemtype": "method",
+            "name": "keyUp",
+            "access": "private",
+            "tagname": "",
+            "class": "Chip8.Keyboard"
+        },
+        {
+            "file": "src/screen.js",
+            "line": 16,
+            "description": "Clear the bitMap.",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "Chip8.Screen"
+        },
+        {
+            "file": "src/screen.js",
+            "line": 24,
+            "itemtype": "method",
+            "name": "setPixel",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "the starting x coordinate of the pixel",
+                    "type": "Integer"
+                },
+                {
+                    "name": "y",
+                    "description": "the starting y coordinate of the pixel",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Chip8.Screen"
+        },
+        {
+            "file": "src/screen.js",
+            "line": 69,
+            "description": "Renders the bitMap array into the canvas context.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "Chip8.Screen.CanvasScreen"
+        },
+        {
+            "file": "src/speaker.js",
+            "line": 20,
+            "description": "Play a triangle wave sound.",
+            "itemtype": "method",
+            "name": "play",
+            "params": [
+                {
+                    "name": "frequency",
+                    "description": "the frequency of the sound wave",
+                    "type": "Integer"
+                }
+            ],
+            "class": "Chip8.Speaker"
+        },
+        {
+            "file": "src/speaker.js",
+            "line": 37,
+            "description": "Stop the speaker.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "Chip8.Speaker"
+        },
+        {
+            "file": "src/speaker.js",
+            "line": 49,
+            "description": "Clear the speaker state.",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "Chip8.Speaker"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 9,
+            "description": "Exports.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 16,
+            "description": "Exports version.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 22,
+            "description": "Possible assertion flags.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 38,
+            "description": "Constructor",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 88,
+            "description": "Performs an assertion",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 105,
+            "description": "Check if the value is truthy",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 118,
+            "description": "Assert that the function throws.",
+            "params": [
+                {
+                    "name": "callback,",
+                    "description": "or regexp to match error string against",
+                    "type": "Function|RegExp"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 161,
+            "description": "Checks if the array is empty.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 192,
+            "description": "Checks if the obj exactly equals another.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 207,
+            "description": "Checks if the obj sortof equals another.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 221,
+            "description": "Assert within start to finish (inclusive).",
+            "params": [
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "finish",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 238,
+            "description": "Assert typeof / instance of",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 270,
+            "description": "Assert numeric value above _n_.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 286,
+            "description": "Assert numeric value below _n_.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 302,
+            "description": "Assert string value matches _regexp_.",
+            "params": [
+                {
+                    "name": "regexp",
+                    "description": "",
+                    "type": "RegExp"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 317,
+            "description": "Assert property \"length\" exists and has value of _n_.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 334,
+            "description": "Assert property _name_ exists, with optional _val_.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "val",
+                    "description": "",
+                    "type": "Mixed"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 382,
+            "description": "Assert that the array contains _obj_ or string contains _obj_.",
+            "params": [
+                {
+                    "name": "obj|string",
+                    "description": "",
+                    "type": "Mixed"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 405,
+            "description": "Assert exact keys or inclusion of keys by using\nthe `.own` modifier.",
+            "params": [
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array|String ..."
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 462,
+            "description": "Assert a failure.",
+            "params": [
+                {
+                    "name": "custom",
+                    "description": "message",
+                    "type": "String ..."
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 474,
+            "description": "Function bind implementation.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 484,
+            "description": "Array every compatibility",
+            "see": [
+                "bit.ly/5Fq1N2"
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 501,
+            "description": "Array indexOf compatibility.",
+            "see": [
+                "bit.ly/a5Dxa2"
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 553,
+            "description": "Inspects an object.",
+            "see": [
+                "taken from node.js `util` module (copyright Joyent",
+                "MIT license)"
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/expect.js",
+            "line": 843,
+            "description": "Asserts deep equality",
+            "see": [
+                "taken from node.js `assert` module (copyright Joyent",
+                "MIT license)"
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 353,
+            "description": "Module exports.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 359,
+            "description": "Check if `obj` is an array.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 367,
+            "description": "Event emitter constructor.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 375,
+            "description": "Adds a listener.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 399,
+            "description": "Adds a volatile listener.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 419,
+            "description": "Removes a listener.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 456,
+            "description": "Removes all listeners for an event.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 475,
+            "description": "Gets all listeners for a certain event.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 497,
+            "description": "Emits an event.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 542,
+            "description": "Expose `Progress`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 548,
+            "description": "Initialize a new `Progress` indicator.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 559,
+            "description": "Set progress size to `n`.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 572,
+            "description": "Set text to `str`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 585,
+            "description": "Set font size to `n`.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 598,
+            "description": "Set font `family`.",
+            "params": [
+                {
+                    "name": "family",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 610,
+            "description": "Update percentage to `n`.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 622,
+            "description": "Draw on `ctx`.",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "",
+                    "type": "CanvasRenderingContext2d"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Progress"
+            },
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 682,
+            "description": "Expose `Context`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 688,
+            "description": "Initialize a new `Context`.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 696,
+            "description": "Set or get the context `Runnable` to `runnable`.",
+            "params": [
+                {
+                    "name": "runnable",
+                    "description": "",
+                    "type": "Runnable"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Context"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 710,
+            "description": "Set test timeout `ms`.",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "self",
+                "type": "Context"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 723,
+            "description": "Set test slowness threshold `ms`.",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "self",
+                "type": "Context"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 736,
+            "description": "Inspect the context void of `._runnable`.",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 755,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 761,
+            "description": "Expose `Hook`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 767,
+            "description": "Initialize a new `Hook` with the given `title` and callback `fn`.",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 780,
+            "description": "Inherit from `Runnable.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 790,
+            "description": "Get or set the test `err`.",
+            "params": [
+                {
+                    "name": "err",
+                    "description": "",
+                    "type": "Error"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Error"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 813,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 820,
+            "description": "BDD-style interface:\n\n     describe('Array', function(){\n       describe('#indexOf()', function(){\n         it('should return -1 when not present', function(){\n\n         });\n\n         it('should return the index when present', function(){\n\n         });\n       });\n     });",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 842,
+            "description": "Execute before running tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 850,
+            "description": "Execute after running tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 858,
+            "description": "Execute before each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 866,
+            "description": "Execute after each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 874,
+            "description": "Describe a \"suite\" with the given `title`\nand callback `fn` containing nested suites\nand/or tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 888,
+            "description": "Pending describe.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 902,
+            "description": "Exclusive suite.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 911,
+            "description": "Describe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 925,
+            "description": "Exclusive test-case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 934,
+            "description": "Pending test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 950,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 957,
+            "description": "TDD-style interface:\n\n    exports.Array = {\n      '#indexOf()': {\n        'should return -1 when the value is not present': function(){\n          \n        },\n\n        'should return the correct index when the value is present': function(){\n          \n        }\n      }\n    };",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1022,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1029,
+            "description": "QUnit-style interface:\n\n    suite('Array');\n    \n    test('#length', function(){\n      var arr = [1,2,3];\n      ok(arr.length == 3);\n    });\n    \n    test('#indexOf()', function(){\n      var arr = [1,2,3];\n      ok(arr.indexOf(1) == 0);\n      ok(arr.indexOf(2) == 1);\n      ok(arr.indexOf(3) == 2);\n    });\n    \n    suite('String');\n    \n    test('#length', function(){\n      ok('foo'.length == 3);\n    });",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1059,
+            "description": "Execute before running tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1067,
+            "description": "Execute after running tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1075,
+            "description": "Execute before each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1083,
+            "description": "Execute after each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1091,
+            "description": "Describe a \"suite\" with the given `title`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1101,
+            "description": "Describe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1117,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1124,
+            "description": "TDD-style interface:\n\n     suite('Array', function(){\n       suite('#indexOf()', function(){\n         suiteSetup(function(){\n\n         });\n         \n         test('should return -1 when not present', function(){\n\n         });\n\n         test('should return the index when present', function(){\n\n         });\n\n         suiteTeardown(function(){\n\n         });\n       });\n     });",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1154,
+            "description": "Execute before each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1162,
+            "description": "Execute after each test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1170,
+            "description": "Execute before the suite.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1178,
+            "description": "Execute after the suite.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1186,
+            "description": "Describe a \"suite\" with the given `title`\nand callback `fn` containing nested suites\nand/or tests.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1200,
+            "description": "Exclusive test-case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1209,
+            "description": "Describe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1221,
+            "description": "Exclusive test-case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1230,
+            "description": "Pending test case.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1249,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1256,
+            "description": "Expose `Mocha`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1262,
+            "description": "Expose internals.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1276,
+            "description": "Return image `name` path.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1288,
+            "description": "Setup mocha with `options`.\n\nOptions:\n\n  - `ui` name \"bdd\", \"tdd\", \"exports\" etc\n  - `reporter` reporter instance, defaults to `mocha.reporters.Dot`\n  - `globals` array of accepted globals\n  - `timeout` timeout in milliseconds\n  - `bail` bail on the first test failure\n  - `slow` milliseconds to wait before considering a test slow\n  - `ignoreLeaks` ignore global leaks\n  - `grep` string or regexp to filter tests with",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1319,
+            "description": "Enable or disable bailing on the first failure.",
+            "params": [
+                {
+                    "name": "bail",
+                    "description": "",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1332,
+            "description": "Add test `file`.",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1344,
+            "description": "Set reporter to `reporter`, defaults to \"dot\".",
+            "params": [
+                {
+                    "name": "reporter",
+                    "description": "name or constructor",
+                    "type": "String|Function"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1366,
+            "description": "Set test UI `name`, defaults to \"bdd\".",
+            "params": [
+                {
+                    "name": "bdd",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1381,
+            "description": "Load registered files.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1400,
+            "description": "Enable growl support.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1424,
+            "description": "Add regexp to grep, if `re` is a string it is escaped.",
+            "params": [
+                {
+                    "name": "re",
+                    "description": "",
+                    "type": "RegExp|String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1439,
+            "description": "Invert `.grep()` matches.",
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1451,
+            "description": "Ignore global leaks.",
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1463,
+            "description": "Enable global leak checking.",
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1475,
+            "description": "Enable growl support.",
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1487,
+            "description": "Ignore `globals` array or string.",
+            "params": [
+                {
+                    "name": "globals",
+                    "description": "",
+                    "type": "Array|String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1500,
+            "description": "Set the timeout in milliseconds.",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1513,
+            "description": "Set slowness threshold in milliseconds.",
+            "params": [
+                {
+                    "name": "slow",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1526,
+            "description": "Makes all tests async (accepting a callback)",
+            "return": {
+                "description": "",
+                "type": "Mocha"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1538,
+            "description": "Run tests and invoke `fn()` when complete.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Runner"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1564,
+            "description": "Helpers.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1573,
+            "description": "Parse or format the given `val`.",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "",
+                    "type": "String|Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String|Number"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1586,
+            "description": "Parse the given `str` and return milliseconds.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1625,
+            "description": "Format the given `ms`.",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1648,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1656,
+            "description": "Save timer references to avoid Sinon interfering (see GH-237).",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1666,
+            "description": "Check if both stdio streams are associated with a tty.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1672,
+            "description": "Expose `Base`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1678,
+            "description": "Enable coloring by default.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1684,
+            "description": "Default color map.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1710,
+            "description": "Default symbol map.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1727,
+            "description": "Color `str` with the given `type`,\nallowing colors to be disabled,\nas well as user-defined color\nschemes.",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1744,
+            "description": "Expose term window size, with some\ndefaults for when stderr is not a tty.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1757,
+            "description": "Expose some basic cursor interactions\nthat are common among reporters.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1785,
+            "description": "Outut the given `failures` as a list.",
+            "params": [
+                {
+                    "name": "failures",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1857,
+            "description": "Initialize a new `Base` reporter.\n\nAll other reporters generally\ninherit from this reporter, providing\nstats such as test duration, number\nof tests passed / failed etc.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1923,
+            "description": "Output common epilogue used by many of\nthe bundled reporters.",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1978,
+            "description": "Pad the given `str` to `len`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "len",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 1992,
+            "description": "Return a character diff for `err`.",
+            "params": [
+                {
+                    "name": "err",
+                    "description": "",
+                    "type": "Error"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2014,
+            "description": "Color lines for `str`, using the color `name`.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2033,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2040,
+            "description": "Expose `Doc`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2046,
+            "description": "Initialize a new `Doc` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2093,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2100,
+            "description": "Expose `Dot`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2106,
+            "description": "Initialize a new `Dot` matrix test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2149,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2162,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2169,
+            "description": "Expose `HTMLCov`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2175,
+            "description": "Initialize a new `JsCoverage` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2199,
+            "description": "Return coverage class for `n`.",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2216,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2225,
+            "description": "Save timer references to avoid Sinon interfering (see GH-237).",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2235,
+            "description": "Expose `Doc`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2241,
+            "description": "Stats template.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2252,
+            "description": "Initialize a new `Doc` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2396,
+            "description": "Display error `msg`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2404,
+            "description": "Return a DOM fragment from `html`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2423,
+            "description": "Check for suites that do not have elements\nwith `classname`, and hide them.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2436,
+            "description": "Unhide .hidden suites.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2447,
+            "description": "Set `el` text to `str`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2459,
+            "description": "Listen on `event` with callback `fn`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2498,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2504,
+            "description": "Expose `JSONCov`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2510,
+            "description": "Initialize a new `JsCoverage` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                },
+                {
+                    "name": "output",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2552,
+            "description": "Map jscoverage data to a JSON structure\nsuitable for reporting.",
+            "params": [
+                {
+                    "name": "cov",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2590,
+            "description": "Map jscoverage data for a single source file\nto a JSON structure suitable for reporting.",
+            "params": [
+                {
+                    "name": "filename",
+                    "description": "name of the source file",
+                    "type": "String"
+                },
+                {
+                    "name": "data",
+                    "description": "jscoverage coverage data",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2634,
+            "description": "Return a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2655,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2662,
+            "description": "Expose `List`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2668,
+            "description": "Initialize a new `List` test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2699,
+            "description": "Return a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2719,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2727,
+            "description": "Expose `JSON`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2733,
+            "description": "Initialize a new `JSON` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2772,
+            "description": "Return a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2792,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2800,
+            "description": "Expose `Landing`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2806,
+            "description": "Airplane color.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2812,
+            "description": "Airplane crash color.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2818,
+            "description": "Runway color.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2824,
+            "description": "Initialize a new `Landing` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2883,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2896,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2904,
+            "description": "Expose `List`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2910,
+            "description": "Initialize a new `List` test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2954,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2967,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2974,
+            "description": "Expose `Markdown`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 2980,
+            "description": "Initialize a new `Markdown` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3062,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3068,
+            "description": "Expose `Min`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3074,
+            "description": "Initialize a new `Min` minimal test reporter (best used with --watch).",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3094,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3107,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3114,
+            "description": "Expose `Dot`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3120,
+            "description": "Initialize a new `Dot` matrix test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3167,
+            "description": "Draw the nyan cat with runner `status`.",
+            "params": [
+                {
+                    "name": "status",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3182,
+            "description": "Draw the \"scoreboard\" showing the number\nof passes, failures and pending tests.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3207,
+            "description": "Append the rainbow.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3224,
+            "description": "Draw the rainbow.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3242,
+            "description": "Draw the nyan cat with `status`.",
+            "params": [
+                {
+                    "name": "status",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3294,
+            "description": "Move cursor up `n`.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3305,
+            "description": "Move cursor down `n`.",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3316,
+            "description": "Generate rainbow colors.",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3338,
+            "description": "Apply rainbow to the given `str`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3352,
+            "description": "Stdout helper.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3360,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3374,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3382,
+            "description": "Expose `Progress`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3388,
+            "description": "General progress bar color.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3394,
+            "description": "Initialize a new `Progress` bar test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3454,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3468,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3476,
+            "description": "Expose `Spec`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3482,
+            "description": "Initialize a new `Spec` test reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3549,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3563,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3571,
+            "description": "Expose `TAP`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3577,
+            "description": "Initialize a new `TAP` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3624,
+            "description": "Return a TAP-safe title of `test`",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3640,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3646,
+            "description": "Expose `Teamcity`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3652,
+            "description": "Initialize a new `Teamcity` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3688,
+            "description": "Escape the given `str`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3709,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3717,
+            "description": "Save timer references to avoid Sinon interfering (see GH-237).",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3727,
+            "description": "Expose `XUnit`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3733,
+            "description": "Initialize a new `XUnit` reporter.",
+            "params": [
+                {
+                    "name": "runner",
+                    "description": "",
+                    "type": "Runner"
+                }
+            ],
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3770,
+            "description": "Inherit from `Base.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3780,
+            "description": "Output tag for the given `test.`",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3802,
+            "description": "HTML tag helper.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3820,
+            "description": "Return cdata escaped CDATA `str`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3832,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3840,
+            "description": "Save timer references to avoid Sinon interfering (see GH-237).",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3850,
+            "description": "Object#toString().",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3856,
+            "description": "Expose `Runnable`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3862,
+            "description": "Initialize a new `Runnable` with the given `title` and callback `fn`.",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3880,
+            "description": "Inherit from `EventEmitter.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3890,
+            "description": "Set & get timeout `ms`.",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "ms or self",
+                "type": "Runnable|Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3907,
+            "description": "Set & get slow `ms`.",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "ms or self",
+                "type": "Runnable|Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3923,
+            "description": "Return the full title generated by recursively\nconcatenating the parent's full title.",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3935,
+            "description": "Clear the timeout.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3945,
+            "description": "Inspect the runnable void of private properties.",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3961,
+            "description": "Reset the timeout.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 3980,
+            "description": "Run the test and invoke `fn(err)`.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4059,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4071,
+            "description": "Non-enumerable globals.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4084,
+            "description": "Expose `Runner`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4090,
+            "description": "Initialize a `Runner` for the given `suite`.\n\nEvents:\n\n  - `start`  execution started\n  - `end`  execution complete\n  - `suite`  (suite) test suite execution started\n  - `suite end`  (suite) all tests (and sub-suites) have finished\n  - `test`  (test) test execution started\n  - `test end`  (test) test completed\n  - `hook`  (hook) hook execution started\n  - `hook end`  (hook) hook complete\n  - `pass`  (test) test passed\n  - `fail`  (test, err) test failed",
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4121,
+            "description": "Inherit from `EventEmitter.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4131,
+            "description": "Run tests with full titles matching `re`. Updates runner.total\nwith number of tests matched.",
+            "params": [
+                {
+                    "name": "re",
+                    "description": "",
+                    "type": "RegExp"
+                },
+                {
+                    "name": "invert",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Runner"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4149,
+            "description": "Returns the number of tests matching the grep search for the\ngiven suite.",
+            "params": [
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "Suite"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4171,
+            "description": "Return a list of global properties.",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4190,
+            "description": "Allow the given `arr` of globals.",
+            "params": [
+                {
+                    "name": "arr",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Runner"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4207,
+            "description": "Check for global variable leaks.",
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4234,
+            "description": "Fail the given `test`.",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Test"
+                },
+                {
+                    "name": "err",
+                    "description": "",
+                    "type": "Error"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4253,
+            "description": "Fail the given `hook` with `err`.\n\nHook failures (currently) hard-end due\nto that fact that a failing hook will\nsurely cause subsequent tests to fail,\ncausing jumbled reporting.",
+            "params": [
+                {
+                    "name": "hook",
+                    "description": "",
+                    "type": "Hook"
+                },
+                {
+                    "name": "err",
+                    "description": "",
+                    "type": "Error"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4271,
+            "description": "Run hook `name` callbacks and then invoke `fn()`.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "function",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4311,
+            "description": "Run hook `name` for the given array of `suites`\nin order, and callback `fn(err)`.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "suites",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4346,
+            "description": "Run hooks from the top level down.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4359,
+            "description": "Run hooks from the bottom up.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4372,
+            "description": "Return an array of parent Suites from\nclosest to furthest.",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4387,
+            "description": "Run the current test and callback `fn(err)`.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4410,
+            "description": "Run tests in the given `suite` and invoke\nthe callback `fn()` when complete.",
+            "params": [
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "Suite"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4471,
+            "description": "Run the given `suite` and invoke the\ncallback `fn()` when complete.",
+            "params": [
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "Suite"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4510,
+            "description": "Handle uncaught exceptions.",
+            "params": [
+                {
+                    "name": "err",
+                    "description": "",
+                    "type": "Error"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4536,
+            "description": "Run the root suite and invoke `fn(failures)`\non completion.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Runner"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4575,
+            "description": "Filter leaks with the given globals flagged as `ok`.",
+            "params": [
+                {
+                    "name": "ok",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "globals",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4600,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4610,
+            "description": "Expose `Suite`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4616,
+            "description": "Create a new `Suite` with the given `title`\nand parent `Suite`. When a suite with the\nsame title is already present, that suite\nis returned to provide nicer reporter\nand more flexible meta-testing.",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "",
+                    "type": "Suite"
+                },
+                {
+                    "name": "title",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Suite"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4638,
+            "description": "Initialize a new `Suite` with the given\n`title` and `ctx`.",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "ctx",
+                    "description": "",
+                    "type": "Context"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4663,
+            "description": "Inherit from `EventEmitter.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4673,
+            "description": "Return a clone of this `Suite`.",
+            "return": {
+                "description": "",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4690,
+            "description": "Set timeout `ms` or short-hand such as \"2s\".",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite|Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4706,
+            "description": "Set slow `ms` or short-hand such as \"2s\".",
+            "params": [
+                {
+                    "name": "ms",
+                    "description": "",
+                    "type": "Number|String"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite|Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4722,
+            "description": "Sets whether to bail after first error.",
+            "params": [
+                {
+                    "name": "bail",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite|Number"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4737,
+            "description": "Run `fn(test[, done])` before running tests.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4757,
+            "description": "Run `fn(test[, done])` after running tests.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4777,
+            "description": "Run `fn(test[, done])` before each test case.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4797,
+            "description": "Run `fn(test[, done])` after each test case.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4817,
+            "description": "Add a test `suite`.",
+            "params": [
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "Suite"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4835,
+            "description": "Add a `test` to this suite.",
+            "params": [
+                {
+                    "name": "test",
+                    "description": "",
+                    "type": "Test"
+                }
+            ],
+            "return": {
+                "description": "for chaining",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4853,
+            "description": "Return the full title generated by recursively\nconcatenating the parent's full title.",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4869,
+            "description": "Return the total number of tests.",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "api": "public",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4882,
+            "description": "Iterates through each suite recursively to find\nall tests. Applies a function in the format\n`fn(test)`.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Suite"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4904,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4910,
+            "description": "Expose `Test`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4916,
+            "description": "Initialize a new `Test` with the given `title` and callback `fn`.",
+            "params": [
+                {
+                    "name": "title",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4930,
+            "description": "Inherit from `Runnable.prototype`.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4944,
+            "description": "Module dependencies.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4953,
+            "description": "Ignored directories.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4959,
+            "description": "Escape special characters in the given string of html.",
+            "params": [
+                {
+                    "name": "html",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4975,
+            "description": "Array#forEach (<=IE8)",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "scope",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 4989,
+            "description": "Array#indexOf (<=IE8)",
+            "params": [
+                {
+                    "name": "arr",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "obj",
+                    "description": "to find index of",
+                    "type": "Object"
+                },
+                {
+                    "name": "start",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5006,
+            "description": "Array#reduce (<=IE8)",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "initial",
+                    "description": "value",
+                    "type": "Object"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5025,
+            "description": "Array#filter (<=IE8)",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5044,
+            "description": "Object.keys (<=IE8)",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "keys",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5065,
+            "description": "Watch the given `files` for changes\nand invoke `fn(file)` on modification.",
+            "params": [
+                {
+                    "name": "files",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5084,
+            "description": "Ignored files.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5092,
+            "description": "Lookup files in the given `dir`.",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5116,
+            "description": "Compute a slug from the given `str`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5131,
+            "description": "Strip the function definition from `str`,\nand re-indent for pre whitespace.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5149,
+            "description": "Escape regular expression characters in `str`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5161,
+            "description": "Trim the given `str`.",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5173,
+            "description": "Parse the given `qs`.",
+            "params": [
+                {
+                    "name": "qs",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5192,
+            "description": "Highlight the given string of `js`.",
+            "params": [
+                {
+                    "name": "js",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5212,
+            "description": "Highlight the contents of tag `name`.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "api": "private",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5227,
+            "description": "Node shims.\n\nThese are meant only to allow\nmocha.js to run untouched, not\nto allow running node code in\nthe browser.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5241,
+            "description": "next tick implementation.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5269,
+            "description": "Remove uncaughtException listener.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5279,
+            "description": "Implements uncaughtException listener.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5294,
+            "description": "Expose mocha.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5301,
+            "description": "Override ui to ensure that the ui functions are initialized.\nNormally this would happen in Mocha.prototype.loadFiles.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5312,
+            "description": "Setup mocha with the given setting options.",
+            "class": "Chip8"
+        },
+        {
+            "file": "test/mocha.js",
+            "line": 5322,
+            "description": "Run mocha, returning the Runner.",
+            "class": "Chip8"
+        },
+        {
+            "file": "chip8.js",
+            "line": 20,
+            "description": "An emulation cycle step.",
+            "access": "private",
+            "tagname": "",
+            "class": "Chip8"
+        },
+        {
+            "file": "chip8.js",
+            "line": 29,
+            "description": "Start the emulator main loop.",
+            "itemtype": "method",
+            "name": "start",
+            "class": "Chip8"
+        },
+        {
+            "file": "chip8.js",
+            "line": 37,
+            "description": "Stop the emulator main loop.",
+            "itemtype": "method",
+            "name": "stop",
+            "class": "Chip8"
+        },
+        {
+            "file": "chip8.js",
+            "line": 45,
+            "description": "Load a rom into the CPU memory.",
+            "itemtype": "method",
+            "name": "loadRom",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "of a rom",
+                    "type": "String, Chip8.ROMS"
+                }
+            ],
+            "class": "Chip8"
+        },
+        {
+            "file": "chip8.js",
+            "line": 69,
+            "description": "List of known CHIP8 roms.",
+            "itemtype": "property",
+            "name": "ROMS",
+            "type": "Array",
+            "static": 1,
+            "final": 1,
+            "class": "Chip8"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:38"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:88"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:105"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:118"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:161"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:192"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:207"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:221"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:238"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:270"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:286"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:302"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:317"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:334"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:382"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:405"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:462"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:484"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:501"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:553"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/expect.js:843"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:367"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:375"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:399"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:419"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:456"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:475"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:497"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:559"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:572"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:585"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:688"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:696"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:710"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:723"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:736"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:767"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:790"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1276"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1288"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1319"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1332"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1344"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1366"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1381"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1400"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1424"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1439"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1451"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1463"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1475"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1487"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1500"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1513"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1526"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1538"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1573"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1586"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1625"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1727"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1785"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1857"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1923"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1978"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:1992"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2014"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2046"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2106"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2175"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2199"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2252"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2510"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2552"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2590"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2634"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2668"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2699"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2733"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2772"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2824"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2910"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:2980"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3074"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3120"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3167"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3182"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3207"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3224"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3242"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3294"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3305"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3316"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3338"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3394"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3482"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3577"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3624"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3652"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3733"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3862"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3890"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3907"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3923"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3935"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3945"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3961"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:3980"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4090"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4131"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4149"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4171"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4190"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4207"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4234"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4253"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4271"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4311"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4346"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4359"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4372"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4387"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4410"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4471"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4510"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4536"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4575"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4616"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4638"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4673"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4690"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4706"
+        },
+        {
+            "message": "replacing incorrect tag: parma with param",
+            "line": " test/mocha.js:4722"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4722"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4737"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4757"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4777"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4797"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4817"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4835"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4853"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4869"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4882"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4916"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4959"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4975"
+        },
+        {
+            "message": "replacing incorrect tag: parma with param",
+            "line": " test/mocha.js:4989"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:4989"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5006"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5025"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5044"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5065"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5092"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5116"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5149"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5161"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5173"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5192"
+        },
+        {
+            "message": "unknown tag: api",
+            "line": " test/mocha.js:5212"
+        },
+        {
+            "message": "Missing item type\nChecks if a given keyCode is pressed or not.",
+            "line": " src/keyboard.js:27"
+        },
+        {
+            "message": "Missing item type\nExports.",
+            "line": " test/expect.js:9"
+        },
+        {
+            "message": "Missing item type\nExports version.",
+            "line": " test/expect.js:16"
+        },
+        {
+            "message": "Missing item type\nPossible assertion flags.",
+            "line": " test/expect.js:22"
+        },
+        {
+            "message": "Missing item type\nConstructor",
+            "line": " test/expect.js:38"
+        },
+        {
+            "message": "Missing item type\nPerforms an assertion",
+            "line": " test/expect.js:88"
+        },
+        {
+            "message": "Missing item type\nCheck if the value is truthy",
+            "line": " test/expect.js:105"
+        },
+        {
+            "message": "Missing item type\nAssert that the function throws.",
+            "line": " test/expect.js:118"
+        },
+        {
+            "message": "Missing item type\nChecks if the array is empty.",
+            "line": " test/expect.js:161"
+        },
+        {
+            "message": "Missing item type\nChecks if the obj exactly equals another.",
+            "line": " test/expect.js:192"
+        },
+        {
+            "message": "Missing item type\nChecks if the obj sortof equals another.",
+            "line": " test/expect.js:207"
+        },
+        {
+            "message": "Missing item type\nAssert within start to finish (inclusive).",
+            "line": " test/expect.js:221"
+        },
+        {
+            "message": "Missing item type\nAssert typeof / instance of",
+            "line": " test/expect.js:238"
+        },
+        {
+            "message": "Missing item type\nAssert numeric value above _n_.",
+            "line": " test/expect.js:270"
+        },
+        {
+            "message": "Missing item type\nAssert numeric value below _n_.",
+            "line": " test/expect.js:286"
+        },
+        {
+            "message": "Missing item type\nAssert string value matches _regexp_.",
+            "line": " test/expect.js:302"
+        },
+        {
+            "message": "Missing item type\nAssert property \"length\" exists and has value of _n_.",
+            "line": " test/expect.js:317"
+        },
+        {
+            "message": "Missing item type\nAssert property _name_ exists, with optional _val_.",
+            "line": " test/expect.js:334"
+        },
+        {
+            "message": "Missing item type\nAssert that the array contains _obj_ or string contains _obj_.",
+            "line": " test/expect.js:382"
+        },
+        {
+            "message": "Missing item type\nAssert exact keys or inclusion of keys by using\nthe `.own` modifier.",
+            "line": " test/expect.js:405"
+        },
+        {
+            "message": "Missing item type\nAssert a failure.",
+            "line": " test/expect.js:462"
+        },
+        {
+            "message": "Missing item type\nFunction bind implementation.",
+            "line": " test/expect.js:474"
+        },
+        {
+            "message": "Missing item type\nArray every compatibility",
+            "line": " test/expect.js:484"
+        },
+        {
+            "message": "Missing item type\nArray indexOf compatibility.",
+            "line": " test/expect.js:501"
+        },
+        {
+            "message": "Missing item type\nInspects an object.",
+            "line": " test/expect.js:553"
+        },
+        {
+            "message": "Missing item type\nAsserts deep equality",
+            "line": " test/expect.js:843"
+        },
+        {
+            "message": "Missing item type\nModule exports.",
+            "line": " test/mocha.js:353"
+        },
+        {
+            "message": "Missing item type\nCheck if `obj` is an array.",
+            "line": " test/mocha.js:359"
+        },
+        {
+            "message": "Missing item type\nEvent emitter constructor.",
+            "line": " test/mocha.js:367"
+        },
+        {
+            "message": "Missing item type\nAdds a listener.",
+            "line": " test/mocha.js:375"
+        },
+        {
+            "message": "Missing item type\nAdds a volatile listener.",
+            "line": " test/mocha.js:399"
+        },
+        {
+            "message": "Missing item type\nRemoves a listener.",
+            "line": " test/mocha.js:419"
+        },
+        {
+            "message": "Missing item type\nRemoves all listeners for an event.",
+            "line": " test/mocha.js:456"
+        },
+        {
+            "message": "Missing item type\nGets all listeners for a certain event.",
+            "line": " test/mocha.js:475"
+        },
+        {
+            "message": "Missing item type\nEmits an event.",
+            "line": " test/mocha.js:497"
+        },
+        {
+            "message": "Missing item type\nExpose `Progress`.",
+            "line": " test/mocha.js:542"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Progress` indicator.",
+            "line": " test/mocha.js:548"
+        },
+        {
+            "message": "Missing item type\nSet progress size to `n`.",
+            "line": " test/mocha.js:559"
+        },
+        {
+            "message": "Missing item type\nSet text to `str`.",
+            "line": " test/mocha.js:572"
+        },
+        {
+            "message": "Missing item type\nSet font size to `n`.",
+            "line": " test/mocha.js:585"
+        },
+        {
+            "message": "Missing item type\nSet font `family`.",
+            "line": " test/mocha.js:598"
+        },
+        {
+            "message": "Missing item type\nUpdate percentage to `n`.",
+            "line": " test/mocha.js:610"
+        },
+        {
+            "message": "Missing item type\nDraw on `ctx`.",
+            "line": " test/mocha.js:622"
+        },
+        {
+            "message": "Missing item type\nExpose `Context`.",
+            "line": " test/mocha.js:682"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Context`.",
+            "line": " test/mocha.js:688"
+        },
+        {
+            "message": "Missing item type\nSet or get the context `Runnable` to `runnable`.",
+            "line": " test/mocha.js:696"
+        },
+        {
+            "message": "Missing item type\nSet test timeout `ms`.",
+            "line": " test/mocha.js:710"
+        },
+        {
+            "message": "Missing item type\nSet test slowness threshold `ms`.",
+            "line": " test/mocha.js:723"
+        },
+        {
+            "message": "Missing item type\nInspect the context void of `._runnable`.",
+            "line": " test/mocha.js:736"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:755"
+        },
+        {
+            "message": "Missing item type\nExpose `Hook`.",
+            "line": " test/mocha.js:761"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Hook` with the given `title` and callback `fn`.",
+            "line": " test/mocha.js:767"
+        },
+        {
+            "message": "Missing item type\nInherit from `Runnable.prototype`.",
+            "line": " test/mocha.js:780"
+        },
+        {
+            "message": "Missing item type\nGet or set the test `err`.",
+            "line": " test/mocha.js:790"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:813"
+        },
+        {
+            "message": "Missing item type\nBDD-style interface:\n\n     describe('Array', function(){\n       describe('#indexOf()', function(){\n         it('should return -1 when not present', function(){\n\n         });\n\n         it('should return the index when present', function(){\n\n         });\n       });\n     });",
+            "line": " test/mocha.js:820"
+        },
+        {
+            "message": "Missing item type\nExecute before running tests.",
+            "line": " test/mocha.js:842"
+        },
+        {
+            "message": "Missing item type\nExecute after running tests.",
+            "line": " test/mocha.js:850"
+        },
+        {
+            "message": "Missing item type\nExecute before each test case.",
+            "line": " test/mocha.js:858"
+        },
+        {
+            "message": "Missing item type\nExecute after each test case.",
+            "line": " test/mocha.js:866"
+        },
+        {
+            "message": "Missing item type\nDescribe a \"suite\" with the given `title`\nand callback `fn` containing nested suites\nand/or tests.",
+            "line": " test/mocha.js:874"
+        },
+        {
+            "message": "Missing item type\nPending describe.",
+            "line": " test/mocha.js:888"
+        },
+        {
+            "message": "Missing item type\nExclusive suite.",
+            "line": " test/mocha.js:902"
+        },
+        {
+            "message": "Missing item type\nDescribe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "line": " test/mocha.js:911"
+        },
+        {
+            "message": "Missing item type\nExclusive test-case.",
+            "line": " test/mocha.js:925"
+        },
+        {
+            "message": "Missing item type\nPending test case.",
+            "line": " test/mocha.js:934"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:950"
+        },
+        {
+            "message": "Missing item type\nTDD-style interface:\n\n    exports.Array = {\n      '#indexOf()': {\n        'should return -1 when the value is not present': function(){\n          \n        },\n\n        'should return the correct index when the value is present': function(){\n          \n        }\n      }\n    };",
+            "line": " test/mocha.js:957"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:1022"
+        },
+        {
+            "message": "Missing item type\nQUnit-style interface:\n\n    suite('Array');\n    \n    test('#length', function(){\n      var arr = [1,2,3];\n      ok(arr.length == 3);\n    });\n    \n    test('#indexOf()', function(){\n      var arr = [1,2,3];\n      ok(arr.indexOf(1) == 0);\n      ok(arr.indexOf(2) == 1);\n      ok(arr.indexOf(3) == 2);\n    });\n    \n    suite('String');\n    \n    test('#length', function(){\n      ok('foo'.length == 3);\n    });",
+            "line": " test/mocha.js:1029"
+        },
+        {
+            "message": "Missing item type\nExecute before running tests.",
+            "line": " test/mocha.js:1059"
+        },
+        {
+            "message": "Missing item type\nExecute after running tests.",
+            "line": " test/mocha.js:1067"
+        },
+        {
+            "message": "Missing item type\nExecute before each test case.",
+            "line": " test/mocha.js:1075"
+        },
+        {
+            "message": "Missing item type\nExecute after each test case.",
+            "line": " test/mocha.js:1083"
+        },
+        {
+            "message": "Missing item type\nDescribe a \"suite\" with the given `title`.",
+            "line": " test/mocha.js:1091"
+        },
+        {
+            "message": "Missing item type\nDescribe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "line": " test/mocha.js:1101"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:1117"
+        },
+        {
+            "message": "Missing item type\nTDD-style interface:\n\n     suite('Array', function(){\n       suite('#indexOf()', function(){\n         suiteSetup(function(){\n\n         });\n         \n         test('should return -1 when not present', function(){\n\n         });\n\n         test('should return the index when present', function(){\n\n         });\n\n         suiteTeardown(function(){\n\n         });\n       });\n     });",
+            "line": " test/mocha.js:1124"
+        },
+        {
+            "message": "Missing item type\nExecute before each test case.",
+            "line": " test/mocha.js:1154"
+        },
+        {
+            "message": "Missing item type\nExecute after each test case.",
+            "line": " test/mocha.js:1162"
+        },
+        {
+            "message": "Missing item type\nExecute before the suite.",
+            "line": " test/mocha.js:1170"
+        },
+        {
+            "message": "Missing item type\nExecute after the suite.",
+            "line": " test/mocha.js:1178"
+        },
+        {
+            "message": "Missing item type\nDescribe a \"suite\" with the given `title`\nand callback `fn` containing nested suites\nand/or tests.",
+            "line": " test/mocha.js:1186"
+        },
+        {
+            "message": "Missing item type\nExclusive test-case.",
+            "line": " test/mocha.js:1200"
+        },
+        {
+            "message": "Missing item type\nDescribe a specification or test-case\nwith the given `title` and callback `fn`\nacting as a thunk.",
+            "line": " test/mocha.js:1209"
+        },
+        {
+            "message": "Missing item type\nExclusive test-case.",
+            "line": " test/mocha.js:1221"
+        },
+        {
+            "message": "Missing item type\nPending test case.",
+            "line": " test/mocha.js:1230"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:1249"
+        },
+        {
+            "message": "Missing item type\nExpose `Mocha`.",
+            "line": " test/mocha.js:1256"
+        },
+        {
+            "message": "Missing item type\nExpose internals.",
+            "line": " test/mocha.js:1262"
+        },
+        {
+            "message": "Missing item type\nReturn image `name` path.",
+            "line": " test/mocha.js:1276"
+        },
+        {
+            "message": "Missing item type\nSetup mocha with `options`.\n\nOptions:\n\n  - `ui` name \"bdd\", \"tdd\", \"exports\" etc\n  - `reporter` reporter instance, defaults to `mocha.reporters.Dot`\n  - `globals` array of accepted globals\n  - `timeout` timeout in milliseconds\n  - `bail` bail on the first test failure\n  - `slow` milliseconds to wait before considering a test slow\n  - `ignoreLeaks` ignore global leaks\n  - `grep` string or regexp to filter tests with",
+            "line": " test/mocha.js:1288"
+        },
+        {
+            "message": "Missing item type\nEnable or disable bailing on the first failure.",
+            "line": " test/mocha.js:1319"
+        },
+        {
+            "message": "Missing item type\nAdd test `file`.",
+            "line": " test/mocha.js:1332"
+        },
+        {
+            "message": "Missing item type\nSet reporter to `reporter`, defaults to \"dot\".",
+            "line": " test/mocha.js:1344"
+        },
+        {
+            "message": "Missing item type\nSet test UI `name`, defaults to \"bdd\".",
+            "line": " test/mocha.js:1366"
+        },
+        {
+            "message": "Missing item type\nLoad registered files.",
+            "line": " test/mocha.js:1381"
+        },
+        {
+            "message": "Missing item type\nEnable growl support.",
+            "line": " test/mocha.js:1400"
+        },
+        {
+            "message": "Missing item type\nAdd regexp to grep, if `re` is a string it is escaped.",
+            "line": " test/mocha.js:1424"
+        },
+        {
+            "message": "Missing item type\nInvert `.grep()` matches.",
+            "line": " test/mocha.js:1439"
+        },
+        {
+            "message": "Missing item type\nIgnore global leaks.",
+            "line": " test/mocha.js:1451"
+        },
+        {
+            "message": "Missing item type\nEnable global leak checking.",
+            "line": " test/mocha.js:1463"
+        },
+        {
+            "message": "Missing item type\nEnable growl support.",
+            "line": " test/mocha.js:1475"
+        },
+        {
+            "message": "Missing item type\nIgnore `globals` array or string.",
+            "line": " test/mocha.js:1487"
+        },
+        {
+            "message": "Missing item type\nSet the timeout in milliseconds.",
+            "line": " test/mocha.js:1500"
+        },
+        {
+            "message": "Missing item type\nSet slowness threshold in milliseconds.",
+            "line": " test/mocha.js:1513"
+        },
+        {
+            "message": "Missing item type\nMakes all tests async (accepting a callback)",
+            "line": " test/mocha.js:1526"
+        },
+        {
+            "message": "Missing item type\nRun tests and invoke `fn()` when complete.",
+            "line": " test/mocha.js:1538"
+        },
+        {
+            "message": "Missing item type\nHelpers.",
+            "line": " test/mocha.js:1564"
+        },
+        {
+            "message": "Missing item type\nParse or format the given `val`.",
+            "line": " test/mocha.js:1573"
+        },
+        {
+            "message": "Missing item type\nParse the given `str` and return milliseconds.",
+            "line": " test/mocha.js:1586"
+        },
+        {
+            "message": "Missing item type\nFormat the given `ms`.",
+            "line": " test/mocha.js:1625"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:1648"
+        },
+        {
+            "message": "Missing item type\nSave timer references to avoid Sinon interfering (see GH-237).",
+            "line": " test/mocha.js:1656"
+        },
+        {
+            "message": "Missing item type\nCheck if both stdio streams are associated with a tty.",
+            "line": " test/mocha.js:1666"
+        },
+        {
+            "message": "Missing item type\nExpose `Base`.",
+            "line": " test/mocha.js:1672"
+        },
+        {
+            "message": "Missing item type\nEnable coloring by default.",
+            "line": " test/mocha.js:1678"
+        },
+        {
+            "message": "Missing item type\nDefault color map.",
+            "line": " test/mocha.js:1684"
+        },
+        {
+            "message": "Missing item type\nDefault symbol map.",
+            "line": " test/mocha.js:1710"
+        },
+        {
+            "message": "Missing item type\nColor `str` with the given `type`,\nallowing colors to be disabled,\nas well as user-defined color\nschemes.",
+            "line": " test/mocha.js:1727"
+        },
+        {
+            "message": "Missing item type\nExpose term window size, with some\ndefaults for when stderr is not a tty.",
+            "line": " test/mocha.js:1744"
+        },
+        {
+            "message": "Missing item type\nExpose some basic cursor interactions\nthat are common among reporters.",
+            "line": " test/mocha.js:1757"
+        },
+        {
+            "message": "Missing item type\nOutut the given `failures` as a list.",
+            "line": " test/mocha.js:1785"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Base` reporter.\n\nAll other reporters generally\ninherit from this reporter, providing\nstats such as test duration, number\nof tests passed / failed etc.",
+            "line": " test/mocha.js:1857"
+        },
+        {
+            "message": "Missing item type\nOutput common epilogue used by many of\nthe bundled reporters.",
+            "line": " test/mocha.js:1923"
+        },
+        {
+            "message": "Missing item type\nPad the given `str` to `len`.",
+            "line": " test/mocha.js:1978"
+        },
+        {
+            "message": "Missing item type\nReturn a character diff for `err`.",
+            "line": " test/mocha.js:1992"
+        },
+        {
+            "message": "Missing item type\nColor lines for `str`, using the color `name`.",
+            "line": " test/mocha.js:2014"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2033"
+        },
+        {
+            "message": "Missing item type\nExpose `Doc`.",
+            "line": " test/mocha.js:2040"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Doc` reporter.",
+            "line": " test/mocha.js:2046"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2093"
+        },
+        {
+            "message": "Missing item type\nExpose `Dot`.",
+            "line": " test/mocha.js:2100"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Dot` matrix test reporter.",
+            "line": " test/mocha.js:2106"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:2149"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2162"
+        },
+        {
+            "message": "Missing item type\nExpose `HTMLCov`.",
+            "line": " test/mocha.js:2169"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `JsCoverage` reporter.",
+            "line": " test/mocha.js:2175"
+        },
+        {
+            "message": "Missing item type\nReturn coverage class for `n`.",
+            "line": " test/mocha.js:2199"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2216"
+        },
+        {
+            "message": "Missing item type\nSave timer references to avoid Sinon interfering (see GH-237).",
+            "line": " test/mocha.js:2225"
+        },
+        {
+            "message": "Missing item type\nExpose `Doc`.",
+            "line": " test/mocha.js:2235"
+        },
+        {
+            "message": "Missing item type\nStats template.",
+            "line": " test/mocha.js:2241"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Doc` reporter.",
+            "line": " test/mocha.js:2252"
+        },
+        {
+            "message": "Missing item type\nDisplay error `msg`.",
+            "line": " test/mocha.js:2396"
+        },
+        {
+            "message": "Missing item type\nReturn a DOM fragment from `html`.",
+            "line": " test/mocha.js:2404"
+        },
+        {
+            "message": "Missing item type\nCheck for suites that do not have elements\nwith `classname`, and hide them.",
+            "line": " test/mocha.js:2423"
+        },
+        {
+            "message": "Missing item type\nUnhide .hidden suites.",
+            "line": " test/mocha.js:2436"
+        },
+        {
+            "message": "Missing item type\nSet `el` text to `str`.",
+            "line": " test/mocha.js:2447"
+        },
+        {
+            "message": "Missing item type\nListen on `event` with callback `fn`.",
+            "line": " test/mocha.js:2459"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2498"
+        },
+        {
+            "message": "Missing item type\nExpose `JSONCov`.",
+            "line": " test/mocha.js:2504"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `JsCoverage` reporter.",
+            "line": " test/mocha.js:2510"
+        },
+        {
+            "message": "Missing item type\nMap jscoverage data to a JSON structure\nsuitable for reporting.",
+            "line": " test/mocha.js:2552"
+        },
+        {
+            "message": "Missing item type\nMap jscoverage data for a single source file\nto a JSON structure suitable for reporting.",
+            "line": " test/mocha.js:2590"
+        },
+        {
+            "message": "Missing item type\nReturn a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "line": " test/mocha.js:2634"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2655"
+        },
+        {
+            "message": "Missing item type\nExpose `List`.",
+            "line": " test/mocha.js:2662"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `List` test reporter.",
+            "line": " test/mocha.js:2668"
+        },
+        {
+            "message": "Missing item type\nReturn a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "line": " test/mocha.js:2699"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2719"
+        },
+        {
+            "message": "Missing item type\nExpose `JSON`.",
+            "line": " test/mocha.js:2727"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `JSON` reporter.",
+            "line": " test/mocha.js:2733"
+        },
+        {
+            "message": "Missing item type\nReturn a plain-object representation of `test`\nfree of cyclic properties etc.",
+            "line": " test/mocha.js:2772"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2792"
+        },
+        {
+            "message": "Missing item type\nExpose `Landing`.",
+            "line": " test/mocha.js:2800"
+        },
+        {
+            "message": "Missing item type\nAirplane color.",
+            "line": " test/mocha.js:2806"
+        },
+        {
+            "message": "Missing item type\nAirplane crash color.",
+            "line": " test/mocha.js:2812"
+        },
+        {
+            "message": "Missing item type\nRunway color.",
+            "line": " test/mocha.js:2818"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Landing` reporter.",
+            "line": " test/mocha.js:2824"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:2883"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2896"
+        },
+        {
+            "message": "Missing item type\nExpose `List`.",
+            "line": " test/mocha.js:2904"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `List` test reporter.",
+            "line": " test/mocha.js:2910"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:2954"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:2967"
+        },
+        {
+            "message": "Missing item type\nExpose `Markdown`.",
+            "line": " test/mocha.js:2974"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Markdown` reporter.",
+            "line": " test/mocha.js:2980"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3062"
+        },
+        {
+            "message": "Missing item type\nExpose `Min`.",
+            "line": " test/mocha.js:3068"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Min` minimal test reporter (best used with --watch).",
+            "line": " test/mocha.js:3074"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:3094"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3107"
+        },
+        {
+            "message": "Missing item type\nExpose `Dot`.",
+            "line": " test/mocha.js:3114"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Dot` matrix test reporter.",
+            "line": " test/mocha.js:3120"
+        },
+        {
+            "message": "Missing item type\nDraw the nyan cat with runner `status`.",
+            "line": " test/mocha.js:3167"
+        },
+        {
+            "message": "Missing item type\nDraw the \"scoreboard\" showing the number\nof passes, failures and pending tests.",
+            "line": " test/mocha.js:3182"
+        },
+        {
+            "message": "Missing item type\nAppend the rainbow.",
+            "line": " test/mocha.js:3207"
+        },
+        {
+            "message": "Missing item type\nDraw the rainbow.",
+            "line": " test/mocha.js:3224"
+        },
+        {
+            "message": "Missing item type\nDraw the nyan cat with `status`.",
+            "line": " test/mocha.js:3242"
+        },
+        {
+            "message": "Missing item type\nMove cursor up `n`.",
+            "line": " test/mocha.js:3294"
+        },
+        {
+            "message": "Missing item type\nMove cursor down `n`.",
+            "line": " test/mocha.js:3305"
+        },
+        {
+            "message": "Missing item type\nGenerate rainbow colors.",
+            "line": " test/mocha.js:3316"
+        },
+        {
+            "message": "Missing item type\nApply rainbow to the given `str`.",
+            "line": " test/mocha.js:3338"
+        },
+        {
+            "message": "Missing item type\nStdout helper.",
+            "line": " test/mocha.js:3352"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:3360"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3374"
+        },
+        {
+            "message": "Missing item type\nExpose `Progress`.",
+            "line": " test/mocha.js:3382"
+        },
+        {
+            "message": "Missing item type\nGeneral progress bar color.",
+            "line": " test/mocha.js:3388"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Progress` bar test reporter.",
+            "line": " test/mocha.js:3394"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:3454"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3468"
+        },
+        {
+            "message": "Missing item type\nExpose `Spec`.",
+            "line": " test/mocha.js:3476"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Spec` test reporter.",
+            "line": " test/mocha.js:3482"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:3549"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3563"
+        },
+        {
+            "message": "Missing item type\nExpose `TAP`.",
+            "line": " test/mocha.js:3571"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `TAP` reporter.",
+            "line": " test/mocha.js:3577"
+        },
+        {
+            "message": "Missing item type\nReturn a TAP-safe title of `test`",
+            "line": " test/mocha.js:3624"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3640"
+        },
+        {
+            "message": "Missing item type\nExpose `Teamcity`.",
+            "line": " test/mocha.js:3646"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Teamcity` reporter.",
+            "line": " test/mocha.js:3652"
+        },
+        {
+            "message": "Missing item type\nEscape the given `str`.",
+            "line": " test/mocha.js:3688"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3709"
+        },
+        {
+            "message": "Missing item type\nSave timer references to avoid Sinon interfering (see GH-237).",
+            "line": " test/mocha.js:3717"
+        },
+        {
+            "message": "Missing item type\nExpose `XUnit`.",
+            "line": " test/mocha.js:3727"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `XUnit` reporter.",
+            "line": " test/mocha.js:3733"
+        },
+        {
+            "message": "Missing item type\nInherit from `Base.prototype`.",
+            "line": " test/mocha.js:3770"
+        },
+        {
+            "message": "Missing item type\nOutput tag for the given `test.`",
+            "line": " test/mocha.js:3780"
+        },
+        {
+            "message": "Missing item type\nHTML tag helper.",
+            "line": " test/mocha.js:3802"
+        },
+        {
+            "message": "Missing item type\nReturn cdata escaped CDATA `str`.",
+            "line": " test/mocha.js:3820"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:3832"
+        },
+        {
+            "message": "Missing item type\nSave timer references to avoid Sinon interfering (see GH-237).",
+            "line": " test/mocha.js:3840"
+        },
+        {
+            "message": "Missing item type\nObject#toString().",
+            "line": " test/mocha.js:3850"
+        },
+        {
+            "message": "Missing item type\nExpose `Runnable`.",
+            "line": " test/mocha.js:3856"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Runnable` with the given `title` and callback `fn`.",
+            "line": " test/mocha.js:3862"
+        },
+        {
+            "message": "Missing item type\nInherit from `EventEmitter.prototype`.",
+            "line": " test/mocha.js:3880"
+        },
+        {
+            "message": "Missing item type\nSet & get timeout `ms`.",
+            "line": " test/mocha.js:3890"
+        },
+        {
+            "message": "Missing item type\nSet & get slow `ms`.",
+            "line": " test/mocha.js:3907"
+        },
+        {
+            "message": "Missing item type\nReturn the full title generated by recursively\nconcatenating the parent's full title.",
+            "line": " test/mocha.js:3923"
+        },
+        {
+            "message": "Missing item type\nClear the timeout.",
+            "line": " test/mocha.js:3935"
+        },
+        {
+            "message": "Missing item type\nInspect the runnable void of private properties.",
+            "line": " test/mocha.js:3945"
+        },
+        {
+            "message": "Missing item type\nReset the timeout.",
+            "line": " test/mocha.js:3961"
+        },
+        {
+            "message": "Missing item type\nRun the test and invoke `fn(err)`.",
+            "line": " test/mocha.js:3980"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:4059"
+        },
+        {
+            "message": "Missing item type\nNon-enumerable globals.",
+            "line": " test/mocha.js:4071"
+        },
+        {
+            "message": "Missing item type\nExpose `Runner`.",
+            "line": " test/mocha.js:4084"
+        },
+        {
+            "message": "Missing item type\nInitialize a `Runner` for the given `suite`.\n\nEvents:\n\n  - `start`  execution started\n  - `end`  execution complete\n  - `suite`  (suite) test suite execution started\n  - `suite end`  (suite) all tests (and sub-suites) have finished\n  - `test`  (test) test execution started\n  - `test end`  (test) test completed\n  - `hook`  (hook) hook execution started\n  - `hook end`  (hook) hook complete\n  - `pass`  (test) test passed\n  - `fail`  (test, err) test failed",
+            "line": " test/mocha.js:4090"
+        },
+        {
+            "message": "Missing item type\nInherit from `EventEmitter.prototype`.",
+            "line": " test/mocha.js:4121"
+        },
+        {
+            "message": "Missing item type\nRun tests with full titles matching `re`. Updates runner.total\nwith number of tests matched.",
+            "line": " test/mocha.js:4131"
+        },
+        {
+            "message": "Missing item type\nReturns the number of tests matching the grep search for the\ngiven suite.",
+            "line": " test/mocha.js:4149"
+        },
+        {
+            "message": "Missing item type\nReturn a list of global properties.",
+            "line": " test/mocha.js:4171"
+        },
+        {
+            "message": "Missing item type\nAllow the given `arr` of globals.",
+            "line": " test/mocha.js:4190"
+        },
+        {
+            "message": "Missing item type\nCheck for global variable leaks.",
+            "line": " test/mocha.js:4207"
+        },
+        {
+            "message": "Missing item type\nFail the given `test`.",
+            "line": " test/mocha.js:4234"
+        },
+        {
+            "message": "Missing item type\nFail the given `hook` with `err`.\n\nHook failures (currently) hard-end due\nto that fact that a failing hook will\nsurely cause subsequent tests to fail,\ncausing jumbled reporting.",
+            "line": " test/mocha.js:4253"
+        },
+        {
+            "message": "Missing item type\nRun hook `name` callbacks and then invoke `fn()`.",
+            "line": " test/mocha.js:4271"
+        },
+        {
+            "message": "Missing item type\nRun hook `name` for the given array of `suites`\nin order, and callback `fn(err)`.",
+            "line": " test/mocha.js:4311"
+        },
+        {
+            "message": "Missing item type\nRun hooks from the top level down.",
+            "line": " test/mocha.js:4346"
+        },
+        {
+            "message": "Missing item type\nRun hooks from the bottom up.",
+            "line": " test/mocha.js:4359"
+        },
+        {
+            "message": "Missing item type\nReturn an array of parent Suites from\nclosest to furthest.",
+            "line": " test/mocha.js:4372"
+        },
+        {
+            "message": "Missing item type\nRun the current test and callback `fn(err)`.",
+            "line": " test/mocha.js:4387"
+        },
+        {
+            "message": "Missing item type\nRun tests in the given `suite` and invoke\nthe callback `fn()` when complete.",
+            "line": " test/mocha.js:4410"
+        },
+        {
+            "message": "Missing item type\nRun the given `suite` and invoke the\ncallback `fn()` when complete.",
+            "line": " test/mocha.js:4471"
+        },
+        {
+            "message": "Missing item type\nHandle uncaught exceptions.",
+            "line": " test/mocha.js:4510"
+        },
+        {
+            "message": "Missing item type\nRun the root suite and invoke `fn(failures)`\non completion.",
+            "line": " test/mocha.js:4536"
+        },
+        {
+            "message": "Missing item type\nFilter leaks with the given globals flagged as `ok`.",
+            "line": " test/mocha.js:4575"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:4600"
+        },
+        {
+            "message": "Missing item type\nExpose `Suite`.",
+            "line": " test/mocha.js:4610"
+        },
+        {
+            "message": "Missing item type\nCreate a new `Suite` with the given `title`\nand parent `Suite`. When a suite with the\nsame title is already present, that suite\nis returned to provide nicer reporter\nand more flexible meta-testing.",
+            "line": " test/mocha.js:4616"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Suite` with the given\n`title` and `ctx`.",
+            "line": " test/mocha.js:4638"
+        },
+        {
+            "message": "Missing item type\nInherit from `EventEmitter.prototype`.",
+            "line": " test/mocha.js:4663"
+        },
+        {
+            "message": "Missing item type\nReturn a clone of this `Suite`.",
+            "line": " test/mocha.js:4673"
+        },
+        {
+            "message": "Missing item type\nSet timeout `ms` or short-hand such as \"2s\".",
+            "line": " test/mocha.js:4690"
+        },
+        {
+            "message": "Missing item type\nSet slow `ms` or short-hand such as \"2s\".",
+            "line": " test/mocha.js:4706"
+        },
+        {
+            "message": "Missing item type\nSets whether to bail after first error.",
+            "line": " test/mocha.js:4722"
+        },
+        {
+            "message": "Missing item type\nRun `fn(test[, done])` before running tests.",
+            "line": " test/mocha.js:4737"
+        },
+        {
+            "message": "Missing item type\nRun `fn(test[, done])` after running tests.",
+            "line": " test/mocha.js:4757"
+        },
+        {
+            "message": "Missing item type\nRun `fn(test[, done])` before each test case.",
+            "line": " test/mocha.js:4777"
+        },
+        {
+            "message": "Missing item type\nRun `fn(test[, done])` after each test case.",
+            "line": " test/mocha.js:4797"
+        },
+        {
+            "message": "Missing item type\nAdd a test `suite`.",
+            "line": " test/mocha.js:4817"
+        },
+        {
+            "message": "Missing item type\nAdd a `test` to this suite.",
+            "line": " test/mocha.js:4835"
+        },
+        {
+            "message": "Missing item type\nReturn the full title generated by recursively\nconcatenating the parent's full title.",
+            "line": " test/mocha.js:4853"
+        },
+        {
+            "message": "Missing item type\nReturn the total number of tests.",
+            "line": " test/mocha.js:4869"
+        },
+        {
+            "message": "Missing item type\nIterates through each suite recursively to find\nall tests. Applies a function in the format\n`fn(test)`.",
+            "line": " test/mocha.js:4882"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:4904"
+        },
+        {
+            "message": "Missing item type\nExpose `Test`.",
+            "line": " test/mocha.js:4910"
+        },
+        {
+            "message": "Missing item type\nInitialize a new `Test` with the given `title` and callback `fn`.",
+            "line": " test/mocha.js:4916"
+        },
+        {
+            "message": "Missing item type\nInherit from `Runnable.prototype`.",
+            "line": " test/mocha.js:4930"
+        },
+        {
+            "message": "Missing item type\nModule dependencies.",
+            "line": " test/mocha.js:4944"
+        },
+        {
+            "message": "Missing item type\nIgnored directories.",
+            "line": " test/mocha.js:4953"
+        },
+        {
+            "message": "Missing item type\nEscape special characters in the given string of html.",
+            "line": " test/mocha.js:4959"
+        },
+        {
+            "message": "Missing item type\nArray#forEach (<=IE8)",
+            "line": " test/mocha.js:4975"
+        },
+        {
+            "message": "Missing item type\nArray#indexOf (<=IE8)",
+            "line": " test/mocha.js:4989"
+        },
+        {
+            "message": "Missing item type\nArray#reduce (<=IE8)",
+            "line": " test/mocha.js:5006"
+        },
+        {
+            "message": "Missing item type\nArray#filter (<=IE8)",
+            "line": " test/mocha.js:5025"
+        },
+        {
+            "message": "Missing item type\nObject.keys (<=IE8)",
+            "line": " test/mocha.js:5044"
+        },
+        {
+            "message": "Missing item type\nWatch the given `files` for changes\nand invoke `fn(file)` on modification.",
+            "line": " test/mocha.js:5065"
+        },
+        {
+            "message": "Missing item type\nIgnored files.",
+            "line": " test/mocha.js:5084"
+        },
+        {
+            "message": "Missing item type\nLookup files in the given `dir`.",
+            "line": " test/mocha.js:5092"
+        },
+        {
+            "message": "Missing item type\nCompute a slug from the given `str`.",
+            "line": " test/mocha.js:5116"
+        },
+        {
+            "message": "Missing item type\nStrip the function definition from `str`,\nand re-indent for pre whitespace.",
+            "line": " test/mocha.js:5131"
+        },
+        {
+            "message": "Missing item type\nEscape regular expression characters in `str`.",
+            "line": " test/mocha.js:5149"
+        },
+        {
+            "message": "Missing item type\nTrim the given `str`.",
+            "line": " test/mocha.js:5161"
+        },
+        {
+            "message": "Missing item type\nParse the given `qs`.",
+            "line": " test/mocha.js:5173"
+        },
+        {
+            "message": "Missing item type\nHighlight the given string of `js`.",
+            "line": " test/mocha.js:5192"
+        },
+        {
+            "message": "Missing item type\nHighlight the contents of tag `name`.",
+            "line": " test/mocha.js:5212"
+        },
+        {
+            "message": "Missing item type\nNode shims.\n\nThese are meant only to allow\nmocha.js to run untouched, not\nto allow running node code in\nthe browser.",
+            "line": " test/mocha.js:5227"
+        },
+        {
+            "message": "Missing item type\nnext tick implementation.",
+            "line": " test/mocha.js:5241"
+        },
+        {
+            "message": "Missing item type\nRemove uncaughtException listener.",
+            "line": " test/mocha.js:5269"
+        },
+        {
+            "message": "Missing item type\nImplements uncaughtException listener.",
+            "line": " test/mocha.js:5279"
+        },
+        {
+            "message": "Missing item type\nExpose mocha.",
+            "line": " test/mocha.js:5294"
+        },
+        {
+            "message": "Missing item type\nOverride ui to ensure that the ui functions are initialized.\nNormally this would happen in Mocha.prototype.loadFiles.",
+            "line": " test/mocha.js:5301"
+        },
+        {
+            "message": "Missing item type\nSetup mocha with the given setting options.",
+            "line": " test/mocha.js:5312"
+        },
+        {
+            "message": "Missing item type\nRun mocha, returning the Runner.",
+            "line": " test/mocha.js:5322"
+        },
+        {
+            "message": "Missing item type\nAn emulation cycle step.",
+            "line": " chip8.js:20"
+        }
+    ]
+}
