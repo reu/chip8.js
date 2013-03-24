@@ -3,10 +3,80 @@
   <head>
     <title>chip8.js</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 960px;
+      }
+
+      canvas {
+        border: 10px solid;
+        display: block;
+        margin: 0 auto;
+        float: left;
+        margin-right: 30px
+      }
+
+      .commands {
+        width: 100px;
+      }
+    </style>
   </head>
   <body>
-    <canvas style="border: 10px solid"></canvas>
-    <div id="debug"></div>
+    <a href="https://github.com/reu/chip8.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <div class="container-narrow">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="https://github.com/reu/chip8.js">Source</a></li>
+          <li><a href="test/tests.html">Tests</a></li>
+          <li><a href="doc">Documentation</a></li>
+        </ul>
+        <h3 class="muted">chip8.js</h3>
+      </div>
+      <hr>
+
+      <select id="rom_selector">
+        <option>Select a game</option>
+      </select>
+
+      <canvas></canvas>
+
+      <h4>Commands</h4>
+      <table class="table table-condensed commands">
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>q</td>
+          <td>w</td>
+          <td>e</td>
+          <td>r</td>
+        </tr>
+        <tr>
+          <td>a</td>
+          <td>s</td>
+          <td>d</td>
+          <td>f</td>
+        </tr>
+        <tr>
+          <td>z</td>
+          <td>x</td>
+          <td>c</td>
+          <td>v</td>
+        </tr>
+      </table>
+    </div>
+
+
     <script src="lib/animation-frame-shim.js"></script>
     <script src="chip8.js"></script>
     <script src="src/cpu.js"></script>
@@ -23,22 +93,22 @@
         var canvas = document.querySelector("canvas");
         emulator.screen = new Chip8.Screen.CanvasScreen(canvas.getContext("2d"));
 
-        var romsSelector = document.createElement("select");
+        var romSelector = document.getElementById("rom_selector");
 
         for (var i = 0, romsCount = Chip8.ROMS.length; i < romsCount; i++) {
           var option = document.createElement("option");
           var rom = Chip8.ROMS[i];
           option.value = option.innerHTML = rom;
-          romsSelector.appendChild(option);
+          romSelector.appendChild(option);
         }
 
-        romsSelector.addEventListener("change", function(event) {
-          emulator.loadRom(event.target.value);
-          romsSelector.blur();
-          canvas.focus();
+        romSelector.addEventListener("change", function(event) {
+          if (event.target.value != "") {
+            emulator.loadRom(event.target.value);
+            romSelector.blur();
+            canvas.focus();
+          }
         }, false);
-
-        document.body.appendChild(romsSelector);
       })();
     </script>
   </body>
