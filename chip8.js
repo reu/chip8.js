@@ -7,6 +7,7 @@
    *
    * @property {Chip8.CPU} vm the CHIP8 CPU
    * @property {Chip8.Screen} screen where the emulator will render the graphics
+   * @property {Chip8.Speaker} speaker the audio engine used to play the sound
    * @property {Chip8.Input} input the input handler
    */
   var Chip8 = function Chip8() {
@@ -52,6 +53,7 @@
         if (request.response) {
           cpu.screen = self.screen;
           cpu.input = self.input;
+          cpu.speaker = self.speaker;
           self.stop();
           cpu.reset();
           cpu.loadProgram(new Uint8Array(request.response));
@@ -102,6 +104,7 @@
     Chip8.CPU = require("./src/cpu.js");
     Chip8.Keyboard = require("./src/keyboard.js");
     Chip8.Screen = require("./src/screen.js");
+    Chip8.Speaker = require("./src/speaker.js");
 
     module.exports = Chip8;
   } else {

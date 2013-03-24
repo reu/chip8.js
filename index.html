@@ -12,11 +12,13 @@
     <script src="src/cpu.js"></script>
     <script src="src/screen.js"></script>
     <script src="src/keyboard.js"></script>
+    <script src="src/speaker.js"></script>
     <script>
       (function() {
         var emulator = new Chip8;
 
         emulator.input = new Chip8.Keyboard;
+        emulator.speaker = new Chip8.Speaker;
 
         var canvas = document.querySelector("canvas");
         emulator.screen = new Chip8.Screen.CanvasScreen(canvas.getContext("2d"));

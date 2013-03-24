@@ -76,6 +76,11 @@ describe("Chip8.CPU", function() {
       cpu.cycle();
     });
 
+    it("play sounds", function(done) {
+      cpu.playSound = done;
+      cpu.cycle();
+    });
+
     it("update the timers", function(done) {
       cpu.updateTimers = done;
       cpu.cycle();
@@ -132,6 +137,20 @@ describe("Chip8.CPU", function() {
       expect(cpu.memory[0x200]).to.equal(1);
       expect(cpu.memory[0x201]).to.equal(2);
       expect(cpu.memory[0x202]).to.equal(3);
+    });
+  });
+
+  describe("#playSound", function() {
+    it("plays the speaker if the soundTimer is greater than zero", function(done) {
+      cpu.soundTimer = 1;
+      cpu.speaker.play = done;
+      cpu.playSound();
+    });
+
+    it("stops the speaker if the soundTimer is zero", function(done) {
+      cpu.soundTimer = 0;
+      cpu.speaker.stop = done;
+      cpu.playSound();
     });
   });
 

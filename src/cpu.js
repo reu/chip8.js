@@ -10,6 +10,7 @@
     this.stack = new Array;
     this.screen = { clear: function() {}, render: function() {}, setPixel: function() {} };
     this.input = { isKeyPressed: function(key) {}, clear: function() {} };
+    this.speaker = { clear: function() {}, play: function() {}, stop: function() {} };
     this.v = new Uint8Array(16);
     this.i = 0;
     this.memory = new Uint8Array(4096);
@@ -63,6 +64,7 @@
       this.soundTimer = 0;
       this.screen.clear();
       this.input.clear();
+      this.speaker.clear();
       this.loadFonts();
       this.paused = false;
     }
@@ -93,6 +95,8 @@
       if (!this.paused) {
         this.updateTimers();
       }
+
+      this.playSound();
       this.render();
     }
 
@@ -451,6 +455,18 @@
      */
     this.render = function() {
       this.screen.render();
+    }
+
+    /**
+     * Play the speaker until the sound timer reaches zero.
+     * @method playSound
+     */
+    this.playSound = function() {
+      if (this.soundTimer > 0) {
+        this.speaker.play();
+      } else {
+        this.speaker.stop();
+      }
     }
 
     /**
