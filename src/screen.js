@@ -1,6 +1,6 @@
 (function() {
   /**
-   * The CPU of the emulator, responsible for processing memory opcodes.
+   * The Screen is responsible for drawing the pixels information.
    *
    * @class Chip8.Screen
    * @constructor
@@ -44,7 +44,7 @@
   }
 
   /**
-   * The CPU of the emulator, responsible for processing memory opcodes.
+   * A screen that draws pixels in a HTML Canvas element.
    *
    * @class Chip8.Screen.CanvasScreen
    * @extends Chip8.Screen
